@@ -178,7 +178,7 @@ analyst_plot2
 
   In conclusion, we see that a more accurate assessment of the viability of building green is represented by using the full data set with mean-values instead of a truncated data set with median-values.
 
-```{r remove all,include=FALSE}
+```{r,include=FALSE}
 rm(list=ls())
 ```
 
@@ -186,7 +186,7 @@ rm(list=ls())
 
 ## Question 2
 
-```{r load the data, echo=FALSE}
+```{r load the data, include=FALSE}
 library(plyr)
 library(ggplot2)
 library(maptools)
@@ -234,12 +234,14 @@ plot_1 <- ggplot()+
   geom_point(data=dest_xy,aes(x=dX, y=dY) ,color="red", size=1)+
   ggtitle("Flights to and from Austin International Airport in 2008")+
   theme(plot.title = element_text(hjust = 0.5))
+```
+# A flight to Austin
+  We can get a better understanding of which cities are connected to Austin by air. By plotting all of the flights to and from Austin to other cities in the United States, we can see which cities fly more to and from Austin. 
+```{r plot_1,echo=FALSE}
 plot_1
 ```
 
-  We can get a better understanding of which cities are connected to Austin by air. By plotting all of the flights to and from Austin to other cities in the United States, we can see which cities fly more to and from Austin. 
-  
-  ```{r remove all,include=FALSE}
+```{r,include=FALSE}
 rm(list=ls())
 ```
   
