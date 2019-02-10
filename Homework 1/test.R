@@ -1,5 +1,4 @@
 library(tidyverse)
-library(FNN)
 
 sclass = read.csv('sclass.csv')
 sclass <- select(sclass,trim,mileage,price)
@@ -91,35 +90,13 @@ function_knn <- function(x){
   
   p_test + geom_path(aes(x = mileage, y = ypred_knn), color='red')+ 
     geom_path(aes(x = mileage, y = ypred_lm2), color='blue')+
-    ggtitle(paste("S-Class",trim,"when KNN=",knn_size))
+    ggtitle(paste("sclass",trim,"when KNN=",knn_size))
 }
 
+knn_size <- 10
 trim <- 350
-
-knn_size <- 10
 function_knn(sclass350)
 
-knn_size <- 20
-function_knn(sclass350)
 
-knn_size <- 40
-function_knn(sclass350)
-
-knn_size <- 50
-function_knn(sclass350)
-
-##
-trim <- "65 AMG"
-
-knn_size <- 10
-function_knn(sclass65AMG)
-
-knn_size <- 20
-function_knn(sclass65AMG)
-
-knn_size <- 40
-function_knn(sclass65AMG)
-
-knn_size <- 50
-function_knn(sclass65AMG)
+#function_knn(sclass65AMG)
 
