@@ -11,12 +11,12 @@ airports <- read.csv('airports.csv')
 
 # Let's visualize
 
-abia <- select(abia,Origin,Dest)
+abia_1 <- select(abia,Origin,Dest)
 airports <- select(airports,iata_code,name,latitude_deg,longitude_deg)
 
-abia <- count(abia, vars = c("Origin", "Dest"))
+abia_1 <- count(abia_1, vars = c("Origin", "Dest"))
 
-origin_xy <- merge(abia, airports, by.x="Origin", by.y="iata_code")
+origin_xy <- merge(abia_1, airports, by.x="Origin", by.y="iata_code")
 names(origin_xy) <- c("origin", "destination","trips", "o_name", "oX", "oY")
 
 dest_xy <-  merge(origin_xy, airports, by.x="destination", by.y="iata_code")
@@ -46,3 +46,63 @@ plot_1 <- ggplot()+
   ggtitle("Flights to and from Austin International Airport in 2008")+
   theme(plot.title = element_text(hjust = 0.5))
   
+# distance histogram
+hist(abia$Distance,
+       main = 'Distribution of flight distances',
+       xlab = 'Distance [miles]',
+       col = 'skyblue',
+       border = 'skyblue4')
+#I add a line indicating the mean of the group.
+abline(v=mean(abia$Distance), 
+       col = 'red',
+       lwd = 3)
+# I add a line indicating the median of the group.
+abline(v= median(abia$Distance), 
+       col = 'blue',
+       lty = 5,
+       lwd = 3)
+legend('topright',
+       legend = c('mean', 'median'), 
+       lty = c(1,5),
+       lwd = c(3,3),
+       col = c('red', 'blue'))
+
+plot_2 <- plot(abia$Distance, 
+               abia$ArrDelay, 
+               xlab = 'Distance [miles]', 
+               ylab = 'Arrival Delay [min]', 
+               main = 'Relationship between Distance and Arrival Delay', 
+               pch = 20, 
+               col = 'purple')
+
+# Seasonal delays
+
+abia$Season <- abia$Month
+
+#recoding the spring months
+abia$Season [abia$Season == 3] <- 100
+abia$Season [abia$Season == 4] <- 100
+abia$Season [abia$Season == 5] <- 100
+
+#recoding the summer months
+abia$Season [abia$Season == 6] <- 200
+abia$Season [abia$Season == 7] <- 200
+abia$Season [abia$Season == 8] <- 200
+
+#recoding the fall months 
+abia$Season [abia$Season == 9] <- 300
+abia$Season [abia$Season == 10] <- 300
+abia$Season [abia$Season == 11] <- 300
+
+#recoding the winter months
+abia$Season [abia$Season == 12] <- 400
+abia$Season [abia$Season == 1] <- 400
+abia$Season [abia$Season == 2] <- 400
+
+plot_3 <- boxplot(formula = DepDelay ~ Season,
+        data = abia,
+        main = 'Departure delay by season',
+        xlab = 'Season',
+        ylab = 'Departure delay [min]',
+        border = c('springgreen', 'gold', 'orange', 'skyblue'),
+        names = c('Spring', 'Summer', 'Fall', 'Winter'))

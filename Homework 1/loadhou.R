@@ -52,8 +52,13 @@ lm1 = lm(COAST ~ KHOU, data=D_train)
 lm2 = lm(COAST ~ poly(KHOU, 2), data=D_train)
 
 # KNN 250
-knn250 = knn.reg(train = X_train, test = X_test, y = y_train, k=250)
+knn250 = knn.reg(train = X_train, test = X_test, y = y_train, k=1885)
 names(knn250)
+
+nrow(X_train)
+nrow(X_test)
+nrow(y_train)
+nrow(loadhou)
 
 #####
 # Compare the models by RMSE_out
@@ -91,3 +96,5 @@ p_test + geom_point(aes(x = KHOU, y = ypred_knn250), color='red')
 p_test + geom_path(aes(x = KHOU, y = ypred_knn250), color='red')
 p_test + geom_path(aes(x = KHOU, y = ypred_knn250), color='red') + 
   geom_path(aes(x = KHOU, y = ypred_lm2), color='blue')
+
+# minimize knn and maximize 
