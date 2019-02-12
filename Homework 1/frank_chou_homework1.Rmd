@@ -1,9 +1,11 @@
 ---
-title: "Data Mining and Statistical Learning: Exercise 1"
+title: 'Data Mining and Statistical Learning: Exercise 1'
 author: "Frank Chou"
 date: "February 9, 2019"
-output: pdf_document
-indent: true
+output:
+  html_document:
+    df_print: paged
+indent: yes
 ---
 
 ```{r setup, include=FALSE}
