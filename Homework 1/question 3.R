@@ -163,11 +163,13 @@ rmse_lm2 <- vector()
 rmse_knn <- vector()
 
 ### Ask prof how to do this.
-#for (i in 1:knn_max_size){
-#  paste(rmse_k(sclass350,i))
-#}
+for (i in 1:knn_max_size){
+  rmse_k(sclass350,i)
+}
 
-rmse_k(sclass350,10)
+# keep things inside the function, also that the fucntion doesn't have a mechanism to save the results.
+
+test <- rmse_k(sclass350,10)
 rmse_k(sclass350,20)
 rmse_k(sclass350,30)
 rmse_k(sclass350,40)

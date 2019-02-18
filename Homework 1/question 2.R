@@ -22,8 +22,8 @@ names(origin_xy) <- c("origin", "destination","trips", "o_name", "oX", "oY")
 dest_xy <-  merge(origin_xy, airports, by.x="destination", by.y="iata_code")
 names(dest_xy) <- c("origin", "destination","trips", "o_name", "oY", "oX","d_name", "dY", "dX")
 
-dest_xy <- dest_xy[- grep("Erase", dest_xy$o_name),]#erase the damn island of nowhere
-dest_xy <- dest_xy[- grep("Erase", dest_xy$d_name),]#erase the damn island of nowhere
+#dest_xy <- dest_xy[- grep("Erase", dest_xy$o_name),]#erase the damn island of nowhere
+#dest_xy <- dest_xy[- grep("Erase", dest_xy$d_name),]#erase the damn island of nowhere
 
 xquiet<- scale_x_continuous("", breaks=NULL)
 yquiet<-scale_y_continuous("", breaks=NULL)
