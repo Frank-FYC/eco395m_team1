@@ -1,6 +1,8 @@
 this.dir <- dirname(parent.frame(2)$ofile)
 setwd(this.dir)
 
+# notes, btw normalize means log scale
+
 library(tidyverse)
 library(mosaic)
 library(class)
@@ -12,17 +14,12 @@ rmse = function(y, yhat) {
   sqrt( mean( (y - yhat)^2 ) )
 }
 
-# Root mean-squared prediction error
-rmse(saratoga_test$price, yhat_test1)
-rmse(saratoga_test$price, yhat_test2)
-rmse(saratoga_test$price, yhat_test3)
-
-
 # easy averaging over train/test splits
 
 rmse_vals = do(100)*{
   
   # re-split into train and test cases
+  n = nrow(SaratogaHouses)
   n_train = round(0.8*n)  # round to nearest integer
   n_test = n - n_train
   train_cases = sample.int(n, n_train, replace=FALSE)
