@@ -79,5 +79,5 @@ sum(diag(conf4))/n_test
 sum(diag(conf2))/n_test
 
 # what happened?  for a clue, see:
-cbind(probhat4_test, fgl_test$type)
+df = cbind(probhat4_test, fgl_test$type)
 

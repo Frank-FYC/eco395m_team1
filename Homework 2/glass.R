@@ -33,7 +33,7 @@ p0 + geom_boxplot(aes(x=type, y=Si))
 
 
 ## for illustration, consider the RIxMg plane (i.e., just 2D)
-X = select(fgl,RI,Mg)
+X = dplyr::select(fgl,RI,Mg)
 y = fgl$type
 n = length(y)
 
