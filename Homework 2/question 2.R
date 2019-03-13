@@ -5,11 +5,6 @@ library(mosaic)
 
 brca <- read.csv("./brca.csv")
 
-# First question: are some radiologists more clinically conservative than others in recalling patients, holding patient risk factors equal?
-
-# Some advice: imagine two radiologists who see the mammogram of a single patient, who has a specific set of risk factors. If radiologist A has a higher probability of recalling that patient than radiologist B, we'd say that radiologist A is more conservative (because they have a lower threshold for wanting to double-check the patient's results). So if all five radiologists saw the same set of patients, we'd easily find out whether some radiologists are more conservative than others. The problem is that the radiologists don't see the same patients. So we can't just look at raw recall rates-some radiologists might have seen patients whose clinical situation mandated more conservatism in the first place. Can you build a classification model that addresses this problem, i.e. that holds risk factors constant in assessing whether some radiologists are more conservative than others in recalling patients?
-
-
 do_many = do(100)*{
   
   # split train and test set
@@ -23,25 +18,25 @@ do_many = do(100)*{
   # train models: recall
   maxit = 10000
   
-  ml1 = multinom(recall ~ .-cancer,
+  ml1 = glm(recall ~ .-cancer,
                  data=brca_train,
                  maxit = maxit)
-  ml2 = multinom(recall ~ (.-cancer)^2, 
+  ml2 = glm(recall ~ (.-cancer)^2, 
                  data=brca_train, 
                  maxit = maxit)
   
   # train models: cancer
-  ml3 = multinom(cancer ~ recall,
+  ml3 = glm(cancer ~ recall,
                  data=brca_train,
                  maxit = maxit)
-  ml4 = multinom(cancer ~ .,
+  ml4 = glm(cancer ~ recall + history,
                  data=brca_train,
                  maxit = maxit)
-  ml5 = multinom(cancer ~ (.)^2, 
+  ml5 = glm(cancer ~ ., 
                  data=brca_train, 
                  maxit = maxit)
   
-  # make predictions
+  # make predictions (this shit broke cause you changed models)
   predict_test = function(x){
     predict(x, newdata=brca_test, type='probs')
   }
