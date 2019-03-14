@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Question 2: A Hospital Audit
+# Question 2: A Hospital Audit
 
 ```{r question 2 code,include=FALSE}
 rm(list=ls())
@@ -21,100 +21,214 @@ library(tidyverse)
 library(nnet)  # for multinom
 library(mosaic)
 
+options(warn=-1)
+
 brca <- read.csv("./brca.csv")
 
-# First question: are some radiologists more clinically conservative than others in recalling patients, holding patient risk factors equal?
+#####
+#First question: are some radiologists more clinically conservative than others in recalling patients, holding patient risk factors equal?
 
-# Some advice: imagine two radiologists who see the mammogram of a single patient, who has a specific set of risk factors. If radiologist A has a higher probability of recalling that patient than radiologist B, we'd say that radiologist A is more conservative (because they have a lower threshold for wanting to double-check the patient's results). So if all five radiologists saw the same set of patients, we'd easily find out whether some radiologists are more conservative than others. The problem is that the radiologists don't see the same patients. So we can't just look at raw recall rates-some radiologists might have seen patients whose clinical situation mandated more conservatism in the first place. Can you build a classification model that addresses this problem, i.e. that holds risk factors constant in assessing whether some radiologists are more conservative than others in recalling patients?
+# Second question: when the radiologists at this hospital interpret a mammogram to make a decision on whether to recall the patient, does the data suggest that they should be weighing some clinical risk factors more heavily than they currently are?
 
+rmse = function(y, yhat) {
+  sqrt( mean( (y - yhat)^2 ) )
+}
 
-do_many = do(100)*{
-  
-  # split train and test set
-  n = nrow(brca) #count all of the rows in the df
-  n_train = round(0.8*n) #take 0.8 times n, then round to nearest
-  train_ind = sort(sample.int(n, n_train, replace=FALSE)) #randomly sample from n, n_train times, without replacement, then sort
+df_rad13 = subset(brca,radiologist=="radiologist13")
+df_rad34 = subset(brca,radiologist=="radiologist34")
+df_rad66 = subset(brca,radiologist=="radiologist66")
+df_rad89 = subset(brca,radiologist=="radiologist89")
+df_rad95 = subset(brca,radiologist=="radiologist95")
+
+probtest = function(a,b){
+  n = nrow(a)
+  n_train = round(0.8*n) #take x times n, then round to nearest
   n_test = n - n_train #number of n test is n minus n_train
-  brca_train = brca[train_ind,] #create a dataframe of just the training
-  brca_test = brca[-train_ind,] #create a dataframe of the just the test
+  
+  train_ind = sort(sample.int(n, n_train, replace=FALSE)) # randomly sample from n, n_train times, without replacement, then sort
+  brca_train = select(a[train_ind,],-radiologist)
+  brca_test = select(a[-train_ind,],-radiologist)
+  brca.w_test = select(subset(brca,radiologist != b),-radiologist)
   
   # train models: recall
   maxit = 10000
   
-  ml1 = multinom(recall ~ .-cancer,
-                 data=brca_train,
-                 maxit = maxit)
-  ml2 = multinom(recall ~ (.-cancer)^2, 
-                 data=brca_train, 
-                 maxit = maxit)
-  
+  lm1 = glm(recall ~ .-cancer,
+            data=brca_train,
+            maxit = maxit)
+  lm2 = glm(recall ~ (.-cancer)^2, 
+            data=brca_train, 
+            maxit = maxit)
   # train models: cancer
-  ml3 = multinom(cancer ~ recall,
-                 data=brca_train,
-                 maxit = maxit)
-  ml4 = multinom(cancer ~ .,
-                 data=brca_train,
-                 maxit = maxit)
-  ml5 = multinom(cancer ~ (.)^2, 
-                 data=brca_train, 
-                 maxit = maxit)
+  lm3 = glm(cancer ~ recall,
+            data=brca_train,
+            maxit = maxit)
+  lm4 = glm(cancer ~ recall + history,
+            data=brca_train,
+            maxit = maxit)
+  lm5 = glm(cancer ~ ., 
+            data=brca_train, 
+            maxit = maxit)
+  lm6 = glm(cancer ~ .-recall, 
+            data=brca_train, 
+            maxit = maxit)
   
-  # make predictions
-  predict_test = function(x){
-    predict(x, newdata=brca_test, type='probs')
+  # predict on the specific radiologist testing set
+  yhat_test1 = predict(lm1,brca_test)
+  yhat_test2 = predict(lm2,brca_test) 
+  
+  yhat_test1.w = predict(lm1,brca.w_test)
+  yhat_test2.w = predict(lm2,brca.w_test)
+  
+  yhat_test3 = predict(lm3,brca_test)
+  yhat_test4 = predict(lm4,brca_test)
+  yhat_test5 = predict(lm5,brca_test)
+  yhat_test6 = predict(lm6,brca_test)
+  
+  yhat_test3.w = predict(lm3,brca.w_test)
+  yhat_test4.w = predict(lm4,brca.w_test)
+  yhat_test5.w = predict(lm5,brca.w_test)
+  yhat_test6.w = predict(lm6,brca.w_test)
+  
+  # predict on the other radiologists testing set
+  
+  rmse = function(y, yhat) {
+    sqrt( mean( (y - yhat)^2 ) )
   }
   
-  probhat1_test = predict_test(ml1)
-  probhat2_test = predict_test(ml2)
-  probhat3_test = predict_test(ml3)
-  probhat4_test = predict_test(ml4)
-  probhat5_test = predict_test(ml5)
-  
-  # here's a generic function for calculating out-of-sample deviance
-  dev_out = function(y, probhat) {
-    rc_pairs = cbind(seq_along(y), y)
-    -2*sum(log(probhat[rc_pairs]))
-  }
-  
-  # Calculate deviance
-  dev_out(brca_test$cancer, probhat1_test)
-  dev_out(brca_test$cancer, probhat2_test)
-  dev_out(brca_test$cancer, probhat3_test)
-  dev_out(brca_test$cancer, probhat4_test)
-  dev_out(brca_test$cancer, probhat5_test)
-  
-  # out of sample classification error rate
-  yhat_test = function(x){
-    predict(x, newdata=brca_test, type='class')
-  }
-  
-  yhat3_test = yhat_test(ml3)
-  yhat4_test = yhat_test(ml4)
-  yhat5_test = yhat_test(ml5)
-  
-  class_err = function(x){
-    table(brca_test$cancer,x)
-  }
-  
-  conf3 = class_err(yhat3_test)
-  conf4 = class_err(yhat4_test)
-  conf5 = class_err(yhat5_test)
-  
-  sum(diag(conf3))/n_test
-  sum(diag(conf4))/n_test
-  sum(diag(conf5))/n_test
-  
-  c(sum(diag(conf3))/n_test,
-    sum(diag(conf4))/n_test,
-    sum(diag(conf5))/n_test
+  c(rmse(brca_test$recall, yhat_test1),
+    rmse(brca_test$recall, yhat_test2),
+    
+    rmse(brca.w_test$recall, yhat_test1.w),
+    rmse(brca.w_test$recall, yhat_test2.w),
+    
+    rmse(brca_test$recall, yhat_test3),
+    rmse(brca_test$recall, yhat_test4),
+    rmse(brca_test$recall, yhat_test5),
+    rmse(brca_test$recall, yhat_test6),
+    
+    rmse(brca.w_test$recall, yhat_test3.w),
+    rmse(brca.w_test$recall, yhat_test4.w),
+    rmse(brca.w_test$recall, yhat_test5.w),
+    rmse(brca.w_test$recall, yhat_test6.w)
   )
-  
-  #cbind(probhat3_test, brca_test$cancer)
-  #cbind(probhat4_test, brca_test$cancer)
-  #cbind(probhat5_test, brca_test$cancer)
 }
 
-do_many
-names(do_many) = c("ml3","ml4","ml5")
-colMeans(do_many)
+# radiologist13 radiologist34 radiologist66 radiologist89 radiologist95
+
+rad13 = do(100)*{probtest(df_rad13,"radiologist13")}
+rad34 = do(100)*{probtest(df_rad34,"radiologist34")}
+rad66 = do(100)*{probtest(df_rad66,"radiologist66")}
+rad89 = do(100)*{
+  tryCatch({
+  probtest(df_rad89,"radiologist89")
+  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
+}
+rad95 = do(100)*{probtest(df_rad95,"radiologist95")}
+superrad = do(100)*{probtest(brca,"")}
+
+df = as.data.frame(
+  rbind(
+  colMeans(rad13),
+  colMeans(rad34),
+  colMeans(rad66),
+  colMeans(rad89),
+  colMeans(rad95),
+  colMeans(superrad)
+  )
+)
+rownames(df) = c("radiologist13","radiologist34","radiologist66","radiologist89","radiologist95","SuperRad")
+colnames(df) = c("lm1","lm2","lm1.w","lm2.w","lm3","lm4","lm5","lm6","lm3.w","lm4.w","lm5.w","lm6.w")
+
+df = as.data.frame(t(df))
+df$Rad13.compare = (df$radiologist13 - df$SuperRad)
+df$Rad34.compare = (df$radiologist34 - df$SuperRad)
+df$Rad66.compare = (df$radiologist66 - df$SuperRad)
+df$Rad89.compare = (df$radiologist89 - df$SuperRad)
+df$Rad95.compare = (df$radiologist95 - df$SuperRad)
+df = as.data.frame(t(df))
+
+df2 = df[,c(1,3,2,4,5,9,6,10,7,11,8,12)]
+df2 = as.data.frame(t(df2))
+
+
+# a confusion table to determine the best way to detect cancer
+
+n = nrow(brca)
+n_train = round(0.8*n) #take x times n, then round to nearest
+n_test = n - n_train #number of n test is n minus n_train
+
+train_ind = sort(sample.int(n, n_train, replace=FALSE)) # randomly sample from n, n_train times, without replacement, then sort
+brca_train = brca[train_ind,]
+brca_test = brca[-train_ind,]
+
+maxit = 1000
+
+lm3 = lm(cancer ~ recall,
+          data=brca_train,
+          maxit = maxit)
+lm4 = lm(cancer ~ recall + history,
+          data=brca_train,
+          maxit = maxit)
+lm5 = glm(cancer ~ ., 
+          data=brca_train, 
+          maxit = maxit)
+lm6 = glm(cancer ~ .-recall, 
+          data=brca_train, 
+          maxit = maxit)
+
+confusion.table = function(x){
+  probhat_test = predict(x, newdata=brca_test)
+  yhat_test = ifelse(probhat_test >= 0.1, 1, 0)
+  table(y=brca_test$cancer, yhat=yhat_test)
+}
+
+confusion.table(lm3)
+confusion.table(lm4)
+confusion.table(lm5)
+confusion.table(lm6)
+
 ```
+
+Hospital Audits are important to determine the effectiveness of hospital operations from a objective standpoint. In this particular case, the goal is to determining the performance of radiologists using a statistical audit of their recent patient interactions - a crucial link between modern data-science and hospital operations. Two overall questions are posited:
+
+1. First question: are some radiologists more clinically conservative than others in recalling patients, holding patient risk factors equal?
+
+2. Second question: when the radiologists at this hospital interpret a mammogram to make a decision on whether to recall the patient, does the data suggest that they should be weighing some clinical risk factors more heavily than they currently are?
+
+At the core of each question is reducing the number of false negatives - where a radiologist recommends a patient to conduct further tests and thereby allows a patient to begin immediately; and false positives - where a radiologist recommends further tests but ultimately turns out that there was no cancer. By introducing a statistical model, the goal is to augment the predictive capabilities of radiologist and offer a better standard of care for patients.
+
+This audit is structured in four parts: first is a brief summary of the data and how it is structured, second is a demonstration and presentation of answering question one, third is a similar approach for question two, fourth is a conclusion of the audit's findings and recommendations for improvement of future radiologist performance or audit effectiveness.
+
+## Brief Summary of Data
+```{r summary statistics, echo=FALSE}
+summary(brca)
+```
+The data of mammograms used in this audit were selected from a Hospital in Seattle, Washington. At this hospital, five radiologists were selected at random for the audit - where about 200 mammograms were randomly selected from the hospital for each. For a total of 987 mammograms covering 7 parameters:
+
+* age: 40-49*, 50-59, 60-69, 70 and older
+
+* family history of breast cancer: 0=No*, 1=Yes
+
+* history of breast biopsy/surgery: 0=No*, 1=Yes
+
+* breast cancer symptoms: 0=No*, 1=Yes
+
+* menopause/hormone-therapy status: Pre-menopausal, Post-menopausal & no hormone replacement therapy (HT), Post-menopausal & HT*, Post-menopausal & unknown HT
+
+* previous mammogram: 0=No*, 1=Yes
+
+* breast density classification: 1=Almost entirely fatty, 2=Scattered fibroglandular tissue*, 3=Heterogeneously dense, 4=Extremely dense
+
+Of these factors, two are of special interest: [recall] and [cancer]. In the abstract [recall] can be explained as the following: upon seeing the medical history of a patient, they can either recommend either one of two actions: recall for further screening or not. It is presumed that radiologists utilize all of the information available before they make a decision. This implies that there is a inherent correlative factor between recall and patient history. On the other hand [cancer] is whether or not a patient, whether through the recall screening process, or through another pathway of discovery - develops cancer within a 12 month window after seeing the radiologist. 
+
+## Question 1: Clinical Conservativism
+Without knowing how patients are assigned to radiologists, it is presumed that the relationship is random at best, and preferential at worst. With a random assignment, we can presume that each radiologist chosen for the audit would have seen, on average, the same makeup of patients that would necessitate a mammogram. A random assignment would entail a random drawing of cancer patients from the overall total cancer patient pool from the population. If preferential - meaning that a patient approaches a radiologist and requests care and upon the approval of the radiologist, we see an issue of sampling error within the audit data; as there is a bias introduced between patient selection and radiologist. Radiologist may either self-select for more difficult cases or easier based on preference and patients self-select based on their estimate of the reputation of the radiologist within the medical community. 
+
+Regardless of assignment, the primary method of which we rank the clinical conservationism is to create a model that is trained on each of the radiologists' and then test the model on data from both the radiologist and other patients not seen by the radiologist in question. The goals behind this approach are twofold: one is to recreate a evaluation profile of the radiologist through a linear model of determining whether or not a patient should be recalled, two to determine whether or not a patient who is recalled or not develops cancer within a 12 month time frame.
+
+The table below depicts the Root Mean Squared Error (RMSE) of each radiologist and their linear model trained on a small reserve of radiologist-specific and whole-patient testing data.
+```{r table of results,echo=FALSE}
+t(df2)
+```
+Example: for radiologist13 

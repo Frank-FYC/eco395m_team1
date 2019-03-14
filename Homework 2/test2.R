@@ -1,12 +1,12 @@
+```{r question 2 code,include=FALSE}
+rm(list=ls())
+
 library(MASS) 	## a library of example datasets
 library(tidyverse)
 library(nnet)  # for multinom
 library(mosaic)
 
 options(warn=-1)
-
-this.dir <- dirname(parent.frame(2)$ofile)
-setwd(this.dir)
 
 brca <- read.csv("./brca.csv")
 
@@ -54,9 +54,6 @@ probtest = function(a,b){
   lm5 = glm(cancer ~ ., 
             data=brca_train, 
             maxit = maxit)
-  lm6 = glm(cancer ~ .-recall, 
-            data=brca_train, 
-            maxit = maxit)
   
   # predict on the specific radiologist testing set
   yhat_test1 = predict(lm1,brca_test)
@@ -68,12 +65,10 @@ probtest = function(a,b){
   yhat_test3 = predict(lm3,brca_test)
   yhat_test4 = predict(lm4,brca_test)
   yhat_test5 = predict(lm5,brca_test)
-  yhat_test6 = predict(lm6,brca_test)
   
   yhat_test3.w = predict(lm3,brca.w_test)
   yhat_test4.w = predict(lm4,brca.w_test)
   yhat_test5.w = predict(lm5,brca.w_test)
-  yhat_test6.w = predict(lm6,brca.w_test)
   
   # predict on the other radiologists testing set
   
@@ -90,12 +85,10 @@ probtest = function(a,b){
     rmse(brca_test$recall, yhat_test3),
     rmse(brca_test$recall, yhat_test4),
     rmse(brca_test$recall, yhat_test5),
-    rmse(brca_test$recall, yhat_test6),
     
     rmse(brca.w_test$recall, yhat_test3.w),
     rmse(brca.w_test$recall, yhat_test4.w),
-    rmse(brca.w_test$recall, yhat_test5.w),
-    rmse(brca.w_test$recall, yhat_test6.w)
+    rmse(brca.w_test$recall, yhat_test5.w)
   )
 }
 
@@ -106,7 +99,7 @@ rad34 = do(100)*{probtest(df_rad34,"radiologist34")}
 rad66 = do(100)*{probtest(df_rad66,"radiologist66")}
 rad89 = do(100)*{
   tryCatch({
-  probtest(df_rad89,"radiologist89")
+    probtest(df_rad89,"radiologist89")
   }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
 }
 rad95 = do(100)*{probtest(df_rad95,"radiologist95")}
@@ -114,16 +107,16 @@ superrad = do(100)*{probtest(brca,"")}
 
 df = as.data.frame(
   rbind(
-  colMeans(rad13),
-  colMeans(rad34),
-  colMeans(rad66),
-  colMeans(rad89),
-  colMeans(rad95),
-  colMeans(superrad)
+    colMeans(rad13),
+    colMeans(rad34),
+    colMeans(rad66),
+    colMeans(rad89),
+    colMeans(rad95),
+    colMeans(superrad)
   )
 )
 rownames(df) = c("radiologist13","radiologist34","radiologist66","radiologist89","radiologist95","SuperRad")
-colnames(df) = c("lm1","lm2","lm1.w","lm2.w","lm3","lm4","lm5","lm6","lm3.w","lm4.w","lm5.w","lm6.w")
+colnames(df) = c("lm1","lm2","lm1.w","lm2.w","lm3","lm4","lm5","lm3.w","lm4.w","lm5.w")
 
 df = as.data.frame(t(df))
 df$Rad13.compare = (df$radiologist13 - df$SuperRad)
@@ -131,11 +124,6 @@ df$Rad34.compare = (df$radiologist34 - df$SuperRad)
 df$Rad66.compare = (df$radiologist66 - df$SuperRad)
 df$Rad89.compare = (df$radiologist89 - df$SuperRad)
 df$Rad95.compare = (df$radiologist95 - df$SuperRad)
-df = as.data.frame(t(df))
-
-df2 = df[,c(1,3,2,4,5,9,6,10,7,11,8,12)]
-df2 = as.data.frame(t(df2))
-
 
 # a confusion table to determine the best way to detect cancer
 
@@ -150,25 +138,25 @@ brca_test = brca[-train_ind,]
 maxit = 1000
 
 lm3 = lm(cancer ~ recall,
-          data=brca_train,
-          maxit = maxit)
+         data=brca_train,
+         maxit = maxit)
 lm4 = lm(cancer ~ recall + history,
-          data=brca_train,
-          maxit = maxit)
-lm5 = glm(cancer ~ ., 
-          data=brca_train, 
-          maxit = maxit)
-lm6 = glm(cancer ~ .-recall, 
-          data=brca_train, 
-          maxit = maxit)
+         data=brca_train,
+         maxit = maxit)
+lm5 = lm(cancer ~ ., 
+         data=brca_train, 
+         maxit = maxit)
 
-confusion.table = function(x){
-  probhat_test = predict(x, newdata=brca_test)
-  yhat_test = ifelse(probhat_test >= 0.1, 1, 0)
-  table(y=brca_test$cancer, yhat=yhat_test)
-}
+lm3_probhat_test = predict(lm3, newdata=brca_test)
+lm4_probhat_test = predict(lm4, newdata=brca_test)
+lm5_probhat_test = predict(lm5, newdata=brca_test)
 
-confusion.table(lm3)
-confusion.table(lm4)
-confusion.table(lm5)
-confusion.table(lm6)
+lm3_yhat_test = ifelse(lm3_probhat_test >= 0.1, 1, 0)
+lm4_yhat_test = ifelse(lm4_probhat_test >= 0.1, 1, 0)
+lm5_yhat_test = ifelse(lm5_probhat_test >= 0.1, 1, 0)
+
+table(y=brca_test$cancer, yhat=lm3_yhat_test)
+table(y=brca_test$cancer, yhat=lm4_yhat_test)
+table(y=brca_test$cancer, yhat=lm5_yhat_test)
+
+```
