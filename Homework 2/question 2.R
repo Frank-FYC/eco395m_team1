@@ -36,27 +36,27 @@ probtest = function(a,b){
   brca.w_test = select(subset(brca,radiologist != b),-radiologist)
   
   # train models: recall
-  maxit = 10000
+  maxit <<- 10000
   
-  lm1 = glm(recall ~ .-cancer,
+  lm1 <<- glm(recall ~ .-cancer,
             data=brca_train,
             maxit = maxit)
-  lm2 = glm(recall ~ (.-cancer)^2, 
+  lm2 <<- glm(recall ~ (.-cancer)^2, 
             data=brca_train, 
             maxit = maxit)
   # train models: cancer
-  lm3 = glm(cancer ~ recall,
-            data=brca_train,
-            maxit = maxit)
-  lm4 = glm(cancer ~ recall + history,
-            data=brca_train,
-            maxit = maxit)
-  lm5 = glm(cancer ~ ., 
-            data=brca_train, 
-            maxit = maxit)
-  lm6 = glm(cancer ~ .-recall, 
-            data=brca_train, 
-            maxit = maxit)
+  lm3 <<- glm(cancer ~ recall,
+              data=brca_train,
+              maxit = maxit)
+  lm4 <<- glm(cancer ~ .,
+              data=brca_train,
+              maxit = maxit)
+  lm5 <<- glm(cancer ~ .-recall, 
+              data=brca_train, 
+              maxit = maxit)
+  lm6 <<- glm(cancer ~ (.-recall)^2, 
+              data=brca_train, 
+              maxit = maxit)
   
   # predict on the specific radiologist testing set
   yhat_test1 = predict(lm1,brca_test)
@@ -147,20 +147,18 @@ train_ind = sort(sample.int(n, n_train, replace=FALSE)) # randomly sample from n
 brca_train = brca[train_ind,]
 brca_test = brca[-train_ind,]
 
-maxit = 1000
-
-lm3 = lm(cancer ~ recall,
-          data=brca_train,
-          maxit = maxit)
-lm4 = lm(cancer ~ recall + history,
-          data=brca_train,
-          maxit = maxit)
-lm5 = glm(cancer ~ ., 
-          data=brca_train, 
-          maxit = maxit)
-lm6 = glm(cancer ~ .-recall, 
-          data=brca_train, 
-          maxit = maxit)
+lm3 <<- glm(cancer ~ recall,
+            data=brca_train,
+            maxit = maxit)
+lm4 <<- glm(cancer ~ .,
+            data=brca_train,
+            maxit = maxit)
+lm5 <<- glm(cancer ~ .-recall, 
+            data=brca_train, 
+            maxit = maxit)
+lm6 <<- glm(cancer ~ (.-recall)^2, 
+            data=brca_train, 
+            maxit = maxit)
 
 confusion.table = function(x){
   probhat_test = predict(x, newdata=brca_test)
@@ -171,4 +169,4 @@ confusion.table = function(x){
 confusion.table(lm3)
 confusion.table(lm4)
 confusion.table(lm5)
-confusion.table(lm6)
+suppressWarnings(confusion.table(lm6))
