@@ -292,3 +292,235 @@ c.table_lm6
 + (1,0) means that a patient had cancer but was not recalled.
 + (0,1) means that a patient did not have cancer but was recalled.
 + (1,1) means that a patient had cancer and was successfully recalled.
+
+# Question 3: Going Viral
+
+```{r question 3 code, include = FALSE}
+rm(list=ls())
+
+options(warn=-1)
+
+library(mosaic)
+library(tidyverse)
+library(FNN)
+library(foreach)
+library(nnet)
+require(scales)
+
+df = read.csv('./online_news.csv')
+
+df = subset(df, select = -c(url) )
+
+
+
+rmse = function(y, yhat) {
+  sqrt( mean( (y - yhat)^2 ) )
+}
+
+rmse_model = do(10)*{
+  df = df[sample(nrow(df), 1000),]
+  n = nrow(df)
+  n_train = round(0.8*n) #take x times n, then round to nearest
+  n_test = n - n_train #number of n test is n minus n_train
+  
+  train_ind = sort(sample.int(n, n_train, replace=FALSE)) # randomly sample from n, n_train times, without replacement, then sort
+  df_train = df[train_ind,]
+  df_test = df[-train_ind,]
+  y_df_train = df_train$shares
+  y_df_test = df_test$shares
+  #####
+  # train models: recall # num_videos data_channel_is_lifestyle 
+  maxit <- 10000
+  
+  lm1 <<- glm(shares ~ .,
+              data=df_train,
+              maxit = maxit)
+  lm2 <<- glm(shares ~ 
+                n_tokens_content 
+              + num_imgs 
+              + data_channel_is_world 
+              + max_negative_polarity,
+              data=df_train,
+              maxit = maxit)
+  lm3 <<- glm(shares ~ 
+              . 
+              - n_tokens_content 
+              - num_imgs 
+              - data_channel_is_world
+              - max_negative_polarity,
+              data=df_train,
+              maxit = maxit)
+  lm4 <<- glm(shares ~ (.)^2,
+              data=df_train,
+              maxit = maxit)
+  lm5 <<- glm(shares ~ 
+                (n_tokens_content 
+              + num_imgs 
+              + data_channel_is_world 
+              + max_negative_polarity)^2,
+              data=df_train,
+              maxit = maxit)
+  lm6 <<- glm(shares ~ 
+                (. 
+              - n_tokens_content 
+              - num_imgs 
+              - data_channel_is_world
+              - max_negative_polarity)^2,
+              data=df_train,
+              maxit = maxit)
+  
+  yhat_test1 = predict(lm1,df_test)
+  yhat_test2 = predict(lm2,df_test)
+  yhat_test3 = predict(lm3,df_test)
+  yhat_test4 = predict(lm4,df_test)
+  yhat_test5 = predict(lm5,df_test)
+  yhat_test6 = predict(lm6,df_test)
+  
+  c(rmse(df_test$shares, yhat_test1),
+    rmse(df_test$shares, yhat_test2),
+    rmse(df_test$shares, yhat_test3),
+    rmse(df_test$shares, yhat_test4),
+    rmse(df_test$shares, yhat_test5),
+    rmse(df_test$shares, yhat_test6)
+  )
+}
+
+rmse_model
+colMeans(rmse_model)
+
+# in-sample and out of sample accuracy?
+n = nrow(df)
+n_train = round(0.8*n) #take x times n, then round to nearest
+n_test = n - n_train #number of n test is n minus n_train
+
+train_ind = sort(sample.int(n, n_train, replace=FALSE)) # randomly sample from n, n_train times, without replacement, then sort
+df_train = df[train_ind,]
+df_test = df[-train_ind,]
+
+sample.accuracy = function(x){
+  yhat_train = ifelse(predict(x) >= 1400, 1, 0)
+  y_train = ifelse(df_train$shares >= 1400, 1, 0)
+  in.sample_table <<- table(y=y_train, yhat=yhat_train)
+  
+  probhat_test = predict(x, newdata=df_test)
+  yhat_test = ifelse(probhat_test >= 1400, 1, 0)
+  y_test = ifelse(df_test$shares >= 1400, 1, 0)
+  out.sample_table <<- table(y=y_test, yhat=yhat_test)
+}
+
+sample.accuracy(lm1)
+in.sample_table
+out.sample_table
+
+sample.accuracy(lm2)
+in.sample_table
+out.sample_table
+
+sample.accuracy(lm3)
+in.sample_table
+out.sample_table
+
+sample.accuracy(lm4)
+in.sample_table
+out.sample_table
+
+sample.accuracy(lm5)
+in.sample_table
+out.sample_table
+
+sample.accuracy(lm6)
+in.sample_table
+out.sample_table
+
+```
+
+In the digital age, where information is no longer a constraint but rather - a superfluousness asset, determining what will be popular is a contentious task in of itself. Factors observable and unobservable go into the underlying decision-making of drawing a user's attention towards the consumption of given content. At the core of this question is determining what factors will ultimately predict the 'virality' given a piece of content and its associating metadata. To better understand this phenomena, a data set of 39,797 articles were utilized to train and test models to this effect. 
+
+## Methodology
+
+Given the large data set, it was computationally impractical to run the models on the entirety of the data set. A compromise was reached where 1000 articles were randomly sampled per cycle of model testing. Thereby maintaining independent and identically distributed random variables among the samples. Six different linear models were trained on 80% of this sampled data and tested on the remaining 20%. As mentioned before, a Root Mean Squared Error value was established among the models and then they were tested for in-sample and out-of-sample accuracy. As for deceiding which factors played a role in determining whether or not content went viral, linear regression models were created and promising variables selected for further testing. 
+
+The models used were the following
+
+* lm1 <<- glm(shares ~ .,
+            data=df_train,
+            maxit = maxit)
+* lm2 <<- glm(shares ~ 
+              weekday_is_friday 
+            + num_videos 
+            + data_channel_is_lifestyle 
+            + global_rate_negative_words,
+            data=df_train,
+            maxit = maxit)
+* lm3 <<- glm(shares ~ 
+            . 
+            - weekday_is_friday 
+            - num_videos 
+            - data_channel_is_lifestyle
+            - global_rate_negative_words,
+            data=df_train,
+            maxit = maxit)
+* lm4 <<- glm(shares ~ (.)^2,
+            data=df_train,
+            maxit = maxit)
+* lm5 <<- glm(shares ~ 
+              (weekday_is_friday 
+            + num_videos 
+            + data_channel_is_lifestyle 
+            + global_rate_negative_words)^2,
+            data=df_train,
+            maxit = maxit)
+* lm6 <<- glm(shares ~ 
+              (. 
+            - weekday_is_friday 
+            - num_videos 
+            - data_channel_is_lifestyle
+            - global_rate_negative_words)^2,
+            data=df_train,
+            maxit = maxit)
+
+## Results
+
+Because of compuational limitation of the underlying base model, only sampling 1000 from a population of about 40,000, different iterations of training/testing cycles yields different results. As a result, only a general sense of what factors makes content go viral can be obtained at this time.
+
+```{r p3 linear regression, echo=FALSE}
+summary(lm1)
+```
+            
+###The RMSE output for each model:
+
+```{r question 3 rmse output, echo=FALSE}
+rmse_result = as.data.frame(colMeans(rmse_model))
+rownames(rmse_result) = c("lm1","lm2","lm3","lm4","lm5","lm6")
+colnames(rmse_result) = c("RMSE")
+rmse_result
+```
+
+### Confusion Matrixes of each Model on the sample 1000 set. 
+
+```{r p3 confusion matrix, echo=FALSE}
+print("lm1 Confusion Matrix, training and testing")
+suppressWarnings(sample.accuracy(lm1))
+in.sample_table
+out.sample_table
+print("lm2 Confusion Matrix, training and testing")
+suppressWarnings(sample.accuracy(lm2))
+in.sample_table
+out.sample_table
+print("lm3 Confusion Matrix, training and testing")
+suppressWarnings(sample.accuracy(lm3))
+in.sample_table
+out.sample_table
+print("lm4 Confusion Matrix, training and testing")
+suppressWarnings(sample.accuracy(lm4))
+in.sample_table
+out.sample_table
+print("lm5 Confusion Matrix, training and testing")
+suppressWarnings(sample.accuracy(lm5))
+in.sample_table
+out.sample_table
+print("lm6 Confusion Matrix, training and testing")
+suppressWarnings(sample.accuracy(lm6))
+in.sample_table
+out.sample_table
+```
