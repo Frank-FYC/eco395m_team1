@@ -14,13 +14,13 @@ summary(online_news)
 viral = subset(online_news, shares >= 1400)
 dim(viral)
 
-#Find a plot that shows an intersting relationship with 'viral'.
+# Find a plot that shows an intersting relationship with 'viral'.
 plot(shares~n_tokens_title, data=viral)
 plot(log(shares)~n_tokens_title, data=viral)
 plot(log(shares)~title_sentiment_polarity, data=viral)
 plot(log(shares)~title_subjectivity, data=viral)
 
-#I like 'n_tokens_title' the most, so let's use this.
+# I like 'n_tokens_title' the most, so let's use this.
 
 rmse_model = do(2)*{
 
@@ -83,10 +83,13 @@ p_out = ggplot(data=rmse_grid_out) +
 
 
 which(rmse_grid_out==min(rmse_grid_out),arr.ind=TRUE)
-which.min(rmse_grid_out$RMSE)
+which.min(rmse_grid_out$RMSE) 
+
+# K=18 is the predicted best value of 
 
 p_out + geom_vline(xintercept=k_best, color='darkgreen', size=1.5)
 
-# 
+# So now, let us see how the actual compares to the prediction.
+
 
 
