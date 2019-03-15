@@ -1,0 +1,367 @@
+---
+output:
+pdf_document:
+keep_tex: yes
+html_document: 
+keep_md: yes
+word_document: default
+md_document:
+variant: markdown_github
+indent: yes
+title: 'Data Mining and Statistical Learning: Exercise 2'
+author: "Frank Chau, Milo Opdahl & Tejaswi Pukkalla"
+date: "March 15, 2019"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+```
+# Question 1
+
+Let's first look at the summary statistics of the data before going into developing regression models. 
+
+```{r q1 load data, include=FALSE}
+library(tidyverse)
+library(FNN)
+library(mosaic)
+library(psycho)
+data(SaratogaHouses)
+```
+
+```{r q1 summary, echo=FALSE}
+summary(SaratogaHouses)
+```
+
+The average price of houses in Saratoga, NY is around $200,000. On average, houses are around 28 years old, with hardly 80 new constructions (out of more than 1500), with an estimated living area of 1755 sq feet, 3 bedrooms and 2 bathrooms.About 65% of these houses have hot air heating, 70% of them use gas fuel, about 63% of them do not use centrail air conditioning.Only 15 of these houses are waterfront properties.
+
+We start by first building a baseline model using just bedrooms, bathrooms and Airconditioning and Waterfront property as variables and look at the regression coefficients.
+
+```{r q1 baseline model, include=FALSE}
+# Baseline model
+lm_small = lm(price ~ bedrooms + centralAir + bathrooms + waterfront, data=SaratogaHouses)
+```
+
+```{r q1 coefsmall, echo=FALSE}
+coef(lm_small)
+```
+
+We see that while increase in bedrooms and bathrooms increases the price, not having central air conditiong o=and not being waterfron tproperty drives down the price. This howeever, isn't very efficient. So then we add additonal effects such as land value, living area, age of the building, sewage type, fuel type, lot size and if the building is a new construction or not and look at the new regression coefficients.
+
+```{r q1 extra model, include=FALSE}
+# 10 main effects
+lm_medium = lm(price ~ . - sewer - age - livingArea - landValue - pctCollege, data=SaratogaHouses)
+```
+
+```{r q1 coefmed, echo=FALSE}
+coef(lm_medium)
+```
+
+While this gives us a better picture, we still might be missing any interaction between these variables that might lead to conflation of estimator coefficients. Hence, we next run the regression taking into account the interactions possible. After that, we compare out of sample predictions to see how effective our regression model is and then calculate the average root mean square errors for these three regresssions.
+
+```{r q1 inter, include=FALSE}
+# All interactions
+# the ()^2 says "include all pairwise interactions"
+lm_big = lm(price ~ (. - sewer - age - livingArea - landValue - pctCollege)^2, data=SaratogaHouses)
+
+####
+# Compare out-of-sample predictive performance
+####
+
+# Split into training and testing sets
+n = nrow(SaratogaHouses)
+n_train = round(0.8*n)  # round to nearest integer
+n_test = n - n_train
+train_cases = sample.int(n, n_train, replace=FALSE)
+test_cases = setdiff(1:n, train_cases)
+saratoga_train = SaratogaHouses[train_cases,]
+saratoga_test = SaratogaHouses[test_cases,]
+
+# Fit to the training data
+lm1 = lm(price ~ bedrooms + centralAir + bathrooms + waterfront, data=saratoga_train)
+lm2 = lm(price ~ . - sewer - age - livingArea - landValue - pctCollege, data=saratoga_train)
+lm3 = lm(price ~ (. - sewer - age - livingArea - landValue - pctCollege)^2, data=saratoga_train)
+
+# Predictions out of sample
+yhat_test1 = predict(lm1, saratoga_test)
+yhat_test2 = predict(lm2, saratoga_test)
+yhat_test3 = predict(lm3, saratoga_test)
+
+rmse = function(y, yhat) {
+  sqrt( mean( (y - yhat)^2 ) )
+}
+
+# Root mean-squared prediction error
+RMSE_Base <- rmse(saratoga_test$price, yhat_test1)
+RMSE_Extra <- rmse(saratoga_test$price, yhat_test2)
+RMSE_Interactions <- rmse(saratoga_test$price, yhat_test3)
+```
+
+```{r q1 R, echo=FALSE}
+RMSE_Base
+
+RMSE_Extra
+
+RMSE_Interactions
+
+```
+
+Now let's improve the model by adding multiple interaction terms and repeating the regression a hundred times and taking an average of the root mean square errors.
+
+
+```{r q1 repeat, include=FALSE}
+# easy averaging over train/test splits
+library(mosaic)
+
+rmse_vals = do(100)*{
+  
+  # re-split into train and test cases
+  n_train = round(0.8*n)  # round to nearest integer
+  n_test = n - n_train
+  train_cases = sample.int(n, n_train, replace=FALSE)
+  test_cases = setdiff(1:n, train_cases)
+  saratoga_train = SaratogaHouses[train_cases,]
+  saratoga_test = SaratogaHouses[test_cases,]
+  
+  # fit to this training set
+  lm2 = lm(price ~ . - sewer - waterfront - landValue - newConstruction, data=saratoga_train)
+  
+  lm_boom = lm(price ~ lotSize + age + pctCollege + 
+                 fireplaces + rooms + heating + fuel + centralAir +
+                 bedrooms*rooms + bathrooms*rooms + 
+                 bathrooms*livingArea, data=saratoga_train)
+  
+  lm_biggerboom = lm(price ~ lotSize + landValue + waterfront + newConstruction + bedrooms*bathrooms + heating + fuel + pctCollege + rooms*bedrooms + rooms*bathrooms + rooms*heating + livingArea, data=saratoga_train)
+  
+  
+  # predict on this testing set
+  yhat_test2 = predict(lm2, saratoga_test)
+  yhat_testboom = predict(lm_boom, saratoga_test)
+  yhat_testbiggerboom = predict(lm_biggerboom, saratoga_test)
+  c(rmse(saratoga_test$price, yhat_test2),
+    rmse(saratoga_test$price, yhat_testboom),
+    rmse(saratoga_test$price, yhat_testbiggerboom))
+}
+
+rmse_vals
+A <- colMeans(rmse_vals)
+```
+
+
+```{r q1 R2, echo=FALSE}
+A
+```
+
+Now, we see that our RMSE values are better than the ones we derived in class. However, to build a KNN model to better our outcomes, we first need to standardize our variables and rerun the linear regressions as well so that the RMSE values across different kinds of regressions are comparable. Let's look at the summary statistics of the standardized variables to ensure they have indeed all been standardized.
+
+```{r q1 std, include=FALSE}
+
+z_SaratogaHouses <- SaratogaHouses %>% 
+  psycho::standardize() 
+
+## Taking back-up of the input file, in case the original data is required later
+z_shbc <- z_SaratogaHouses
+
+## Convert the dependent var to factor. Normalize the numeric variables  
+
+##z_SaratogaHouses$Default <- factor(z_SaratogaHouses$Default)
+num.vars <- sapply(z_SaratogaHouses, is.numeric)
+z_SaratogaHouses[num.vars] <- lapply(z_SaratogaHouses[num.vars], scale)
+```
+
+```{r q1 sum, echo=FALSE}
+summary(z_SaratogaHouses)
+```
+
+Let's now repeat the linear regressions as before and get the average RMSE values for the three regressions.
+
+```{r q1 repreg, include=FALSE}
+##Generate caterical variable dummies
+results <- fastDummies::dummy_cols(z_SaratogaHouses)
+summary(results)
+
+myvars <- c("landValue", "livingArea", "bedrooms", "centralAir_Yes", "bathrooms", "waterfront_Yes", "age", "fuel_electric", "fuel_gas", "fuel_oil", "lotSize", "newConstruction_Yes")
+results.subset <- results[myvars]
+
+summary(results.subset)
+
+####
+# Compare out-of-sample predictive performance
+####
+
+# Split into training and testing sets
+n = nrow(results)
+n_train = round(0.8*n)  # round to nearest integer
+n_test = n - n_train
+train_cases = sample.int(n, n_train, replace=FALSE)
+test_cases = setdiff(1:n, train_cases)
+saratoga_train = results[train_cases,]
+saratoga_test = results[test_cases,]
+
+rmse = function(y, yhat) {
+  sqrt( mean( (y - yhat)^2 ) )
+}
+
+# easy averaging over train/test splits
+
+rmse_vals = do(100)*{
+  
+  # re-split into train and test cases
+  n_train = round(0.8*n)  # round to nearest integer
+  n_test = n - n_train
+  train_cases = sample.int(n, n_train, replace=FALSE)
+  test_cases = setdiff(1:n, train_cases)
+  saratoga_train = results[train_cases,]
+  saratoga_test = results[test_cases,]
+  
+  # fit to this training set
+  lm2 = lm(price ~ . - sewer - rooms - fireplaces - heating - pctCollege, data=saratoga_train)
+  
+  lm_boom = lm(price ~ bedrooms + centralAir + landValue + livingArea + bathrooms +
+                 landValue*livingArea + bedrooms*bathrooms + bedrooms*landValue, data=saratoga_train)
+  
+  lm_biggerboom = lm(price ~ bedrooms + centralAir + landValue + livingArea + bathrooms + waterfront + lotSize + age +
+                       fuel + newConstruction + 
+                       landValue*lotSize + bathrooms*rooms + age*newConstruction + 
+                       bedrooms*bathrooms + centralAir*fuel + landValue*waterfront, data=saratoga_train)
+  
+  
+  # predict on this testing set
+  yhat_test2 = predict(lm2, saratoga_test)
+  yhat_testboom = predict(lm_boom, saratoga_test)
+  yhat_testbiggerboom = predict(lm_biggerboom, saratoga_test)
+  c(rmse(saratoga_test$price, yhat_test2),
+    rmse(saratoga_test$price, yhat_testboom),
+    rmse(saratoga_test$price, yhat_testbiggerboom))
+}
+
+rmse_vals
+colMeans(rmse_vals)
+V1 <- mean(rmse_vals$V1)
+V2 <- mean(rmse_vals$V2)
+V3 <- mean(rmse_vals$V3)
+```
+
+```{r q1 vs, echo=FALSE}
+V1
+V2
+V3
+```
+
+We are ready to run the KNN regression using the same variables. 
+
+```{r q1 knn, include=FALSE}
+####
+# Compare out-of-sample predictive performance using KNN
+####
+
+# Split into training and testing sets
+n = nrow(results)
+n_train = round(0.8*n)  # round to nearest integer
+n_test = n - n_train
+train_cases = sample.int(n, n_train, replace=FALSE)
+test_cases = setdiff(1:n, train_cases)
+saratoga_train = results[train_cases,]
+saratoga_test = results[test_cases,]
+
+
+#####
+# Train/test split
+#####
+
+# randomly sample a set of data points to include in the training set
+train_ind = sample.int(n, n_train, replace=FALSE)
+
+# Define the training and testing set
+D_train = results[train_ind,]
+D_test = results[-train_ind,]
+
+
+
+X_train = select(D_train, myvars)
+y_train = select(D_train, price)
+X_test = select(D_test, myvars)
+y_test = select(D_test, price)
+
+# Running KNN
+rmse = function(y, ypred) {
+  sqrt(mean(data.matrix((y - ypred) ^ 2)))
+}
+
+
+# Multiple K values function
+knn_max = nrow(X_train)
+khat <- c()
+for (i in 3:knn_max)
+{
+  knn = knn.reg(
+    train = X_train,
+    test = X_test,
+    y = y_train,
+    k = i
+  )
+  names(knn)
+  ypred_knn = knn$pred
+  #####
+  # Compare the models by RMSE_out
+  #####
+  khat[i] = rmse(y_test, ypred_knn)
+}
+Averagek <- mean(khat)
+####
+# plot the fit
+####
+
+K = c(1:knn_max)
+RMSE = (khat)
+rmse_k = ggplot() + geom_path(aes(x = K, y = RMSE), color="red") +
+  geom_path(aes(x = K, y = mean(rmse_vals$V1)), color="green") +
+  geom_path(aes(x = K, y = mean(rmse_vals$V2)), color="brown") +
+  geom_path(aes(x = K, y = mean(rmse_vals$V3)), color="purple")+
+  geom_path(aes(x = K, y = Averagek), color="black")+
+  theme_bw(base_size = 18)
+```
+
+```{r q1 plo1, echo=FALSE}
+rmse_k
+```
+
+Since we are only interested in looking at the data where RMSE does better than the linear models, let us narrow down our K values upto 500. We can see below that the optimal K value seems to be closer to 50. 
+
+```{r q1 pl, include=FALSE}
+rmse_k1 = ggplot() + geom_path(aes(x = K, y = RMSE), color="red") +
+  geom_path(aes(x = K, y = mean(rmse_vals$V1)), color="green") +
+  geom_path(aes(x = K, y = mean(rmse_vals$V2)), color="brown") +
+  geom_path(aes(x = K, y = mean(rmse_vals$V3)), color="purple")+
+  geom_path(aes(x = K, y = Averagek), color="black")+
+  theme_bw(base_size = 18) +
+  xlim(0,500)
+```
+
+```{r q1 plo2, echo=FALSE}
+rmse_k1
+```
+
+Since, we have by now justified our usage of the variables in both the linear as well as the KNN regression by minimizing RMSE, let us have a look at the variables and their coefficients of regression once again. 
+
+
+```{r q1 pp, include=FALSE}
+n_train = round(0.8*n)  # round to nearest integer
+n_test = n - n_train
+train_cases = sample.int(n, n_train, replace=FALSE)
+test_cases = setdiff(1:n, train_cases)
+saratoga_train = results[train_cases,]
+saratoga_test = results[test_cases,]
+
+# fit to this training set
+
+lm_biggerboom = lm(price ~ bedrooms + centralAir + landValue + livingArea + bathrooms + waterfront + lotSize + age +
+                     fuel + newConstruction + 
+                     landValue*lotSize + bathrooms*rooms + age*newConstruction + 
+                     bedrooms*bathrooms + centralAir*fuel + landValue*waterfront, data=saratoga_train)
+```
+
+```{r q1 fin, echo=FALSE}
+coef(lm_biggerboom)
+```
+
+Being a waterfront property increases the price steeply. Prices are also driven by the number of bathrooms and rooms and are negatively related with number of bedrooms although this would be because of the association between the bedrooms, bathrooms and rooms. Central Airconditioning is another driving factor in the determination of prices. Based on the type of fuel used, the price of house varies from high for gas to low for electricity. Hot air heating also drives the prices up as compared to electricity or water. Being a new construction however, starkly affects the price of the house. 
