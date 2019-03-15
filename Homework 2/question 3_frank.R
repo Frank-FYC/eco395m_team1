@@ -3,6 +3,7 @@ library(tidyverse)
 library(FNN)
 library(foreach)
 library(nnet)
+require(scales)
 
 df=read.csv('./online_news.csv')
 
@@ -10,89 +11,83 @@ df = subset(df, select = -c(url) )
 
 df=df[sample(nrow(df), 100),]
 
-# The variables involved
-summary(online_news)
+rmse = function(y, yhat) {
+  sqrt( mean( (y - yhat)^2 ) )
+}
 
-# Focus on the following trim level: >=1400
-viral = subset(online_news, shares >= 1400)
-dim(viral)
+rmse_model = do(100)*{
 
-# Find a plot that shows an intersting relationship with 'viral'.
-plot(shares~n_tokens_title, data=viral)
-plot(log(shares)~n_tokens_title, data=viral)
-plot(log(shares)~title_sentiment_polarity, data=viral)
-plot(log(shares)~title_subjectivity, data=viral)
-
-# I like 'n_tokens_title' the most, so let's use this.
-
-rmse_model = do(2)*{
-
-  # Create a train/test split for y=shares and x=n_tokens_title
-  N=nrow(viral)
-  N_Train=floor(0.8*N)
-  N_Train_Ind=sample.int(N, N_Train, replace=FALSE)
-  viral_train = viral[N_Train_Ind,]
-  viral_test = viral[-N_Train_Ind,]
-  y_train_viral = viral_train$shares
-  X_train_viral = data.frame(n_tokens_title = viral_train$n_tokens_title)
-  y_test_viral = viral_test$shares
-  X_test_viral = data.frame(n_tokens_title = viral_test$n_tokens_title)
+  n = nrow(df)
+  n_train = round(0.8*n) #take x times n, then round to nearest
+  n_test = n - n_train #number of n test is n minus n_train
   
-  rmse = function(y, ypred) {
-    sqrt(mean((y-ypred)^2))
-  }
+  train_ind = sort(sample.int(n, n_train, replace=FALSE)) # randomly sample from n, n_train times, without replacement, then sort
+  df_train = df[train_ind,]
+  df_test = df[-train_ind,]
+  y_df_train = df_train$shares
+  y_df_test = df_test$shares
+  #####
+  # train models: recall # num_videos data_channel_is_lifestyle 
+  maxit <- 10000
   
-  k_grid = unique(round(exp(seq(log(N_Train), log(2), length=100))))
-  rmse_grid_out = foreach(k = k_grid, .combine='c') %do% {
-    knn_model = knn.reg(X_train_viral, X_test_viral, y_train_viral, k = k)
-    rmse(y_test_viral, knn_model$pred)
-  }
+  lm1 <<- glm(shares ~ .,
+              data=df_train,
+              maxit = maxit)
+  lm2 <<- glm(shares ~ 
+                weekday_is_friday 
+              + num_videos 
+              + data_channel_is_lifestyle 
+              + global_rate_negative_words,
+              data=df_train,
+              maxit = maxit)
+  lm3 <<- glm(shares ~ 
+              . 
+              - weekday_is_friday 
+              - num_videos 
+              - data_channel_is_lifestyle
+              - global_rate_negative_words,
+              data=df_train,
+              maxit = maxit)
+  lm4 <<- glm(shares ~ (.)^2,
+              data=df_train,
+              maxit = maxit)
+  lm5 <<- glm(shares ~ 
+                (weekday_is_friday 
+              + num_videos 
+              + data_channel_is_lifestyle 
+              + global_rate_negative_words)^2,
+              data=df_train,
+              maxit = maxit)
+  lm6 <<- glm(shares ~ 
+                (. 
+              - weekday_is_friday 
+              - num_videos 
+              - data_channel_is_lifestyle
+              - global_rate_negative_words)^2,
+              data=df_train,
+              maxit = maxit)
   
-  rmse_grid_out = data.frame(K = k_grid, RMSE = rmse_grid_out)
+  yhat_test1 = predict(lm1,df_test)
+  yhat_test2 = predict(lm2,df_test)
+  yhat_test3 = predict(lm3,df_test)
+  yhat_test4 = predict(lm4,df_test)
+  yhat_test5 = predict(lm5,df_test)
+  yhat_test6 = predict(lm6,df_test)
   
-  
-  revlog_trans <- function(base = exp(1)) {
-    require(scales)
-    ## Define the desired transformation.
-    trans <- function(x){
-      -log(x, base)
-    }
-    ## Define the reverse of the desired transformation
-    inv <- function(x){
-      base^(-x)
-    }
-    ## Creates the transformation
-    scales::trans_new(paste("revlog-", base, sep = ""),
-                      trans,
-                      inv,  ## The reverse of the transformation
-                      log_breaks(base = base), ## default way to define the scale breaks
-                      domain = c(1e-100, Inf) 
-    )
-  }
-  
-  ind_best = which.min(rmse_grid_out$RMSE)
-  k_best = k_grid[ind_best]
-  
-  c(k_best)
-
+  c(rmse(df_test$shares, yhat_test1),
+    rmse(df_test$shares, yhat_test2),
+    rmse(df_test$shares, yhat_test3),
+    rmse(df_test$shares, yhat_test4),
+    rmse(df_test$shares, yhat_test5),
+    rmse(df_test$shares, yhat_test6)
+  )
 }
 
 rmse_model
 colMeans(rmse_model)
 
-p_out = ggplot(data=rmse_grid_out) + 
-  geom_path(aes(x=K, y=RMSE, color='testset'), size=1.5) +
-  xlim(0, 100)
-
-
-which(rmse_grid_out==min(rmse_grid_out),arr.ind=TRUE)
-which.min(rmse_grid_out$RMSE) 
-
-# K=18 is the predicted best value of 
-
-p_out + geom_vline(xintercept=k_best, color='darkgreen', size=1.5)
-
-# So now, let us see how the actual compares to the prediction.
-
-
+# in-sample accuracy?
+yhat_train = ifelse(predict(lm2) >= 1400, 1, 0)
+y_train = ifelse(df_train$shares >= 1400, 1, 0)
+table(y=y_train, yhat=yhat_train)
 

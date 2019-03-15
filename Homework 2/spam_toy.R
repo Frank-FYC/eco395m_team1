@@ -7,6 +7,7 @@ spamtest = read.csv('./spamtest.csv')
 # a simple linear probability model
 lm1 = lm(y ~ log(capital.run.length.average), data=spamfit)
 spamfit$lm1_pred = predict(lm1)
+
 ggplot(data = spamfit) + 
   theme_bw(base_size=18) + 
   geom_point(aes(x=log(capital.run.length.average), y = jitter(y, 0.25)), color='grey', alpha=0.2) + 

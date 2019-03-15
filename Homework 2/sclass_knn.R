@@ -61,6 +61,7 @@ revlog_trans <- function(base = exp(1)) {
 p_out = ggplot(data=rmse_grid_out) + 
   geom_path(aes(x=K, y=RMSE, color='testset'), size=1.5) + 
   scale_x_continuous(trans=log)
+
 ind_best = which.min(rmse_grid_out$RMSE)
 k_best = k_grid[ind_best]
 
