@@ -438,7 +438,7 @@ In the digital age, where information is no longer a constraint but rather - a s
 
 ## Methodology
 
-Given the large data set, it was computationally impractical to run the models on the entirety of the data set. A compromise was reached where 1000 articles were randomly sampled per cycle of model testing. Thereby maintaining independent and identically distributed random variables among the samples. Six different linear models were trained on 80% of this sampled data and tested on the remaining 20%. As mentioned before, a Root Mean Squared Error value was established among the models and then they were tested for in-sample and out-of-sample accuracy. As for deceiding which factors played a role in determining whether or not content went viral, linear regression models were created and promising variables selected for further testing. 
+Given the large data set, it was computationally impractical to run the models on the entirety of the data set. A compromise was reached where 1000 articles were randomly sampled per cycle of model testing. Thereby maintaining independent and identically distributed random variables among the samples. Six different linear models were trained on 80% of this sampled data and tested on the remaining 20%. As mentioned before, a Root Mean Squared Error value was established among the models and then they were tested for in-sample and out-of-sample accuracy. As for deciding which factors played a role in determining whether or not content went viral, linear regression models were created and promising variables selected for further testing. 
 
 The models used were the following
 
@@ -481,7 +481,7 @@ The models used were the following
 
 ## Results
 
-Because of compuational limitation of the underlying base model, only sampling 1000 from a population of about 40,000, different iterations of training/testing cycles yields different results. As a result, only a general sense of what factors makes content go viral can be obtained at this time.
+Because of computational limitation of the underlying base model, only sampling 1000 from a population of about 40,000, different iterations of training/testing cycles yields different results. As a result, only a general sense of what factors makes content go viral can be obtained at this time.
 
 ```{r p3 linear regression, echo=FALSE}
 summary(lm1)
@@ -524,3 +524,6 @@ suppressWarnings(sample.accuracy(lm6))
 in.sample_table
 out.sample_table
 ```
+
+## Conclusion
+In hindsight, it is believed that the method of regress first, then threshold second, would be the optimal mechanism of developing models that predict what articles will go viral. The reasoning behind this presumption is that just as a model needs what factors that will make an article succeed, it will also need to know what factors causes it to not succeed. There are useful information and metrics from failure data that needs to be considered when construing predictive models.
