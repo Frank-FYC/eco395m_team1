@@ -8,6 +8,8 @@ output: pdf_document
 ```{r libraries, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(foreign)
+df <- read.dta("nlsy_deming.dta")
 ```
 
 
@@ -15,3 +17,21 @@ library(tidyverse)
 
 # Abstract
 This is frank's copy. 
+
+# Results
+
+## Table Means
+
+```{r table means,echo=FALSE}
+
+
+```
+
+In this table, we have hte following understana;snaliwnfwafiwahfwakjf
+In this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjf
+
+This is normal text. However, when I reference a **variable** and when I have inserted code 
+
+> This would be displayed as a block quote, it is great to display text or long quotes. snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this tasnaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this tasnaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this tasnaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this ta
+
+now I move on.
