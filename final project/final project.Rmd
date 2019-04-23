@@ -16,22 +16,32 @@ df <- read.dta("nlsy_deming.dta")
 
 
 # Abstract
-This is frank's copy. 
+
+Length: 1 paragraph
+Purpose: one paragraph summary of project
+
+# Introduction
+
+Length: 2 paragraph.
+Purpose: Background copy
+
+1st paragraph (tessie): our research question.
+
+2nd paragraph (tessie): background and Motivation 
+
+# Methods
+
+Figure 1: recreate linear model from the paper, present table.
+
+Figure 2: present the best model to fit our research questions.
 
 # Results
 
-## Table Means
+Figure 1: we found that figure one (pros and cons)
 
-```{r table means,echo=FALSE}
+Figure 2: why our model would best answer our hypothesis.
 
+# Conclusion
 
-```
+# Appendix
 
-In this table, we have hte following understana;snaliwnfwafiwahfwakjf
-In this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjf
-
-This is normal text. However, when I reference a **variable** and when I have inserted code 
-
-> This would be displayed as a block quote, it is great to display text or long quotes. snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this tasnaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this tasnaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this tasnaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this table, we have hte following understana;snaliwnfwafiwahfwakjfIn this ta
-
-now I move on.
