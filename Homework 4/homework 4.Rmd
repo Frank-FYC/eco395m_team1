@@ -49,4 +49,14 @@ Our first dimensionality reduction technique would be Principal Component Analys
 ```{r summary of pca,echo=FALSE}
 summary(pcr1)
 ```
-With the results of our PCA regression, we find that with just three PCA components, we are able to find a model that has **residual standard error** `r summary(pcr1)[[6]]` that captures a significant portion of the observations within the data. In addition, each coefficient's p-values indicate that each are well within the 
+With the results of our PCA regression, we find that with just three PCA components, we are able to find a model that has **residual standard error** `r summary(pcr1)[[6]]` that captures a significant portion of the observations within the data. In addition, each coefficient's p-values indicate that each are well within the confidence level needed to utilize each principal component accurately.
+```{r matrix plot,echo=FALSE}
+# fancy plot matrix with stuff, see http://www.sthda.com/english/wiki/scatter-plot-matrices-r-base-graphs
+pairs.panels(Z_std[,1:4], 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+             ellipses = TRUE # show correlation ellipses
+)
+```
+In this matrix of different plots, we take four of the 11 descriptor variables from the dataset and display the following:

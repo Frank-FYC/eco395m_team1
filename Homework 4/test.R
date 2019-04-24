@@ -6,8 +6,6 @@ pairs.panels(Z_std[,1:4],
              ellipses = TRUE # show correlation ellipses
 )
 
-summary(pcr1)
-
 # Show the model fit
 par(mfrow=c(2,2))
 plot(fitted(pcr1), y_wine_quality, main="Wine Quality and PC 1")
