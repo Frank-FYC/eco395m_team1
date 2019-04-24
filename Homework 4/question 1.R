@@ -23,6 +23,33 @@ pairs.panels(Z_std[,1:4],
              ellipses = TRUE # show correlation ellipses
 )
 
+pairs(wine[,1:4], pch = 19)
+pairs(wine[,1:4], pch = 19, lower.panel = NULL)
+my_cols <- c("red", "grey")  
+pairs(wine[,1:4], pch = 19,  cex = 0.5,
+      col = my_cols[wine$color],
+      lower.panel=NULL)
+# Correlation panel
+panel.cor <- function(x, y){
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- round(cor(x, y), digits=2)
+  txt <- paste0("R = ", r)
+  cex.cor <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex.cor * r)
+}
+# Customize upper panel
+upper.panel<-function(x, y){
+  points(x,y, pch = 19, col = my_cols[wine$color])
+}
+# Create the plots
+pairs(wine[,1:4], 
+      lower.panel = panel.cor,
+      upper.panel = upper.panel)
+
+
+
+
 x_wine = as.matrix(wine[,1:11])
 y_wine_quality= wine[,12]
 y_wine_color= wine[,13]
