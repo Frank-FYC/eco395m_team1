@@ -1,0 +1,52 @@
+---
+title: "Homework 4"
+author: "Frank Chou, Tejaswi Pukkalla"
+date: "April 23, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1: Clustering and PCA
+Given the fact that the **wines.csv** dataset consists of 11 chemical properties and 6,500 different bottles of *vinho verde* wine from northern Portugal, we have some difficulty determining which dimensionality reduction technique would be the better model for the task. With only 11 variables of the chemical properties of the wine, **Principal Component Analysis (PCA)** offers a easy-to-use tool to reduce the total number of variables down to a handful to work with, however at the same time, important information might be lost if the data is reduced to just a handful. On the other hand, **clustering** offers a method where all of the variables are at play, meaning that all 11 variables would be considered when determining which wine would be a part of which artificial group we are creating. However the drawback is that given the inherent randomization of cluster selection and our algorithm settings, we would have minute yet inconsistent results.
+
+## Principal Component Analysis
+```{r pca initialization, include=FALSE}
+ip <- installed.packages() 
+pkgs.to.remove <- ip[!(ip[,"Priority"] %in% c("base", "recommended")), 1] 
+
+library(ISLR)
+library(tidyverse)
+library(ggplot2)
+library(psych)
+
+wine <- read.csv("wine.csv", header = TRUE)
+
+# Pick out the pca columns
+Z = wine[,c(1:9)]
+# Standardize (center/scale) the data
+Z_std = scale(Z, center=TRUE, scale=TRUE)
+plot(Z_std)
+
+x_wine = as.matrix(wine[,1:11])
+y_wine_quality= wine[,12]
+y_wine_color= wine[,13]
+
+# Let's try dimensionality reduction via PCA
+pc_wine = prcomp(x_wine, scale=TRUE)
+
+# pc_wine$x has the summary variables
+# Regress on the first K
+K = 3
+scores = pc_wine$x[,1:K]
+pcr1 = lm(y_wine_quality ~ scores)
+
+
+```
+Our first dimensionality reduction technique would be Principal Component Analysis or PCA. In this case, the goal is to find low-dimensional summaries of high-dimensional data sets. As mentioned before, given the fact that our dataset only has 11 feature variables, the determination of what is high and low is a factor here. 11 variables by itself, is a rather low number of variables in play. However given its mathematical foundations, utilizing linear algebra to determine a vector subspace of the overall data, we capture the entirety of the data when determining our principal components. 
+```{r summary of pca,echo=FALSE}
+summary(pcr1)
+```
+With the results of our PCA regression, we find that with just three PCA components, we are able to find a model that has **residual standard error** `r summary(pcr1)[[6]]` that captures a significant portion of the observations within the data. In addition, each coefficient's p-values indicate that each are well within the 

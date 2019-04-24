@@ -1,29 +1,16 @@
-#OLDPCA Analysis####
-
-x_wine = as.matrix(wine[,1:11])
-y_wine_quality= wine[,12]
-y_wine_color= wine[,13]
-
-# Let's try dimensionality reduction via PCA
-pc_wine = prcomp(x_wine, scale=TRUE)
-
-# pc_wine$x has the summary variables
-# Regress on the first K
-K = 3
-scores = pc_wine$x[,1:K]
-pcr1 = lm(y_wine_quality ~ scores)
+# fancy plot matrix with stuff, see http://www.sthda.com/english/wiki/scatter-plot-matrices-r-base-graphs
+pairs.panels(Z_std[,1:4], 
+             method = "pearson", # correlation method
+             hist.col = "#00AFBB",
+             density = TRUE,  # show density plots
+             ellipses = TRUE # show correlation ellipses
+)
 
 summary(pcr1)
 
 # Show the model fit
-plot(fitted(pcr1), y_wine_quality)
-
-# we can find best k, through train test splits, data validation. Auto-encoder = PCA. Dimensionality reduction. 
-
-# Visualize the first few principal components:
-# these are the coefficients in the linear combination for each summary
+par(mfrow=c(2,2))
+plot(fitted(pcr1), y_wine_quality, main="Wine Quality and PC 1")
 plot(seq(1,11,by=1), pc_wine$rotation[,1])
 plot(seq(1,11,by=1), pc_wine$rotation[,2])
 plot(seq(1,11,by=1), pc_wine$rotation[,3])
-
-
