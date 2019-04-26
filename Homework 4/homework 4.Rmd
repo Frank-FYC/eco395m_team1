@@ -198,6 +198,8 @@ SSE_grid = foreach(k = k_grid, .combine='c') %do% {
 plot(k_grid, SSE_grid, xlab="K",ylab="SSE Grid", sub="SSE Grid vs K")
 ```
 
+\pagebreak
+
 Next we use K-means clustering again, but this time we measure the CH grid values for their respective K values.
 
 ```{r CH, echo=FALSE, warning=FALSE}
@@ -215,6 +217,8 @@ plot(k_grid, CH_grid, xlab="K",
      sub="CH Grid vs K")
 ```
 
+\pagebreak
+
 Next, we use the cluster gap function to see where the dip in cluster gap is.
 
 ```{r CG, echo=FALSE, warning=FALSE}
@@ -224,6 +228,8 @@ plot(Market_gap)
 ```
 
 From the above plots, we chose K=6 intuitively as the optimum K value. There is a slight dip in the CH Grid Vs K graph at K=6. However, there is no clear dip in Cluster gaop at all showing this isn't a convex cluster.  
+
+\pagebreak
 
 To analyse the K-means clustering, let's first take a look into the correlation between these various post indicators/factors.
 
@@ -369,6 +375,8 @@ V = pca$sdev^2
 PVE = V / sum(V)
 round(PVE, 2)
 ```
+
+\pagebreak
 
 After doing the PCA analysis of the data and calculating both variance and the proportion of variance explained by these low dimensional summaries, we plot the Scree plot and the cumulative scree plot to get an idea on the different segments explaining these differences. 
 
