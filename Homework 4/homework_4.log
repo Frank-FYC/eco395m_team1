@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.9)  25 APR 2019 16:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.9)  25 APR 2019 22:10
 entering extended mode
 **./homework_4.tex
 (homework_4.tex
@@ -638,7 +638,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) [1
 
 {C:/Users/frank/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-<homework_4_files/figure-latex/matrix plot-1.pdf, id=32, 469.755pt x 325.215pt>
+<homework_4_files/figure-latex/matrix plot-1.pdf, id=36, 469.755pt x 325.215pt>
 
 File: homework_4_files/figure-latex/matrix plot-1.pdf Graphic file (type pdf)
 <use homework_4_files/figure-latex/matrix plot-1.pdf>
@@ -655,7 +655,7 @@ LaTeX Font Info:    Try loading font information for TS1+lmr on input line 153.
 ("C:\Program Files\MiKTeX 2.9\tex/latex/lm\ts1lmr.fd"
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [2 <./homework_4_files/figure-latex/matrix plot-1.pdf>]
-<homework_4_files/figure-latex/PCA Scatterplot-1.pdf, id=43, 469.755pt x 325.21
+<homework_4_files/figure-latex/PCA Scatterplot-1.pdf, id=47, 469.755pt x 325.21
 5pt>
 File: homework_4_files/figure-latex/PCA Scatterplot-1.pdf Graphic file (type pd
 f)
@@ -675,7 +675,7 @@ LaTeX Font Info:    Try loading font information for T1+lmtt on input line 198.
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [4]
 <homework_4_files/figure-latex/Volatile and Fixed Acidity by Wine Type-1.pdf, i
-d=59, 469.755pt x 325.215pt>
+d=63, 469.755pt x 325.215pt>
 File: homework_4_files/figure-latex/Volatile and Fixed Acidity by Wine Type-1.p
 df Graphic file (type pdf)
 <use homework_4_files/figure-latex/Volatile and Fixed Acidity by Wine Type-1.pd
@@ -691,7 +691,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 232--239
 [5 <./homework_4_files/figure-latex/Volatile and Fixed Acidity by Wine Type-1.p
 df>]
 <homework_4_files/figure-latex/Citric Acid and Residual Sugar by Wine Type by W
-ine Type-1.pdf, id=69, 469.755pt x 325.215pt>
+ine Type-1.pdf, id=73, 469.755pt x 325.215pt>
 File: homework_4_files/figure-latex/Citric Acid and Residual Sugar by Wine Type
  by Wine Type-1.pdf Graphic file (type pdf)
 <use homework_4_files/figure-latex/Citric Acid and Residual Sugar by Wine Type 
@@ -707,7 +707,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 242--249
 [6 <./homework_4_files/figure-latex/Citric Acid and Residual Sugar by Wine Type
  by Wine Type-1.pdf>]
 <homework_4_files/figure-latex/Wine Qualiy and Color by actual Wine Type-1.pdf,
- id=79, 469.755pt x 325.215pt>
+ id=83, 469.755pt x 325.215pt>
 File: homework_4_files/figure-latex/Wine Qualiy and Color by actual Wine Type-1
 .pdf Graphic file (type pdf)
 <use homework_4_files/figure-latex/Wine Qualiy and Color by actual Wine Type-1.
@@ -721,25 +721,44 @@ Underfull \hbox (badness 10000) in paragraph at lines 252--260
  []
 
 [7 <./homework_4_files/figure-latex/Wine Qualiy and Color by actual Wine Type-1
-.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 267.
-[8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 267.
+.pdf>] [8]
+<homework_4_files/figure-latex/groceries list-1.pdf, id=98, 469.755pt x 325.215
+pt>
+File: homework_4_files/figure-latex/groceries list-1.pdf Graphic file (type pdf
+)
+<use homework_4_files/figure-latex/groceries list-1.pdf>
+Package pdftex.def Info: homework_4_files/figure-latex/groceries list-1.pdf  us
+ed on input line 280.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--284
+[]
+ []
+
+<gephi_export.png, id=99, 1027.84pt x 1027.84pt>
+File: gephi_export.png Graphic file (type png)
+<use gephi_export.png>
+Package pdftex.def Info: gephi_export.png  used on input line 290.
+(pdftex.def)             Requested size: 469.75385pt x 469.75385pt.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 294.
+[9 <./homework_4_files/figure-latex/groceries list-1.pdf>] [10 <./gephi_export.
+png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 294.
 (homework_4.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 267.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 267.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 294.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 294.
 Package rerunfilecheck Info: File `homework_4.out' has not changed.
-(rerunfilecheck)             Checksum: 3520B46328922F07D63A8FB09524E3FB;722.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 267.
+(rerunfilecheck)             Checksum: E1CF72E1D846862E1DA51E265E435CEE;1040.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 294.
  ) 
 Here is how much of TeX's memory you used:
- 12383 strings out of 492946
- 182292 string characters out of 3135528
- 287859 words of memory out of 3000000
- 16052 multiletter control sequences out of 15000+200000
- 49434 words of font info for 70 fonts, out of 3000000 for 9000
+ 12403 strings out of 492946
+ 182785 string characters out of 3135528
+ 287990 words of memory out of 3000000
+ 16064 multiletter control sequences out of 15000+200000
+ 49600 words of font info for 72 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,8n,38p,975b,336s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 32i,8n,38p,975b,342s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/M
 iKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/
 dvips/lm/lm-mathsy.enc}{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathi
@@ -751,9 +770,9 @@ ic/lm/lmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C
 iKTeX 2.9/fonts/type1/public/lm/lmri12.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
 ype1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lm
 tt10.pfb>
-Output written on homework_4.pdf (8 pages, 4596212 bytes).
+Output written on homework_4.pdf (10 pages, 4719048 bytes).
 PDF statistics:
- 134 PDF objects out of 1000 (max. 8388607)
- 13 named destinations out of 1000 (max. 500000)
- 10298 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 156 PDF objects out of 1000 (max. 8388607)
+ 17 named destinations out of 1000 (max. 500000)
+ 10316 words of extra memory for PDF output out of 12000 (max. 10000000)
 

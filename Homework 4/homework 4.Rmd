@@ -15,9 +15,6 @@ Given the fact that the **wines.csv** dataset consists of 11 chemical properties
 
 ## Principal Component Analysis
 ```{r pca initialization, include=FALSE}
-ip <- installed.packages() 
-pkgs.to.remove <- ip[!(ip[,"Priority"] %in% c("base", "recommended")), 1] 
-
 library(ISLR)
 library(tidyverse)
 library(ggplot2)
@@ -155,3 +152,47 @@ Lastly we have the final clustering of the wine **Color** and **Quality**. The c
 \pagebreak
 
 # Question 2: Market Segmentation
+
+\pagebreak
+
+# Question 3: Association Rules for Grocery Purchases
+```{r question 3 initialization,include=FALSE}
+library(tidyverse)
+library(arules)  # has a big ecosystem of packages built around it
+library(arulesViz)
+library(data.table)
+
+# Association rule mining
+
+groceries_raw <- read.csv("groceries.txt", header=FALSE)
+setDT(groceries_raw, keep.rownames = "id")[]
+names(groceries_raw) <- c("id","item1","item2","item3","item4")
+groceries <- gather(groceries_raw,order,item,item1:item4,factor_key = TRUE)
+
+basket = split(x=groceries$item, f=groceries$id)
+basket = lapply(basket, unique)
+basket.trans = as(basket, "transactions")
+
+basket.rules = apriori(basket.trans, parameter=list(support=.001, confidence=.01, maxlen=4))
+
+sub2 = subset(basket.rules, subset=confidence > 0.1 & support > 0.01)
+```
+The problem of any grocery marketer is what items to stock and in what quantities. If there are certain groups of products, like peanut butter and jelly with bread, then it would make sense to stock items of group value. Market basket analysis has the purpose of quantifying items within the shelves in a store. Placing products is more of an art than a science - however it doesn't mean data analysis should not be a major component in its creation. The goal is to influence customer purchasing habits to chain-buy their groceries. With this in mind, we will delve into the data set at hand.
+```{r groceries list,echo=FALSE}
+groceries_raw$item1 %>%
+  summary(maxsum=Inf) %>%
+  sort(decreasing=TRUE) %>%
+  head(20) %>%
+  barplot(las=2, cex.names=0.6)
+```
+Here is a list of the top items within the data set. It is clear that the most popular item is milk. Being the mainstay of various food groups, milk and cereal, milk and baking, milk in . 
+```{r plotting,include=FALSE}
+par(mfrow=c(3,1)) 
+plot(basket.rules)
+plot(basket.rules, measure = c("support", "lift"), shading = "confidence")
+plot(basket.rules, method='two-key plot')
+```
+With only 2160 rules created, this is a good start in understanding the associations of different goods within the data set. But the holy grail is to visualize the data using a network graph.
+```{r gephi, echo=FALSE, fig.cap="Market Basket Association Network", out.width = '100%'}
+knitr::include_graphics("gephi_export.png")
+```
