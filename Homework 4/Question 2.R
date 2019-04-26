@@ -15,11 +15,11 @@ SocialData<-SocialData[(SocialData$spam==0),]
 #delete uncategorized label "chatter"
 SocialData <- subset(SocialData, select = -c(chatter, uncategorized))
 
-#add total tweets & calculate adult ratio & delete adult ratio more than 30%
+#add total tweets & calculate adult ratio & delete adult ratio more than 25%
 SocialData <- cbind(tot_twt = rowSums(SocialData), SocialData)
 SocialData <- cbind(adult_ratio = 1, SocialData)
 SocialData$adult_ratio <- SocialData$adult/SocialData$tot_twt
-SocialData<-SocialData[(SocialData$adult_ratio<0.3),]
+SocialData<-SocialData[(SocialData$adult_ratio<0.25),]
 
 #delete uncategorized label "unused attributes"
 SocialData <- subset(SocialData, select = -c(adult_ratio, tot_twt, spam))
@@ -54,7 +54,7 @@ plot(Market_gap)
 
 #correlation and visualization
 corr <- cor(SocialData_scaled)
-corrplot(corr, type="upper", tl.cex = 0.5, tl.col="black", order="hclust", col=c("black", "white"), bg="darkgreen")
+corrplot(corr, method="color", type="upper", tl.cex = 0.5, tl.col="black", order="hclust")
 
 
 # k-means analysis
@@ -132,11 +132,11 @@ SocialMarket<-SocialMarket[(SocialMarket$spam==0),]
 #delete uncategorized label "chatter"
 SocialMarket <- subset(SocialMarket, select = -c(chatter, uncategorized))
 
-#add total tweets & calculate adult ratio & delete adult ratio more than 30%
+#add total tweets & calculate adult ratio & delete adult ratio more than 25%
 SocialMarket <- cbind(tot_twt = rowSums(SocialMarket), SocialMarket)
 SocialMarket <- cbind(adult_ratio = 1, SocialMarket)
 SocialMarket$adult_ratio <- SocialMarket$adult/SocialMarket$tot_twt
-SocialMarket<-SocialMarket[(SocialMarket$adult_ratio<0.3),]
+SocialMarket<-SocialMarket[(SocialMarket$adult_ratio<0.25),]
 
 #delete uncategorized label "unused attributes"
 SocialMarket <- subset(SocialMarket, select = -c(adult_ratio, tot_twt, spam))
