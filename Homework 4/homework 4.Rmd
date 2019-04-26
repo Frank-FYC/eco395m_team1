@@ -233,9 +233,12 @@ corr <- cor(SocialData_scaled)
 corrplot(corr, method="color", type="upper", tl.cex = 0.5, tl.col="black", order="hclust")
 ```
 
+\pagebreak
+
 From the above graph, we pick the factors that have highest correlation with each other and try to analyze the K-means clustering results of these factors.
 
 i) Personal fitness, Health, Outdoors
+
 ```{r D1, echo=FALSE, warning=FALSE}
 # k-means analysis
 clust1 = kmeans(SocialData_scaled, centers=6, nstart=25)
@@ -249,6 +252,8 @@ ggpairs(D1, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         switch = NULL, showStrips = NULL, legend = NULL,
         cardinality_threshold = 15, progress = NULL)
 ```
+
+\pagebreak
 
 ii) Fashion, Cooking, Beauty, Shopping, Photo sharing
 
@@ -264,7 +269,10 @@ ggpairs(D2, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         cardinality_threshold = 15, progress = NULL)
 ```
 
+\pagebreak
+
 iii) Gaming, College, Sports
+
 ```{r D3, echo=FALSE, warning=FALSE}
 D3 = subset(SocialData,select = c("online_gaming","college_uni","sports_playing"))
 ggpairs(D3, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), title = "Clusters on gaming, university and sports",
@@ -277,7 +285,10 @@ ggpairs(D3, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         cardinality_threshold = 15, progress = NULL)
 ```
 
+\pagebreak
+
 iv) Sports fan, Parenting, School, Food, Family
+
 ```{r D4, echo=FALSE, warning=FALSE}
 D4 = subset(SocialData,select = c("sports_fandom","parenting","school","food", "family"))
 ggpairs(D4, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), title = "Clusters on sports, parenting, school, food, family",
@@ -290,8 +301,10 @@ ggpairs(D4, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         cardinality_threshold = 15, progress = NULL)
 ```
 
+\pagebreak
 
 v) Politics, News, Computers, Travel, Automotive
+
 ```{r D5, echo=FALSE, warning=FALSE}
 D5 = subset(SocialData,select = c("politics","news","computers", "travel", "automotive"))
 ggpairs(D5, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), title = "Clusters on politics, news, computers, travel, automotive",
@@ -304,7 +317,10 @@ ggpairs(D5, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         cardinality_threshold = 15, progress = NULL)
 ```
 
+\pagebreak
+
 vi) TV, Art, Music
+
 ```{r D6, echo=FALSE, warning=FALSE}
 D6 = subset(SocialData,select = c("tv_film","art","music"))
 ggpairs(D6, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), title = "Clusters on tv, art, music",

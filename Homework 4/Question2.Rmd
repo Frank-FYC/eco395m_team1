@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Market Segmentation
+# Question 2: Market Segmentation
 
 Our objective is to help NutrientH2O understand its social-media audience a little better, so it could work on targeting its market segment more aptly. We start off the same way we start any data analysis, cleaning up the data first. We try our best to clear out out the bots that might have slipped through the initial filtering. We delete users marked as spam. We measure the amount of adult content in the user's messages and delete users that have more than a quarter of their messages flagged as adult content. After removing the unused attributes now that we have deleted users with non zero values in those attributes, we move on to centering and scaling the data. 
 
@@ -91,6 +91,8 @@ corr <- cor(SocialData_scaled)
 corrplot(corr, method="color", type="upper", tl.cex = 0.5, tl.col="black", order="hclust")
 ```
 
+\pagebreak
+
 From the above graph, we pick the factors that have highest correlation with each other and try to analyze the K-means clustering results of these factors.
 
 i) Personal fitness, Health, Outdoors
@@ -109,6 +111,8 @@ ggpairs(D1, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         cardinality_threshold = 15, progress = NULL)
 ```
 
+\pagebreak
+
 ii) Fashion, Cooking, Beauty, Shopping, Photo sharing
 
 ```{r D2, echo=FALSE, warning=FALSE}
@@ -122,6 +126,8 @@ ggpairs(D2, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         switch = NULL, showStrips = NULL, legend = NULL,
         cardinality_threshold = 15, progress = NULL)
 ```
+
+\pagebreak
 
 iii) Gaming, College, Sports
 
@@ -137,6 +143,8 @@ ggpairs(D3, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         cardinality_threshold = 15, progress = NULL)
 ```
 
+\pagebreak
+
 iv) Sports fan, Parenting, School, Food, Family
 
 ```{r D4, echo=FALSE, warning=FALSE}
@@ -151,6 +159,7 @@ ggpairs(D4, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         cardinality_threshold = 15, progress = NULL)
 ```
 
+\pagebreak
 
 v) Politics, News, Computers, Travel, Automotive
 
@@ -165,6 +174,8 @@ ggpairs(D5, aes(col = factor(clust1$cluster), alpha=0.5), columns = 1:ncol(D1), 
         switch = NULL, showStrips = NULL, legend = NULL,
         cardinality_threshold = 15, progress = NULL)
 ```
+
+\pagebreak
 
 vi) TV, Art, Music
 
@@ -261,3 +272,4 @@ colnames(SocialMarket)[head(o7,5)]
 
 The first market segment is parents with children who go to school, are religious, have interest in food and are sports fans. These are your average parents who can be targeted better by advertising the product as a sports drink for their kids. The second market segment is the exact same as the first. Hence, we remove the repetition. The third market segment is people into politics, travel, computers, news and automotive. These are your typical white collar employees who can be targeted better by advertising the drink as a health drink. The fourth segment is people who are heavily into health, fitness, outdoors, politics and news. These are your regular outdoorsy health conscious people who coud be of any age or any employment. They can again be targeted better by advertising NutrientH2O as a health drink. The fifth segment is people who post about beauty, fashion, cooking, photosharing and shopping. This segment would easily represent both college students as well as married women. They can be targeted better by offering better prices and packaging. The sixth segment is people who post about gaming, playing sports, their colleges, automotives and cooking. This is a very typical yet accurate description of most college students. They can targeted better by advertising the drink as a sports drink and offering better prices as this is a highly price sensitive group. The seventh segment is people who post about automotives, shopping, photo sharing, news and current events. This seems to be quite a generic group combining different kinds of interests. Hence, removing the repeated segment, we get a total of six different market segments as mentioned above that can be targeted better and advertised to in different ways.
 
+\pagebreak
