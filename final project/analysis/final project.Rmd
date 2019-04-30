@@ -1,0 +1,14 @@
+---
+title: 'Final Project: Headstart'
+author: "Frank Chou, Tejaswi Pukkalla"
+date: "April 22, 2019"
+output: pdf_document
+---
+
+```{r libraries, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(foreign)
+```
+
+

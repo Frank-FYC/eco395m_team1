@@ -1,20 +1,3 @@
----
-title: 'Final Project: Headstart'
-author: "Frank Chou, Tejaswi Pukkalla"
-date: "April 22, 2019"
-output: pdf_document
----
-
-```{r libraries, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
-library(foreign)
-df <- read.dta("nlsy_deming.dta")
-```
-
-
-
-
 # Abstract
 
 Length: 1 paragraph
@@ -37,11 +20,14 @@ Figure 2: present the best model to fit our research questions.
 
 # Results
 
-Figure 1: we found that figure one (pros and cons)
+Figure 3: we found that figure one (pros and cons)
 
-Figure 2: why our model would best answer our hypothesis.
+Figure 4: why our model would best answer our hypothesis.
 
 # Conclusion
 
-# Appendix
+Figure 5:
 
+Figure 6:
+
+# Appendix
