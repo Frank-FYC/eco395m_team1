@@ -15392,3 +15392,4 @@ end of do-file
 checking tabexport consistency and verifying not already installed...
 all files already exist and are up to date.
 
+. exit, clear
