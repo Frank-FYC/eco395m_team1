@@ -7,4 +7,4 @@ df2 <- read.dta("../data/data_Deming_2008_0217.dta")
 df_headstart <- subset(df,head_start==1)
 df_nonheadstart <- subset(df,head_start==0)
 
-sum()
+some code
