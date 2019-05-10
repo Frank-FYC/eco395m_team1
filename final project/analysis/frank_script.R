@@ -6,6 +6,7 @@ df <- read.dta("../data/data_Deming_2008_0217.dta")
 
 varlist <- c("BirthWeight")
 
+<<<<<<< HEAD
 mentaldisability <- ifelse(
   rowMaxs(
     as.matrix(
@@ -13,6 +14,22 @@ mentaldisability <- ifelse(
       )
     ,na.rm = TRUE)
   >0,1,0)
+=======
+<<<<<<< HEAD
+some code
+
+sgerety4h5h
+=======
+Age_1stHS88 
+Age_1stHS90 
+Age_1stHS92 
+Age_1stHS94 
+Age_1stHS96 
+Age_1stHS98 
+Age_1stHS100 
+Age_1stHS102 
+Age_1stHS104
+>>>>>>> 3d44d18fb319d980f81042c4fdca657677069e9b
 
 somecollege <- ifelse(
   rowMaxs(
@@ -72,8 +89,13 @@ compscorefunc <- function(year,column){
 compmath1986 <- compscorefunc(1986,"PIATMT_Raw86")
 compreading1986 <- compscorefunc(1986,"PIATRC_Raw86")
 
+<<<<<<< HEAD
 compmath.5to6 <- if(df$childage1986==5){
   df$PIATMT_Raw86
 } else if(df$childage1988==5|6){
   df$PIATMT_Raw88
 }
+=======
+mental.disability <- ifelse(rowSums(select(df,Retard86:Retard100),na.rm = TRUE)==0,0,1)
+>>>>>>> 1d40040b77dbaa9e599d1ff0a066e9b3b2ba0891
+>>>>>>> 3d44d18fb319d980f81042c4fdca657677069e9b
