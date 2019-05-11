@@ -4,12 +4,7 @@ author: "David Fraire"
 date: "5/10/2019"
 output: html_document
 ---
-Research Question: Wha is the impact of Headstart in the short/long term effect on the participants, specifically the non-white children. 
-
-Personal hypothesis (guided by provided research papers): Yes, the short term effect on non-white children will be more pronounced in the short-term and long-term. 
-
-There might be a more pronounced "fade-out" effect in the white chidren, but overall the "fade-out" will be seen on average across the particpants. 
-
+Code for loading Library Packages
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(foreign)
@@ -38,7 +33,13 @@ library(stringr)
 library(tidyr)
 library(tidyverse)
 
+```
 
+Research Question: Wha is the impact of Headstart in the short/long term effect on the participants, specifically the non-white children. 
+
+Personal hypothesis (guided by provided research papers): Yes, the short term effect on non-white children will be more pronounced in the short-term and long-term. There might be a more pronounced "fade-out" effect in the white chidren, but overall the "fade-out" will be seen on average across the particpants. 
+
+```{r}
 Deming2008 <- read_dta("Documents/GitHub/eco395m_team_awesome/final project/data/data_Deming_2008_0217.dta") ## Raw NLSY data w/ renamed variables by Deming
 
 nlsy_deming <- read_dta("Documents/GitHub/eco395m_team_awesome/final project/data/nlsy_deming.dta") ## Variable dataset of included regression for Deming paper
