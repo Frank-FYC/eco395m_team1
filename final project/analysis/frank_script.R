@@ -74,16 +74,56 @@ df$childage2004 <- calc_age(2004,df$DOB_Yr_Child)
 
 year <- 1986
 
-compscorefunc <- function(year,column){
-  df_comscorefunc <- subset(df,calc_age(year,df$DOB_Yr_Child)==5 | calc_age(year,df$DOB_Yr_Child)==6)
-  df_comscorefunc[,ChildID]
-  df_comscorefunc[,column]
+compscorefunc <- function(year,column1,column2,age1,age2){
+  df_comscorefunc <<- as.data.frame(subset(df,calc_age(year,df$DOB_Yr_Child)>=age1 & calc_age(year,df$DOB_Yr_Child)<=age2))
+  df_comscorefunc_result <<- cbind(df_comscorefunc[,column1],df_comscorefunc[,column2])
 }
-compmath1986 <- compscorefunc(1986,"PIATMT_Raw86")
-compreading1986 <- compscorefunc(1986,"PIATRC_Raw86")
 
-compmath.5to6 <- if(df$childage1986==5){
-  df$PIATMT_Raw86
-} else if(df$childage1988==5|6){
-  df$PIATMT_Raw88
-}
+df2 <- as.data.frame(subset(df,calc_age(1986,df$DOB_Yr_Child)>=7 & calc_age(1986,df$DOB_Yr_Child)<=10))
+df2_result <- cbind(df2[,"ChildID"],df2[,"PIATMT_Raw86"])
+
+compmath_5to6_1986 <- compscorefunc(1986,"ChildID","PIATMT_Raw86","5","6")
+compmath_5to6_1988 <- compscorefunc(1988,"ChildID","PIATMT_Raw88","5","6")
+compmath_5to6_1990 <- compscorefunc(1990,"ChildID","PIATMT_Raw90","5","6")
+compmath_5to6_1992 <- compscorefunc(1992,"ChildID","PIATMT_Raw92","5","6")
+compmath_5to6_1994 <- compscorefunc(1994,"ChildID","PIATMT_Raw94","5","6")
+compmath_5to6_1996 <- compscorefunc(1996,"ChildID","PIATMT_Raw96","5","6")
+compmath_5to6_1998 <- compscorefunc(1998,"ChildID","PIATMT_Raw98","5","6")
+compmath_5to6_2000 <- compscorefunc(2000,"ChildID","PIATMT_Raw100","5","6")
+compmath_5to6_2002 <- compscorefunc(2002,"ChildID","PIATMT_Raw102","5","6")
+compmath_5to6_2004 <- compscorefunc(2004,"ChildID","PIATMT_Raw104","5","6")
+
+compreading_5to6_1986 <- compscorefunc(1986,"ChildID","PIATRC_Raw86","5","6")
+compreading_5to6_1988 <- compscorefunc(1988,"ChildID","PIATRC_Raw88","5","6")
+compreading_5to6_1990 <- compscorefunc(1990,"ChildID","PIATRC_Raw90","5","6")
+compreading_5to6_1992 <- compscorefunc(1992,"ChildID","PIATRC_Raw92","5","6")
+compreading_5to6_1994 <- compscorefunc(1994,"ChildID","PIATRC_Raw94","5","6")
+compreading_5to6_1996 <- compscorefunc(1996,"ChildID","PIATRC_Raw96","5","6")
+compreading_5to6_1998 <- compscorefunc(1998,"ChildID","PIATRC_Raw98","5","6")
+compreading_5to6_2000 <- compscorefunc(2000,"ChildID","PIATRC_Raw100","5","6")
+compreading_5to6_2002 <- compscorefunc(2002,"ChildID","PIATRC_Raw102","5","6")
+compreading_5to6_2004 <- compscorefunc(2004,"ChildID","PIATRC_Raw104","5","6")
+
+
+
+compmath_7to10_1986 <- compscorefunc(1986,"ChildID","PIATMT_Raw86","7","10")
+compmath_7to10_1988 <- compscorefunc(1988,"ChildID","PIATMT_Raw88","7","10")
+compmath_7to10_1990 <- compscorefunc(1990,"ChildID","PIATMT_Raw90","7","10")
+compmath_7to10_1992 <- compscorefunc(1992,"ChildID","PIATMT_Raw92","7","10")
+compmath_7to10_1994 <- compscorefunc(1994,"ChildID","PIATMT_Raw94","7","10")
+compmath_7to10_1996 <- compscorefunc(1996,"ChildID","PIATMT_Raw96","7","10")
+compmath_7to10_1998 <- compscorefunc(1998,"ChildID","PIATMT_Raw98","7","10")
+compmath_7to10_2000 <- compscorefunc(2000,"ChildID","PIATMT_Raw100","7","10")
+compmath_7to10_2002 <- compscorefunc(2002,"ChildID","PIATMT_Raw102","7","10")
+compmath_7to10_2004 <- compscorefunc(2004,"ChildID","PIATMT_Raw104","7","10")
+
+compreading_7to10_1986 <- compscorefunc(1986,"ChildID","PIATRC_Raw86","7","10")
+compreading_7to10_1988 <- compscorefunc(1988,"ChildID","PIATRC_Raw88","7","10")
+compreading_7to10_1990 <- compscorefunc(1990,"ChildID","PIATRC_Raw90","7","10")
+compreading_7to10_1992 <- compscorefunc(1992,"ChildID","PIATRC_Raw92","7","10")
+compreading_7to10_1994 <- compscorefunc(1994,"ChildID","PIATRC_Raw94","7","10")
+compreading_7to10_1996 <- compscorefunc(1996,"ChildID","PIATRC_Raw96","7","10")
+compreading_7to10_1998 <- compscorefunc(1998,"ChildID","PIATRC_Raw98","7","10")
+compreading_7to10_2000 <- compscorefunc(2000,"ChildID","PIATRC_Raw100","7","10")
+compreading_7to10_2002 <- compscorefunc(2002,"ChildID","PIATRC_Raw102","7","10")
+compreading_7to10_2004 <- compscorefunc(2004,"ChildID","PIATRC_Raw104","7","10")
