@@ -970,6 +970,8 @@ p(HS=Pre NonlowAFQT))	0.245
 p(HS_lowAFQT=HS_NonlowAFQT)	0.594
 R squared	0.107
 Sample Size	1251
+<<<<<<< HEAD
+=======
 	Repeat
 	b/se
 HS2_FE90	-0.067*
@@ -1456,3 +1458,4 @@ p(HS=Pre NonlowAFQT))	0.245
 p(HS_lowAFQT=HS_NonlowAFQT)	0.594
 R squared	0.107
 Sample Size	1251
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d

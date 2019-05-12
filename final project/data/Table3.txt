@@ -208,6 +208,8 @@ Premature_miss	-0.367
 p(All age effects equal)	0.152
 R squared	0.050
 Sample Size	4687
+<<<<<<< HEAD
+=======
 	Test_1
 	b/se
 HS_5to6	-0.025
@@ -313,3 +315,4 @@ Premature_miss	-0.367
 p(All age effects equal)	0.152
 R squared	0.050
 Sample Size	4687
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d

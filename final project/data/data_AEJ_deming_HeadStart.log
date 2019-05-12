@@ -1,8 +1,17 @@
+<<<<<<< HEAD
+-------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\Tessie Krishna\Documents\GitHub\eco395m_team_awesome\final project\data\data_AEJ_deming_HeadS
+> tart.log
+  log type:  text
+ opened on:  11 May 2019, 17:29:24
+=======
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  C:\Dropbox\Classes\ECO 395M Data mining and statisical learning\eco395m_team_awesome\final project\data\data_AEJ_deming_HeadStart.log
   log type:  text
  opened on:  11 May 2019, 18:31:37
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 
 . # delimit ;
 delimiter now ;
@@ -1769,7 +1778,12 @@ delimiter now ;
 . *Minimum of 2 siblings age 54 months or more, in each sample year*;
 . *Want to account in some way for the fact that people are surveyed at different times of the year*;
 . *But also don't want to include siblings who subsequently enroll*;
+<<<<<<< HEAD
+. *So I chose 4 years, 6 months - these kids are almost certainly too old to enroll if they are not already in the 
+> program*;
+=======
 . *So I chose 4 years, 6 months - these kids are almost certainly too old to enroll if they are not already in the program*;
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 . *Estimates in the paper are not sensitive to this rule*;
 . foreach y in 86 88 90 {;
   2.         bysort MotherID: egen Elig1_`y'=count(Age_Mo`y') if Age_Mo`y'>47 & Age_Mo`y'!=.;
@@ -1832,7 +1846,12 @@ delimiter now ;
   4.         foreach x in 90 {;
   5.                 replace HS`y'_`x'=0 if Elig`y'_`x'==1 & HS`y'_`x'!=1;
   6.                 replace Pre`y'_`x'=0 if Elig`y'_`x'==1 & Pre`y'_`x'!=1;
+<<<<<<< HEAD
+  7.                         *I code "yes" responses to both HS and preschool as Head Start (Rule 3 does it the oth
+> er way)*;
+=======
   7.                         *I code "yes" responses to both HS and preschool as Head Start (Rule 3 does it the other way)*;
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 .                 replace Pre`y'_`x'=0 if HS`y'_`x'==1;
   8.                 gen byte None`y'_`x'=Elig`y'_`x'==1 ;
   9.                 replace None`y'_`x'=. if Elig`y'_`x'==0;
@@ -1894,7 +1913,12 @@ delimiter now ;
 . foreach x in 1 2 3 {;
   2.         foreach y in 90 {;
   3.                 *For each family, count the number of kids in each category (HS, Pre, None)*
+<<<<<<< HEAD
+>                 *Then set equal to missing if all kids in the family are in the same category (and thus ineligibl
+> e)*;
+=======
 >                 *Then set equal to missing if all kids in the family are in the same category (and thus ineligible)*;
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 .                                 bysort MotherID: egen temp= count(ChildID) if HS`x'_`y'==1;
   4.                 replace temp=. if Num`x'Elig`y'==temp;
   5.                 bysort MotherID: egen temp2= count(ChildID) if Pre`x'_`y'==1;
@@ -2046,7 +2070,12 @@ delimiter now ;
 
 . egen PermInc=rowmean( NetFamInc78 NetFamInc79 NetFamInc80 NetFamInc81 NetFamInc82 NetFamInc83 NetFamInc84 
 >                             NetFamInc85 NetFamInc86 NetFamInc87 NetFamInc88 NetFamInc89 NetFamInc90 NetFamInc91 
+<<<<<<< HEAD
+>                             NetFamInc92 NetFamInc93 NetFamInc95 NetFamInc97 NetFamInc99 NetFamInc101 NetFamInc103
+> );
+=======
 >                             NetFamInc92 NetFamInc93 NetFamInc95 NetFamInc97 NetFamInc99 NetFamInc101 NetFamInc103);
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 (42 missing values generated)
 
 . gen lnPermInc=ln(PermInc);
@@ -2582,8 +2611,15 @@ delimiter now ;
 . *Create dummies for estimation sample*;
 . foreach x in 1 2 3 {;
   2.         gen Sample90_`x'=1 if HS`x'_FE90!=. & SampleID!=12 & Attrit==0 & Age2_Yr104>=19;
+<<<<<<< HEAD
+  3.         *Also include those who are 18 but have their 19th birthday in the first 7 months of 2004, for the sch
+> ool year*;
+.         replace Sample90_`x'=1 if HS`x'_FE90!=. & Attrit==0 & Sample90_`x'!=1 & DOB_Yr_Child==1985 & DOB_Mo_Child
+> <8;
+=======
   3.         *Also include those who are 18 but have their 19th birthday in the first 7 months of 2004, for the school year*;
 .         replace Sample90_`x'=1 if HS`x'_FE90!=. & Attrit==0 & Sample90_`x'!=1 & DOB_Yr_Child==1985 & DOB_Mo_Child<8;
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
   4. };
 (10,264 missing values generated)
 (26 real changes made)
@@ -2814,7 +2850,12 @@ PreK_FE_3 |   PermInc  MomDro~t  MomSom~l  AgeAFQ~d  Hispanic     Black     Whit
 . egen Moth_HrsWorked_Avg_0to3=rowmean(Moth_HrsWorked*Avg);
 (3819 missing values generated)
 
+<<<<<<< HEAD
+. egen Moth_HrsWorked_0to1=rowmean(Moth_HrsWorked_1_Avg Moth_HrsWorked_2_Avg Moth_HrsWorked_3_Avg Moth_HrsWorked_4_
+> Avg);
+=======
 . egen Moth_HrsWorked_0to1=rowmean(Moth_HrsWorked_1_Avg Moth_HrsWorked_2_Avg Moth_HrsWorked_3_Avg Moth_HrsWorked_4_Avg);
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 (5986 missing values generated)
 
 . *Father and/or Grandmother present, ages 0-3*;
@@ -3121,7 +3162,12 @@ PreK_FE_3 |   PermInc  MomDro~t  MomSom~l  AgeAFQ~d  Hispanic     Black     Whit
 
 . *Reverse sign so that positive=good outcomes*;
 . foreach var of varlist  HealthCond_before_CV Male_CV Age2_Yr104_CV GMom_0to3_CV MomCare_CV RelCare_CV 
+<<<<<<< HEAD
+>                                 Moth_Smoke_BefBirth_CV Alc_BefBirth_CV  Illness_1stYr_CV Premature_CV Medicaid_0t
+> o3_CV {;
+=======
 >                                 Moth_Smoke_BefBirth_CV Alc_BefBirth_CV  Illness_1stYr_CV Premature_CV Medicaid_0to3_CV {;
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
   2.                                 replace `var'=-`var';
   3. };
 (1,187 real changes made)
@@ -3150,7 +3196,12 @@ PreK_FE_3 |   PermInc  MomDro~t  MomSom~l  AgeAFQ~d  Hispanic     Black     Whit
        panel variable:  MotherID (unbalanced)
 
 . xtreg Attrit HS2_FE90 Pre2_FE90 
+<<<<<<< HEAD
+>         if HS2_FE90!=. & SampleID!=12 & (Age2_Yr104>=19 | (DOB_Yr_Child==1985 & DOB_Mo_Child<9)), fe vce(cluster 
+> MotherID);
+=======
 >         if HS2_FE90!=. & SampleID!=12 & (Age2_Yr104>=19 | (DOB_Yr_Child==1985 & DOB_Mo_Child<9)), fe vce(cluster MotherID);
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 
 Fixed-effects (within) regression               Number of obs     =      1,314
 Group variable: MotherID                        Number of groups  =        586
@@ -4580,7 +4631,12 @@ Summary for variables: PreTreatIndex
 . unab Covariates:        Res_0to3 HealthCond_before VLow_BW logBW LogInc_0to3 LogIncAt3 FirstBorn PPVTat3 
 >                         HOME_Pct_0to3 Moth_HrsWorked_BefBirth Moth_HrsWorked_Avg_0to3 Moth_HrsWorked_0to1 
 >                         Father_HH_0to3 GMom_0to3 MomCare RelCare NonRelCare Moth_Smoke_BefBirth Alc_BefBirth 
+<<<<<<< HEAD
+>                         Breastfed Doctor_0to3 Dentist_0to3 Moth_WeightChange Illness_1stYr Premature Insurance_0t
+> o3 
+=======
 >                         Breastfed Doctor_0to3 Dentist_0to3 Moth_WeightChange Illness_1stYr Premature Insurance_0to3 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                         Medicaid_0to3;
 
 . foreach x of local Covariates {;
@@ -6070,9 +6126,16 @@ added scalar:
 . estout Test using Table4.txt, starlevels(* 0.10 ** 0.05 *** 0.01) 
 >                                         keep(HS* Pre*) 
 >                                         cells(b(star fmt(3)) se(par([ ]) fmt(3))) 
+<<<<<<< HEAD
+>                                         stats(Difference_HS Difference_5to6 Difference_7to10 Difference_11to14 r2
+>  N, fmt(3 3 3 3 3 0)
+>                                         labels("p(All age effects equal)" "p(HS=Pre - 5 to 6)" "p(HS=Pre - 7 to 1
+> 0)" "p(HS=Pre - 11 to 14)" "R squared" "Sample Size")) 
+=======
 >                                         stats(Difference_HS Difference_5to6 Difference_7to10 Difference_11to14 r2 N, fmt(3 3 3 3 3 0)
 >                                         labels("p(All age effects equal)" "p(HS=Pre - 5 to 6)" "p(HS=Pre - 7 to 10)" "p(HS=Pre - 11 to 14)" "R squared" "Sample Si
 > ze")) 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                                         label append;
 (output written to Table4.txt)
 
@@ -6093,8 +6156,15 @@ added scalar:
  10.         estout HS_`g' using Table4.txt,         starlevels(* 0.10 ** 0.05 *** 0.01) 
 >                                                         keep(HS_* Pre_*) 
 >                                                         cells(b(star fmt(3)) se(par([ ]) fmt(3))) 
+<<<<<<< HEAD
+>                                                         stats(Diff_5to6_`g' Diff_7to10_`g' Diff_11to14_`g' r2 N, 
+> fmt(3 3 3 3 0) 
+>                                                         labels("p(5 to 6 (`g'))" "p(7 to 10 `g'))" "p(11 to 14 `g
+> ')" "R squared" "Sample Size")) 
+=======
 >                                                         stats(Diff_5to6_`g' Diff_7to10_`g' Diff_11to14_`g' r2 N, fmt(3 3 3 3 0) 
 >                                                         labels("p(5 to 6 (`g'))" "p(7 to 10 `g'))" "p(11 to 14 `g')" "R squared" "Sample Size")) 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                                                         label append;
  11.         drop _est_*;
  12. };
@@ -6517,7 +6587,12 @@ e(Diff_11to14_lowAFQT) =  .19901873
 (output written to Table4.txt)
 
 . foreach g in Black Male lowAFQT {;
+<<<<<<< HEAD
+  2.         xi: xtreg Test_std HS_`g' HS_Non`g' Pre_`g' Pre_Non`g' Male i.Age2_Yr104 `Covariates', fe vce(cluster 
+> MotherID);
+=======
   2.         xi: xtreg Test_std HS_`g' HS_Non`g' Pre_`g' Pre_Non`g' Male i.Age2_Yr104 `Covariates', fe vce(cluster MotherID);
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
   3.         test HS_`g'=Pre_`g';
   4.         estadd scalar Diff_`Test'_`g' = r(p);
   5.         estimates store `Test'_`g';
@@ -6530,8 +6605,15 @@ e(Diff_11to14_lowAFQT) =  .19901873
  12.         estout HS_`Test'_`g' using Table4.txt,  starlevels(* 0.10 ** 0.05 *** 0.01) 
 >                                                                 keep(HS_* Pre_*) 
 >                                                                 cells(b(star fmt(3)) se(par([ ]) fmt(3))) 
+<<<<<<< HEAD
+>                                                                 stats(Diff_`Test'_`g' Diff_`Test'_Non`g' HS_`Test
+> '_`g' r2 N, fmt(3 3 3 3 0)
+>                                                                 labels("p(HS=Pre (`g'))" "p(HS=Pre Non`g'))" "p(H
+> S_`g'=HS_Non`g')" "R squared" "Sample Size")) 
+=======
 >                                                                 stats(Diff_`Test'_`g' Diff_`Test'_Non`g' HS_`Test'_`g' r2 N, fmt(3 3 3 3 0)
 >                                                                 labels("p(HS=Pre (`g'))" "p(HS=Pre Non`g'))" "p(HS_`g'=HS_Non`g')" "R squared" "Sample Size")) 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                                                                 label append;
  13.         drop _est_*;
  14. };
@@ -6978,11 +7060,22 @@ added scalar:
 (1 real change made, 1 to missing)
 
 . *Create yearly indicators, then take the max across years to get "ever repeat" and "ever LD" measures*;
+<<<<<<< HEAD
+. *Note that, particulary for Repeat, some kids are already too old by the 1st survey year, so data is missing for 
+> them*;
+. egen Repeat94=rowmax(   Repeat_K94 Repeat_194 Repeat_294 Repeat_394 Repeat_494 Repeat_594 Repeat_694 Repeat_794 R
+> epeat_894);
+(11130 missing values generated)
+
+. egen Repeat96=rowmax(   Repeat_K96 Repeat_196 Repeat_296 Repeat_396 Repeat_496 Repeat_596 Repeat_696 Repeat_796 R
+> epeat_896 
+=======
 . *Note that, particulary for Repeat, some kids are already too old by the 1st survey year, so data is missing for them*;
 . egen Repeat94=rowmax(   Repeat_K94 Repeat_194 Repeat_294 Repeat_394 Repeat_494 Repeat_594 Repeat_694 Repeat_794 Repeat_894);
 (11130 missing values generated)
 
 . egen Repeat96=rowmax(   Repeat_K96 Repeat_196 Repeat_296 Repeat_396 Repeat_496 Repeat_596 Repeat_696 Repeat_796 Repeat_896 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                                 Repeat_996 Repeat_1096 Repeat_1196 Repeat_1296);
 (10894 missing values generated)
 
@@ -7067,7 +7160,12 @@ added scalar:
 . drop temp*;
 
 . *Long-Term Outcomes - High School Graduation, College Attendance, Idle, Crime, Teen Parenthood, Health Status*;
+<<<<<<< HEAD
+. *Code educational attainment outcomes using the recoded and cleaned variable YA_Educ, rather than other measures*
+> ;
+=======
 . *Code educational attainment outcomes using the recoded and cleaned variable YA_Educ, rather than other measures*;
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 . *Other measures are sometimes only reported if the respondent answers yes or no certain screener questions*;
 . *HS Graduation, with and without GED*;
 . gen HSGrad=YA_Educ104>=12 & YA_Educ104!=.;
@@ -7127,7 +7225,12 @@ added scalar:
 (9,970 real changes made, 9,970 to missing)
 (10,570 real changes made, 10,570 to missing)
 
+<<<<<<< HEAD
+. *If respondent did not know wages, but did report an estimate, code as 0 for lowest estimated category and 1 for 
+> all others*;
+=======
 . *If respondent did not know wages, but did report an estimate, code as 0 for lowest estimated category and 1 for all others*;
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 . gen PosWages=PosWages104;
 (7,243 missing values generated)
 
@@ -7255,14 +7358,24 @@ added scalar:
        panel variable:  MotherID (unbalanced)
 
 . foreach o in Repeat LD HSGrad HSGrad_GED someCollAtt Idle Crime TeenPreg PoorHealth {;
+<<<<<<< HEAD
+  2.         xi: xtreg `o' HS2_FE90 Pre2_FE90 Male i.Age2_Yr104 `Covariates' if Sample90_2==1, fe vce(cluster Mothe
+> rID);
+=======
   2.         xi: xtreg `o' HS2_FE90 Pre2_FE90 Male i.Age2_Yr104 `Covariates' if Sample90_2==1, fe vce(cluster MotherID);
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
   3.         test HS2_FE90=Pre2_FE90;
   4.         estadd scalar Difference_`o' = r(p);
   5.         estimates store `o';
   6.         estout `o' using Table5.txt,    starlevels(* 0.10 ** 0.05 *** 0.01) 
 >                                                 keep(HS2* Pre2*) 
 >                                                 cells(b(star fmt(3)) se(par([ ]) fmt(3))) 
+<<<<<<< HEAD
+>                                                 stats(Difference_`o' r2 N, fmt(3 3 0) labels("p(Head Start=Other 
+> Preschools)" "R squared" "Sample Size")) 
+=======
 >                                                 stats(Difference_`o' r2 N, fmt(3 3 0) labels("p(Head Start=Other Preschools)" "R squared" "Sample Size")) 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                                                 label append;
   7.         drop _est_*;
   8. };
@@ -8621,7 +8734,12 @@ e(Difference_PoorHealth) =  .15441675
 . foreach o in Repeat LD HSGrad HSGrad_GED someColl Idle Crime TeenPreg PoorHealth {;
   2.         foreach g in Black Male lowAFQT {;
   3.                 xi: xtreg `o'   HS_`g' HS_Non`g' Pre_`g' Pre_Non`g' 
+<<<<<<< HEAD
+>                                         Male i.Age2_Yr104 `Covariates' if Sample90_2==1, fe vce(cluster MotherID)
+> ;
+=======
 >                                         Male i.Age2_Yr104 `Covariates' if Sample90_2==1, fe vce(cluster MotherID);
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
   4.                 test HS_`g'=Pre_`g';
   5.                 estadd scalar Diff_`o'_`g' = r(p);
   6.                 estimates store `o'_`g';
@@ -8634,8 +8752,15 @@ e(Difference_PoorHealth) =  .15441675
  13.                 estout HS_`o'_`g' using Table5.txt, starlevels(* 0.10 ** 0.05 *** 0.01) 
 >                                                                 keep(HS_* Pre_*) 
 >                                                                 cells(b(star fmt(3)) se(par([ ]) fmt(3))) 
+<<<<<<< HEAD
+>                                                                 stats(Diff_`o'_`g' Diff_`o'_Non`g' HS_`o'_`g' r2 
+> N, fmt(3 3 3 3 0) 
+>                                                                 labels("p(HS=Pre (`g'))" "p(HS=Pre Non`g'))" "p(H
+> S_`g'=HS_Non`g')" "R squared" "Sample Size")) 
+=======
 >                                                                 stats(Diff_`o'_`g' Diff_`o'_Non`g' HS_`o'_`g' r2 N, fmt(3 3 3 3 0) 
 >                                                                 labels("p(HS=Pre (`g'))" "p(HS=Pre Non`g'))" "p(HS_`g'=HS_Non`g')" "R squared" "Sample Size")) 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                                                                 label append;
  14.                 drop _est_*;
  15.         };
@@ -13242,7 +13367,12 @@ e(HS_PoorHealth_lowAFQT) =  .59438582
        panel variable:  MotherID (unbalanced)
 
 . foreach o in Noncog_std Sum_Adult {;
+<<<<<<< HEAD
+  2.         xi: xtreg `o' HS2_FE90 Pre2_FE90 Male i.Age2_Yr104 `Covariates' if Sample90_2==1, fe vce(cluster Mothe
+> rID);
+=======
   2.         xi: xtreg `o' HS2_FE90 Pre2_FE90 Male i.Age2_Yr104 `Covariates' if Sample90_2==1, fe vce(cluster MotherID);
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
   3.         test HS2_FE90=Pre2_FE90;
   4.         estadd scalar Difference_`o' = r(p);
   5.         estimates store `o';
@@ -13250,7 +13380,12 @@ e(HS_PoorHealth_lowAFQT) =  .59438582
 >                                                 keep(HS2* Pre2*) 
 >                                                 cells(b(star fmt(3)) se(par([ ]) fmt(3))) 
 >                                                 stats(Difference_`o' r2 N, fmt(3 3 0) 
+<<<<<<< HEAD
+>                                                 labels("p(Head Start=Other Preschools)" "R squared" "Sample Size"
+> )) 
+=======
 >                                                 labels("p(Head Start=Other Preschools)" "R squared" "Sample Size")) 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                                                 label append;
   7.         drop _est_*;
   8. };
@@ -13558,7 +13693,12 @@ e(Difference_Sum_Adult) =  .06726412
 . foreach o in Noncog_std Sum_Adult {;
   2.         foreach g in Black Male lowAFQT {;
   3.                 xi: xtreg `o'   HS_`g' HS_Non`g' Pre_`g' Pre_Non`g' 
+<<<<<<< HEAD
+>                                         Male i.Age2_Yr104 `Covariates' if Sample90_2==1, fe vce(cluster MotherID)
+> ;
+=======
 >                                         Male i.Age2_Yr104 `Covariates' if Sample90_2==1, fe vce(cluster MotherID);
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
   4.                 test HS_`g'=Pre_`g';
   5.                 estadd scalar Diff_`o'_`g' = r(p);
   6.                 estimates store `o'_`g';
@@ -13571,8 +13711,15 @@ e(Difference_Sum_Adult) =  .06726412
  13.                 estout HS_`o'_`g' using Table4.txt, starlevels(* 0.10 ** 0.05 *** 0.01) 
 >                                                                 keep(HS_* Pre_*) 
 >                                                                 cells(b(star fmt(3)) se(par([ ]) fmt(3))) 
+<<<<<<< HEAD
+>                                                                 stats(Diff_`o'_`g' Diff_`o'_Non`g' HS_`o'_`g' r2 
+> N, fmt(3 3 3 3 0) 
+>                                                                 labels("p(HS=Pre (`g'))" "p(HS=Pre Non`g'))" "p(H
+> S_`g'=HS_Non`g')" "R squared" "Sample Size")) 
+=======
 >                                                                 stats(Diff_`o'_`g' Diff_`o'_Non`g' HS_`o'_`g' r2 N, fmt(3 3 3 3 0) 
 >                                                                 labels("p(HS=Pre (`g'))" "p(HS=Pre Non`g'))" "p(HS_`g'=HS_Non`g')" "R squared" "Sample Size")) 
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 >                                                                 label append;
  14.                 drop _est_*;
  15.         };
@@ -14607,7 +14754,12 @@ e(HS_Sum_Adult_lowAFQT) =  .49802021
 (10,219 missing values generated)
 
 . egen temp=rowmean( HSGrad_wage-PoorHealth_wage) 
+<<<<<<< HEAD
+>                 if HSGrad_wage!=. & someCollAtt_wage!=. & Idle_wage!=. & Crime_wage!=. & TeenPreg_wage!=. & PoorH
+> ealth_wage!=.;
+=======
 >                 if HSGrad_wage!=. & someCollAtt_wage!=. & Idle_wage!=. & Crime_wage!=. & TeenPreg_wage!=. & PoorHealth_wage!=.;
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 (10219 missing values generated)
 
 . egen Sum_wage=std(temp), mean(0) std(1);
@@ -15199,7 +15351,1495 @@ Moth_HrsWorked_Avg_0to3_miss |  -.0460337   .1003026    -0.46   0.646    -.24303
 . 
 end of do-file
 
+<<<<<<< HEAD
+. SUM
+command SUM is unrecognized
+r(199);
+
+. sum
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     ChildID |     11,470    601613.3    345164.8        201    1267501
+  AFQT_Pct81 |     10,831    36.18816    27.60623          1         99
+AFQT_Pct81~V |     10,831    35.60881    27.29104          1         99
+   AgePreg94 |        103    13.29126    5.940276          0         20
+   AgePreg96 |        151    16.18543    1.714269         13         21
+-------------+---------------------------------------------------------
+   AgePreg98 |        222    14.43243    5.497217          0         20
+ Age_1stHS88 |        873    3.790378    1.239006          0         33
+ Age_1stHS90 |        357    3.694678    .7222777          1          6
+ Age_1stHS92 |        410    3.690244    .7261463          1          6
+ Age_1stHS94 |        355    3.692958    .7393928          0          6
+-------------+---------------------------------------------------------
+ Age_1stHS96 |        235         3.6    .6679475          2          6
+ Age_1stHS98 |        194    3.572165    .7933979          0          5
+Age_1stHS100 |         84    3.511905    .8572026          0          5
+Age_1stHS102 |         91    3.472527    .7504171          1          5
+Age_1stHS104 |         68         3.5    .8195375          1          5
+-------------+---------------------------------------------------------
+    Age_Mo79 |      1,331    24.27573    18.47115          0        100
+    Age_Mo80 |      1,770    26.48588    20.84645          0        111
+    Age_Mo81 |      2,363    30.58146    23.27037          0        124
+    Age_Mo82 |      3,061    34.21627    25.77444          0        135
+    Age_Mo83 |      3,785     38.3712    28.11589          0        146
+-------------+---------------------------------------------------------
+    Age_Mo84 |      4,461    43.54136    30.57064          0        158
+    Age_Mo85 |      4,679    49.05941     33.7868          0        171
+    Age_Mo86 |      5,254    55.09326    36.55742          0        183
+    Age_Mo87 |      5,877    61.86524     39.8395          0        198
+    Age_Mo88 |      6,563    68.86805    43.48733          0        212
+-------------+---------------------------------------------------------
+    Age_Mo89 |      7,208    74.76262     46.2029          0        223
+    Age_Mo90 |      7,671    81.95802    49.40547          0        237
+    Age_Mo91 |      6,887    86.99956    52.02427          0        246
+    Age_Mo92 |      7,246    94.51697    54.83552          0        259
+    Age_Mo93 |      7,626    101.0227    57.55693          0        269
+-------------+---------------------------------------------------------
+    Age_Mo94 |      7,858    109.7088    60.34454          0        282
+    Age_Mo96 |      8,120    125.7217    65.00873          0        304
+    Age_Mo98 |      8,391    142.8311    69.37553          0        328
+   Age_Mo100 |      8,321    164.2132    74.01827          0        356
+   Age_Mo102 |      8,098    184.7392    76.08194          0        377
+-------------+---------------------------------------------------------
+   Age_Mo104 |      8,266    205.8949    77.42746          0        399
+   Age_Mom79 |     11,428    17.87574    2.269911         14         22
+   Age_Mom86 |     10,476    24.80097    2.262489         21         29
+   Age_Mom88 |     10,286    27.22594    2.270029         23         31
+   Age_Mom90 |     10,366    29.22776    2.269521         25         33
+-------------+---------------------------------------------------------
+   Age_Mom92 |      9,218    31.07247    2.254926         27         35
+   Age_Mom94 |      9,158    33.09609    2.253592         29         37
+   Age_Mom96 |      8,956     34.9598    2.260864         31         39
+   Age_Mom98 |      8,844    36.92198    2.251369         33         41
+  Age_Mom100 |      8,497    39.10474    2.265322         35         43
+-------------+---------------------------------------------------------
+  Age_Mom102 |      8,161     40.9864    2.257001         35         45
+  Age_Mom104 |      8,267    42.88509    2.229914         39         47
+Age_Moth_B~h |     11,425    25.11107    5.813196         10         44
+Ageat1stBi~h |      1,466    19.07776    2.715288         12         30
+   Allergy86 |         37          10           0         10         10
+-------------+---------------------------------------------------------
+   Allergy88 |         35          10           0         10         10
+   Allergy90 |         53          10           0         10         10
+   Allergy92 |         61          10           0         10         10
+   Allergy94 |         62          10           0         10         10
+   Allergy96 |        658    .8662614    2.815004          0         10
+-------------+---------------------------------------------------------
+   Allergy98 |        525    .1371429    .3443262          0          1
+  Allergy100 |        443    .1963883    .3977147          0          1
+    AnyIll86 |      4,949    .4089715    .4916937          0          1
+    AnyIll88 |      6,207    .3742549    .4839689          0          1
+    AnyIll90 |      5,721    .3707394     .483045          0          1
+-------------+---------------------------------------------------------
+    AnyIll92 |      6,440    .3496894    .4772344          0          2
+    AnyIll94 |      6,038    .3406757    .4739757          0          1
+    AnyIll96 |      5,394    .3272154    .4692401          0          1
+    AnyIll98 |      4,895    .2994893    .4580811          0          1
+   AnyIll100 |      3,383    .2958912    .4565098          0          1
+-------------+---------------------------------------------------------
+   AnyIll102 |      3,221    .3163614     .465128          0          1
+   AnyIll104 |      2,500       .3056    .4607533          0          1
+    Asthma86 |         83           4           0          4          4
+    Asthma88 |        130           4           0          4          4
+    Asthma90 |        152           4           0          4          4
+-------------+---------------------------------------------------------
+    Asthma92 |        199           4           0          4          4
+    Asthma94 |        195           4           0          4          4
+    Asthma96 |        658    1.288754    1.870681          0          4
+    Asthma98 |        525    .3047619    .4607455          0          1
+   Asthma100 |        443    .3092551    .4627091          0          1
+-------------+---------------------------------------------------------
+ BPIAS_Pct86 |      2,499    661.4234    264.0222        217        999
+ BPIAS_Pct88 |      3,720    656.9091    267.6596        217        999
+ BPIAS_Pct90 |      3,902     631.958    269.6785        217        999
+ BPIAS_Pct92 |      4,643     629.512    274.3352        217        999
+ BPIAS_Pct94 |      4,394     621.563    276.8144        217        999
+-------------+---------------------------------------------------------
+ BPIAS_Pct96 |      4,031    610.1139    276.9558        217        999
+ BPIAS_Pct98 |      3,747    105.8975    14.25752         88        146
+BPIAS_Pct100 |      2,592    538.1578    272.6465        217        999
+BPIAS_Pct102 |      2,834    536.8716    271.0932        217        999
+BPIAS_Pct104 |      2,256    535.2926    265.9508        167        999
+-------------+---------------------------------------------------------
+ BPIAS_Raw86 |      2,516    1.690779    1.487045          0          6
+ BPIAS_Raw88 |      3,724    1.687701    1.541598          0          6
+ BPIAS_Raw90 |      3,905    1.534955    1.509828          0          6
+ BPIAS_Raw92 |      4,646    1.584374    1.605858          0          6
+ BPIAS_Raw94 |      4,398    1.512051    1.578862          0          6
+-------------+---------------------------------------------------------
+ BPIAS_Raw96 |      4,054    1.428959    1.535905          0          6
+ BPIAS_Raw98 |      3,756    1.354899    1.507188          0          6
+BPIAS_Raw100 |      2,605    1.046449    1.374748          0          6
+BPIAS_Raw102 |      2,867    1.023369    1.358008          0          6
+BPIAS_Raw104 |      2,274    1.004837    1.334992          0          6
+-------------+---------------------------------------------------------
+   BPI_Pct86 |      2,460    665.8817    253.4841         30       1000
+   BPI_Pct88 |      3,637    668.0745    252.3796         30       1000
+   BPI_Pct90 |      3,829    619.9428    268.0767         30       1000
+   BPI_Pct92 |      4,686    619.7443    270.2086         30       1000
+   BPI_Pct94 |      4,438    614.3605    275.4709         30       1000
+-------------+---------------------------------------------------------
+   BPI_Pct96 |      4,024    596.6054    277.0604         30       1000
+   BPI_Pct98 |      3,785    104.3823    15.30302         72        149
+  BPI_Pct100 |      2,595    529.1626    285.5587         30       1000
+  BPI_Pct102 |      2,839    533.0169    286.3139         30       1000
+  BPI_Pct104 |      2,272    539.8939    285.1102         30       1000
+-------------+---------------------------------------------------------
+   BPI_Raw86 |      2,476    10.49313    5.946865          0         28
+   BPI_Raw88 |      3,641    10.47871    6.119878          0         28
+   BPI_Raw90 |      3,832    9.306106    6.101549          0         28
+   BPI_Raw92 |      4,689    93.60823    63.60154          0        280
+   BPI_Raw94 |      4,442    91.81855    63.18177          0        280
+-------------+---------------------------------------------------------
+   BPI_Raw96 |      4,047    85.59822    60.91266          0        280
+   BPI_Raw98 |      3,794    80.54613    60.21735          0        280
+  BPI_Raw100 |      2,608     69.5441    56.07494          0        280
+  BPI_Raw102 |      2,872    70.05571    57.31801          0        280
+  BPI_Raw104 |      2,290    70.58166    56.35222          0        280
+-------------+---------------------------------------------------------
+  BirthOrder |     11,426    1.959566    1.138132          1         11
+ BirthWeight |     10,264    116.0144     21.8476          0        268
+     Blind86 |          9           8           0          8          8
+     Blind88 |         13           8           0          8          8
+     Blind90 |          7           8           0          8          8
+-------------+---------------------------------------------------------
+     Blind92 |          8           8           0          8          8
+     Blind94 |          7           8           0          8          8
+     Blind96 |        658     .218845    1.305932          0          8
+     Blind98 |        525    .0152381    .1226154          0          1
+    Blind100 |        443     .013544    .1157186          0          1
+-------------+---------------------------------------------------------
+     Blood88 |          8          17           0         17         17
+     Blood90 |          6          17           0         17         17
+     Blood92 |         10          17           0         17         17
+     Blood94 |          7          17           0         17         17
+     Blood96 |        658    .1808511    1.745391          0         17
+-------------+---------------------------------------------------------
+     Blood98 |        525    .0133333    .1148071          0          1
+    Blood100 |        443     .006772    .0821058          0          1
+BornEarlyo~e |      4,181    1.443195    .4968222          1          2
+  BornOnTime |     10,138    .5885776    .4921157          0          1
+     Brain86 |          9           2           0          2          2
+-------------+---------------------------------------------------------
+     Brain88 |         17           2           0          2          2
+     Brain90 |         18           2           0          2          2
+     Brain92 |         27           2           0          2          2
+     Brain94 |         44           2           0          2          2
+     Brain96 |        658    .1823708    .5761832          0          2
+-------------+---------------------------------------------------------
+     Brain98 |        525    .1085714    .3113975          0          1
+    Brain100 |        443    .0902935    .2869257          0          1
+   Breastfed |     10,742    .4546639    .4979636          0          1
+Chil~re_1_Yr |      9,843    .3903282    .4878486          0          1
+Chil~re_2_Yr |      9,573    .4633866    .4986837          0          1
+-------------+---------------------------------------------------------
+Chil~re_3_Yr |      9,142    .4893896    .4999147          0          1
+Chil~pe_1_Yr |      3,798    9.524487    3.298239          1         15
+Chil~pe_2_Yr |      4,196     9.92326    3.391614          1         15
+Chil~pe_3_Yr |      4,408    10.40268    3.515412          1         15
+ Convicted94 |        886    .0756208    .2645397          0          1
+-------------+---------------------------------------------------------
+ Convicted96 |      1,435     .097561    .2968236          0          1
+ Convicted98 |      1,866    .0916399    .2885942          0          1
+Convicted100 |      3,014    .0693431    .2540788          0          1
+Convicted102 |      4,232    .0751418    .2636511          0          1
+Convicted104 |      4,995    .0558559    .2296661          0          1
+-------------+---------------------------------------------------------
+  Crippled86 |         41          11           0         11         11
+  Crippled88 |         30          11           0         11         11
+  Crippled90 |         24          11           0         11         11
+  Crippled92 |         16          11           0         11         11
+  Crippled94 |         26          11           0         11         11
+-------------+---------------------------------------------------------
+  Crippled96 |        658    .4179331    2.104597          0         11
+  Crippled98 |        525    .0342857    .1821356          0          1
+ Crippled100 |        443    .0406321    .1976595          0          1
+DOB_Mo_Child |     11,425    6.621794    3.413096          1         12
+   DOB_Month |      5,634    6.681399     3.42465          1         12
+-------------+---------------------------------------------------------
+      DOB_Yr |      5,634    1982.977    3.933676       1970       1989
+DOB_Yr_Child |     11,425    1985.956    6.258231       1970       2004
+      Deaf86 |         17           7           0          7          7
+      Deaf88 |         17           7           0          7          7
+      Deaf90 |         16           7           0          7          7
+-------------+---------------------------------------------------------
+      Deaf92 |         18           7           0          7          7
+      Deaf94 |         16           7           0          7          7
+      Deaf96 |        658    .1702128    1.079021          0          7
+      Deaf98 |        525    .0247619    .1555469          0          1
+     Deaf100 |        443    .0158014    .1248473          0          1
+-------------+---------------------------------------------------------
+   Disturb86 |          7           9           0          9          9
+   Disturb88 |         14           9           0          9          9
+   Disturb90 |         11           9           0          9          9
+   Disturb92 |         18           9           0          9          9
+   Disturb94 |         24           9           0          9          9
+-------------+---------------------------------------------------------
+   Disturb96 |        658    .2462006    1.469174          0          9
+   Disturb98 |        525     .032381    .1771785          0          1
+  Disturb100 |        443    .0406321    .1976595          0          1
+       Ear88 |         28          16           0         16         16
+       Ear90 |         28          16           0         16         16
+-------------+---------------------------------------------------------
+       Ear92 |         22          16           0         16         16
+       Ear94 |         24          16           0         16         16
+       Ear96 |        658      .43769    2.611864          0         16
+       Ear98 |        525    .0342857    .1821356          0          1
+      Ear100 |        443    .0180587    .1333143          0          1
+-------------+---------------------------------------------------------
+Enroll_Pr~88 |      3,156    .1647655    .3710276          0          1
+Enroll_Pr~90 |      1,755    .3048433    .4604722          0          1
+Enroll_Pr~92 |      1,954    .2717503    .4449757          0          1
+Enroll_Pr~94 |      2,093    .2551362    .4360419          0          1
+Enroll_Pr~96 |      1,431    .3368274    .4727906          0          1
+-------------+---------------------------------------------------------
+Enroll_Pr~98 |      1,216    29.09951    41.56194          0         95
+Enroll_P~100 |        993    19.75126    36.51678          0         90
+Enroll_P~102 |        689    33.08128    42.98772          0         90
+Enroll_P~104 |        624    181.9856    357.0731          0        999
+Enroll_Sc~86 |      2,621    .6810378    .4661633          0          1
+-------------+---------------------------------------------------------
+Enroll_Sc~88 |      4,653    .6976144    .4593407          0          1
+Enroll_Sc~90 |      4,255    .8218566    .3826784          0          1
+Enroll_Sc~92 |      5,237    .8080962    .3938354          0          1
+Enroll_Sc~94 |      5,111    .8618666    .3450737          0          1
+Enroll_Sc~96 |      4,658    .8681838    .3383272          0          1
+-------------+---------------------------------------------------------
+Enroll_Sc~98 |      4,332    .8813481    .3234158          0          1
+Enroll_S~100 |      3,005    .9054908    .2925844          0          1
+Enroll_S~102 |      3,002    .9213857    .2691806          0          1
+Enroll_S~104 |      2,402    .9379684    .2412632          0          1
+  Epilepsy88 |         27          18           0         18         18
+-------------+---------------------------------------------------------
+  Epilepsy90 |         21          18           0         18         18
+  Epilepsy92 |         23          18           0         18         18
+  Epilepsy94 |         20          18           0         18         18
+  Epilepsy96 |        658    .5744681     3.16633          0         18
+  Epilepsy98 |        525    .0342857    .1821356          0          1
+-------------+---------------------------------------------------------
+ Epilepsy100 |        443    .0293454    .1689635          0          1
+ EverMarried |      5,634    .1260206     .331902          0          1
+  EverPreg94 |        319    .2821317    .4507441          0          1
+  EverPreg96 |        535    .2971963    .4574514          0          1
+  EverPreg98 |        612    .3186275    .4663253          0          1
+-------------+---------------------------------------------------------
+Ever_Dayc~88 |      3,677    .3037803    .4599515          0          1
+Ever_Dayc~90 |      1,805     .366205    .4818999          0          1
+   Ever_HS88 |      3,677    .2376938    .4257285          0          1
+   Ever_HS90 |      1,809    .1973466    .3981062          0          1
+   Ever_HS92 |      3,013    .1367408    .3436305          0          1
+-------------+---------------------------------------------------------
+   Ever_HS94 |      2,652    .1342383    .3409725          0          1
+   Ever_HS96 |      1,882    .1248672    .3306561          0          1
+   Ever_HS98 |      1,564    .1227621     .328269          0          1
+  Ever_HS100 |        993    .0845921     .278414          0          1
+  Ever_HS102 |        842    .1092637    .3121551          0          1
+-------------+---------------------------------------------------------
+  Ever_HS104 |        622    .1093248    .3122974          0          1
+Ever_Pres~88 |      3,681    .5096441    .4999749          0          1
+Ever_Pres~90 |      1,804    .6679601    .4710758          0          1
+Ever_Pres~92 |      2,191    .6421725    .4794704          0          1
+Ever_Pres~94 |      2,118    .4641171    .4988285          0          1
+-------------+---------------------------------------------------------
+Ever_Pres~96 |      1,400        .455    .4981488          0          1
+Ever_Pres~98 |      1,179    .4478372    .4974826          0          1
+Ever_Pre~100 |        782    .5588235    .4968455          0          1
+Ever_Pre~102 |        592     .535473    .4991618          0          1
+Ever_Pre~104 |        464    .5689655    .4957554          0          1
+-------------+---------------------------------------------------------
+Ever_Scho~86 |      1,068    .2368914    .4253743          0          1
+Ever_Scho~88 |      1,584    .3017677      .45917          0          1
+Ever_Scho~90 |        761    .2930355    .4554539          0          1
+Ever_Scho~92 |      1,246    .3555377    .5403381          0          5
+Ever_Scho~94 |        706    .2082153    .4063195          0          1
+-------------+---------------------------------------------------------
+Ever_Scho~96 |        614    .2654723    .4419444          0          1
+Ever_Scho~98 |        514    .3774319    .5803444          0          2
+Ever_Sch~100 |        284    .3767606    .6637686          0          2
+Ever_Sch~102 |        236    .4449153    .7034381          0          2
+Ever_Sch~104 |        148    .4189189    .6802712          0          2
+-------------+---------------------------------------------------------
+FamilySize79 |     11,428     4.55259    2.350703          1         15
+ Father_HH84 |      4,162    .5843345    .4928956          0          1
+ Father_HH85 |      4,391    .5750399    .4943932          0          1
+ Father_HH86 |      4,933    .5876748     .492303          0          1
+ Father_HH87 |      5,524    .6044533    .4890121          0          1
+-------------+---------------------------------------------------------
+ Father_HH88 |      6,041    .5916239    .4915741          0          1
+ Father_HH89 |      6,735    .6084633    .4881302          0          1
+ Father_HH90 |      7,088    .5898702    .4918917          0          1
+ Father_HH92 |      6,642     .596206    .4906941          0          1
+ Father_HH93 |      6,648    .5761131      .49421          0          1
+-------------+---------------------------------------------------------
+ Father_HH94 |      7,102    .5851873    .4927244          0          1
+ Father_HH96 |      7,173    .5759097    .4942386          0          1
+ Father_HH98 |      7,139    .5853761    .4926915          0          1
+Father_HH100 |      6,596    .5839903    .4929325          0          1
+Father_HH102 |      5,934    .5896528    .4919382          0          1
+-------------+---------------------------------------------------------
+Father_HH104 |      5,500    .5921818    .4914737          0          1
+FirstSurve~r |     11,425    1986.944    6.035634       1979       2005
+Freq_Alc_B~h |      4,394    1.460856    1.389021          0          7
+Freq_Smoke~h |      3,347    1.183448    .6457741          0          3
+       GED94 |        141    1.113475    .3183035          1          2
+-------------+---------------------------------------------------------
+       GED96 |        225    1.151111    .3589557          1          2
+       GED98 |        350    1.111429    .3328021          1          3
+      GED100 |        636    1.169811    .3757625          1          2
+      GED102 |        818    1.147922    .3586686          1          3
+      GED104 |        904    1.142699    .3654391          1          3
+-------------+---------------------------------------------------------
+     Grade86 |      1,819    2.616822      8.8794          0         95
+     Grade88 |      3,614    15.80548    31.32745          0         95
+     Grade90 |      3,865     17.2947    32.21045          0         95
+     Grade92 |      4,457    13.99192    27.69918          0         95
+     Grade94 |      4,551    14.15887    28.24372          0         95
+-------------+---------------------------------------------------------
+     Grade96 |      4,206    13.93723    27.89182          0         95
+     Grade98 |      3,958    12.54952    25.70711          0         95
+    Grade100 |      2,770     11.0231    22.66711          0         95
+    Grade102 |      2,813    11.94241    24.35138          0         95
+    Grade104 |      2,282    10.44172    21.85905          0         95
+-------------+---------------------------------------------------------
+Grandmoth~79 |     11,367    .6592769    .4739733          0          1
+Grandmoth~80 |     11,030    .6019946    .4895088          0          1
+Grandmoth~81 |     11,114    .5050387    .4999971          0          1
+Grandmoth~82 |     11,042    .4267343    .4946254          0          1
+Grandmoth~83 |     11,165    .3555755    .4787088          0          1
+-------------+---------------------------------------------------------
+Grandmoth~84 |     11,096    .2872206    .4524858          0          1
+Grandmoth~85 |     10,609    .2310303    .4215116          0          1
+Grandmoth~86 |     10,476    .1827033    .3864416          0          1
+Grandmoth~87 |     10,374    .1468093    .3539328          0          1
+Grandmoth~88 |     10,260    .1159844    .3202218          0          1
+-------------+---------------------------------------------------------
+Grandmoth~89 |     10,525    .1016627    .3022186          0          1
+Grandmoth~90 |     10,358    .0913304    .2880923          0          1
+Grandmoth~91 |      9,231    .0794063    .2703866          0          1
+Grandmoth~92 |      9,218    .0815795    .2737379          0          1
+Grandmoth~93 |      9,262    .0737422     .261365          0          1
+-------------+---------------------------------------------------------
+Grandmoth~94 |      9,158    .0646429    .2459082          0          1
+Grandmoth~96 |      8,956    .0617463    .2407077          0          1
+Grandmoth~98 |      8,843    .0515662    .2211621          0          1
+Grandmot~100 |      8,486    .0487862    .2154335          0          1
+Grandmot~102 |      8,157    .0418046    .2001546          0          1
+-------------+---------------------------------------------------------
+Grandmot~104 |      8,256    .0423934    .2014972          0          1
+HOMECog_P~86 |      4,376    46.01782     29.4996          0         99
+HOMECog_P~88 |      5,582    46.28413    29.47146          0         98
+HOMECog_P~90 |      5,182    46.93863    29.60801          0         96
+HOMECog_P~92 |      5,871    46.49719    29.51545          0         99
+-------------+---------------------------------------------------------
+HOMECog_P~94 |      5,461    46.88958    29.57757          0         96
+HOMECog_P~96 |      4,765    46.92487    29.05116          0         95
+HOMECog_P~98 |      4,190    47.26587    29.15265          0         95
+HOMECog_P~00 |      2,942     48.5809    29.01175          0         95
+HOMECog_P~02 |      2,838    46.84249    29.54996          0         96
+-------------+---------------------------------------------------------
+HOMECog_P~04 |      2,199    46.01137    30.02567          0         95
+HOMECog_S~86 |      4,376    969.5117    159.0002        281       1348
+HOMECog_S~88 |      5,582    971.1107      157.64        221       1300
+HOMECog_S~90 |      5,182    970.8234    162.0039        244       1272
+HOMECog_S~92 |      5,871    968.6069    162.6894        111       1482
+-------------+---------------------------------------------------------
+HOMECog_S~94 |      5,461    969.6079    163.4798        178       1263
+HOMECog_S~96 |      4,765     970.651    162.1453         57       1255
+HOMECog_S~98 |      4,190    971.7535     162.281        219       1245
+HOMECog_S~00 |      2,942    978.1132    160.2381        110       1240
+HOMECog_S~02 |      2,838    971.7967    160.4611        318       1271
+-------------+---------------------------------------------------------
+HOMECog_S~04 |      2,199    965.1469    167.2254        123       1243
+  HOME_Pct86 |      4,786    45.64459    29.37418          0         99
+  HOME_Pct88 |      5,941    46.10537     29.2521          0         99
+  HOME_Pct90 |      5,358    45.89847    29.66234          0         98
+  HOME_Pct92 |      6,106    45.86325    29.70143          0         98
+-------------+---------------------------------------------------------
+  HOME_Pct94 |      5,714    46.27949    29.38639          0         97
+  HOME_Pct96 |      4,972    46.21762    29.18248          0         96
+  HOME_Pct98 |      4,549     46.2539    29.18804          0         96
+ HOME_Pct100 |      3,150     48.0727    28.97198          0         95
+ HOME_Pct102 |      3,078    46.17024    29.39494          0         96
+-------------+---------------------------------------------------------
+ HOME_Pct104 |      2,399    46.11755    29.53588          0         97
+  HOME_Std86 |      4,786    969.2135    157.6462        225       1339
+  HOME_Std88 |      5,941    969.9987    157.8263        251       1333
+  HOME_Std90 |      5,358    966.3764    162.2659        295       1302
+  HOME_Std92 |      6,106    966.0843    162.9121        137       1323
+-------------+---------------------------------------------------------
+  HOME_Std94 |      5,714    967.3414    164.4414        170       1289
+  HOME_Std96 |      4,972    966.3624    164.4933         40       1274
+  HOME_Std98 |      4,549    967.3425    163.2101        195       1259
+ HOME_Std100 |      3,150    976.2025    161.0898         80       1252
+ HOME_Std102 |      3,078    968.6693    162.5334        196       1271
+-------------+---------------------------------------------------------
+ HOME_Std104 |      2,399    967.8374    162.0657        241       1287
+HealthCond86 |      4,971    .0985717    .2981161          0          1
+HealthCond88 |      6,164    .0715445     .257753          0          1
+HealthCond90 |      5,751    .0732047    .2604948          0          1
+HealthCond92 |      6,469     .084248    .2777808          0          1
+-------------+---------------------------------------------------------
+HealthCond94 |      6,040    .0971854    .2962346          0          1
+HealthCond96 |      5,394    .1221728    .3275156          0          1
+HealthCond98 |      4,896    .1098856    .3127791          0          1
+HealthCo~100 |      3,385    .1308715    .3373096          0          1
+HealthCo~102 |        472           1           0          1          1
+-------------+---------------------------------------------------------
+HealthCo~104 |        388           1           0          1          1
+HealthLim~94 |         81    .6419753    .4824065          0          1
+HealthLim~96 |        159    .7232704    .4487951          0          1
+HealthLim~98 |        159    .6415094    .4810724          0          1
+HealthLi~100 |        264    1.174242    .9228507          0          2
+-------------+---------------------------------------------------------
+HealthLi~102 |        501    1.117764    .9121972          0          2
+HealthLi~104 |        584    1.416096    .8135734          0          2
+Health_Re~94 |        975    3.828718    .9742031          1          5
+Health_Re~96 |      1,669    3.835231    .9707004          1          5
+Health_Re~98 |      2,139    3.918654    .9559634          1          5
+-------------+---------------------------------------------------------
+Health_R~100 |      3,022     3.81403    .9480873          1          5
+Health_R~102 |      4,238    3.826097    .9609847          1          5
+Health_R~104 |      5,015    3.783051    .9710569          1          5
+     Heart86 |         21          13           0         13         13
+     Heart88 |         22          13           0         13         13
+-------------+---------------------------------------------------------
+     Heart90 |         15          13           0         13         13
+     Heart92 |         18          13           0         13         13
+     Heart94 |         20          13           0         13         13
+     Heart96 |        658    .3753799    2.178587          0         13
+     Heart98 |        525     .032381    .1771785          0          1
+-------------+---------------------------------------------------------
+    Heart100 |        443     .027088    .1625235          0          1
+Height_Mom81 |     11,067    501.0976    19.14574        400        604
+HighGrad~t94 |        193    10.87047     1.50997          7         16
+HighGrad~t96 |        436    11.08945    1.604241          1         17
+HighGrad~t98 |        542    11.07565    1.483052          0         15
+-------------+---------------------------------------------------------
+HighGra~t100 |        671    11.98212    1.643524          5         18
+HighGra~t102 |        744    12.31183    4.699826          0         95
+HighGra~t104 |        883     12.5017    3.430348          2         95
+HighGrad~l94 |        978    9.649284    1.554438          0         16
+HighGrad~l96 |      1,667    9.883023    1.682869          1         17
+-------------+---------------------------------------------------------
+HighGrad~l98 |      2,137    9.990173    2.498576          1         95
+HighGra~l100 |      2,387    10.55216    2.075306          5         18
+HighGra~l102 |      3,040    10.85395    3.738717          0         95
+HighGra~l104 |      3,406      11.101    3.093513          0         95
+HighGrad~d79 |      9,498    10.38756    4.038386          0         20
+-------------+---------------------------------------------------------
+HighG~GMom79 |     10,702    10.38974    3.271438          0         20
+HighG~_Mom79 |     11,420    10.34912    2.051595          0         17
+HighGrad~m86 |     10,449    12.18107    2.294448          0         20
+HighGrad~m88 |     10,243    12.33672    2.340429          0         20
+HighGrad~m90 |     10,334    12.40768    2.385101          0         20
+-------------+---------------------------------------------------------
+HighGrad~m92 |      9,210    12.56189    2.409649          0         20
+HighGrad~m96 |      8,956    12.71561    2.434827          0         20
+HighGrad~m98 |      8,844    12.73417    2.429698          0         20
+HighGra~m100 |      8,497    12.84783    2.425205          0         20
+HighGra~m102 |      8,159    12.88785    2.467648          0         20
+-------------+---------------------------------------------------------
+HighGra~m104 |      8,267    12.94037    2.464056          0         20
+HighGrad~h79 |     11,365    10.35301    2.040761          0         17
+HighGrade~80 |     11,012    10.87713    1.992374          0         18
+HighGrade~81 |     11,100    11.28541    1.976933          0         17
+HighGrade~82 |     11,045    11.58551     2.03395          0         19
+-------------+---------------------------------------------------------
+HighGrade~83 |     11,154     11.7678    2.112767          0         20
+HighGrade~84 |     11,094    11.88498    2.215295          0         20
+HighGrade~85 |     10,611    11.96343    2.312728          0         20
+HighGrad~h86 |     10,453    12.03894    2.393286          0         20
+HighGrade~87 |     10,354    12.13299    2.418933          0         20
+-------------+---------------------------------------------------------
+HighGrad~h88 |     10,270    12.18637    2.464023          0         20
+HighGrade~89 |     10,518     12.2084    2.501063          0         20
+HighGrad~h90 |     10,353     12.2465    2.499091          0         20
+HighGrade~91 |      9,215    12.34791    2.503104          0         20
+HighGrad~h92 |      9,202    12.38481    2.525608          0         20
+-------------+---------------------------------------------------------
+HighGrade~93 |      9,247    12.39916    2.531816          0         20
+HighGrad~h94 |      9,144    12.44434    2.526717          0         20
+HighGrad~h96 |      8,938    12.51622    2.545725          0         20
+HighGrad~h98 |      8,831    12.57106    2.570526          0         20
+HighGra~h100 |      8,484    12.62364    2.564304          0         20
+-------------+---------------------------------------------------------
+HighGra~h102 |      8,141    12.64845    2.630614          0         20
+HighGra~h104 |      8,252    12.68408    2.690593          0         20
+HomeEmo_P~86 |      4,512    48.33777    29.64192          0         99
+HomeEmo_P~88 |      5,364    48.07998    29.26548          0         98
+HomeEmo_P~90 |      4,754    47.29239    29.78891          0         95
+-------------+---------------------------------------------------------
+HomeEmo_P~92 |      5,344    47.67908    29.73573          0         95
+HomeEmo_P~94 |      5,128    47.64996    29.66317          0         95
+HomeEmo_P~96 |      4,499    47.85152     29.3501          0         94
+HomeEmo_P~98 |      3,941    47.53895    29.34669          0         92
+HomeEmo_P~00 |      2,809    49.42328    29.27107          0         97
+-------------+---------------------------------------------------------
+HomeEmo_P~02 |      2,618    47.94118     29.7966          0         94
+HomeEmo_P~04 |      1,952    48.34887    29.66498          0         94
+HomeEmo_S~86 |      4,512    980.5213    156.6714        367       1336
+HomeEmo_S~88 |      5,364    979.4344    157.8458        284       1303
+HomeEmo_S~90 |      4,754    974.9203    160.7605        352       1250
+-------------+---------------------------------------------------------
+HomeEmo_S~92 |      5,344    975.4038    160.7384        316       1243
+HomeEmo_S~94 |      5,128    976.1706    161.0624        184       1243
+HomeEmo_S~96 |      4,499    975.2185     162.923         70       1226
+HomeEmo_S~98 |      3,941    973.9383    163.0047        217       1212
+HomeEmo_S~00 |      2,809    983.5817     160.017         65       1277
+-------------+---------------------------------------------------------
+HomeEmo_S~02 |      2,618    977.5138    161.5872        282       1233
+HomeEmo_S~04 |      1,952    980.5236    159.3887        411       1233
+HowLongLim90 |        420    50.49762    46.10254          0         95
+HowLong_HS88 |        874    2.902746    .8752243          1          5
+HowLong_HS90 |        357    2.733894    .9144899          1          5
+-------------+---------------------------------------------------------
+HowLong_HS92 |        413    2.835351    .8516174          1          5
+HowLong_HS94 |        356    2.898876     .901266          1          5
+HowLong_HS96 |        235    2.889362    .8846348          1          5
+HowLong_HS98 |        192    2.895833    .9376272          1          5
+HowLong_~100 |         84     2.77381     1.02206          1          5
+-------------+---------------------------------------------------------
+HowLong_~102 |         92    2.934783    .9699252          1          5
+HowLong_~104 |         68    3.117647    .8556993          1          5
+     Hyper86 |         12           3           0          3          3
+     Hyper88 |         16           3           0          3          3
+     Hyper90 |         30           3           0          3          3
+-------------+---------------------------------------------------------
+     Hyper92 |         42           3           0          3          3
+     Hyper94 |         47           3           0          3          3
+     Hyper96 |        658    .2234043    .7881925          0          3
+     Hyper98 |        525    .0971429    .2964346          0          1
+    Hyper100 |        443    .0744921    .2628669          0          1
+-------------+---------------------------------------------------------
+Illness_1s~r |     10,093    .5521649     .497296          0          1
+  InSchool94 |        979    .8028601    .3980422          0          1
+  InSchool96 |      1,669    .7375674    .4400884          0          1
+  InSchool98 |      2,139    .7461431    .4353185          0          1
+ InSchool100 |      3,025    .5676033    .4954906          0          1
+-------------+---------------------------------------------------------
+ InSchool102 |      4,238    .5420009    .4982916          0          1
+ InSchool104 |      5,022    .5057746    .5000164          0          1
+ Insurance86 |      4,949    .5393009    .4985034          0          1
+ Insurance88 |      6,216    .6053732    .4888097          0          1
+ Insurance90 |      5,757    .6727462    .4692515          0          1
+-------------+---------------------------------------------------------
+ Insurance92 |      6,457    .6614527    .4732523          0          1
+ Insurance94 |      6,030    .7359867    .4408429          0          1
+ Insurance96 |      5,388    .7782108    .4154886          0          1
+ Insurance98 |      4,882    .7937321    .4046665          0          1
+Insurance100 |      3,379     .847588    .3594729          0          1
+-------------+---------------------------------------------------------
+Insurance102 |      3,222    .8261949    .3790006          0          1
+Insurance104 |      2,501    .8292683    .3763496          0          1
+        LD86 |         17           1           0          1          1
+        LD88 |         38           1           0          1          1
+        LD90 |         50           1           0          1          1
+-------------+---------------------------------------------------------
+        LD92 |         80           1           0          1          1
+        LD94 |         97           1           0          1          1
+        LD96 |        658    .1580547    .3650698          0          1
+        LD98 |        525    .1790476    .3837578          0          1
+       LD100 |        443    .1873589    .3906405          0          1
+-------------+---------------------------------------------------------
+Last_Dent~86 |      3,792    5.010285    2.116409          1          7
+Last_Dent~88 |      5,187    4.699055    2.080951          1          7
+Last_Dent~90 |      4,892    4.448692    2.047889          1          7
+Last_Dent~92 |      5,734    4.286188    2.002413          0          7
+Last_Dent~94 |      5,448    4.124082    2.005963          1          7
+-------------+---------------------------------------------------------
+Last_Dent~96 |      4,938     3.90158    1.975758          1          7
+Last_Dent~98 |      4,513    3.722801    1.871671          1          7
+Last_Den~100 |      3,147    3.585955    1.869341          1          7
+Last_Den~102 |      3,100    3.339032    1.771441          1          7
+Last_Den~104 |      2,433    3.260584    1.672729          1          7
+-------------+---------------------------------------------------------
+Last_Doct~86 |      4,906    3.222381    1.612918          1          7
+Last_Doct~88 |      6,180    3.309061    1.640526          1          7
+Last_Doct~90 |      5,695    3.301844    1.651182          1          7
+Last_Doct~92 |      6,428    3.472775    1.699277          1         40
+Last_Doct~94 |      6,022    3.516772    1.622883          1          7
+-------------+---------------------------------------------------------
+Last_Doct~96 |      5,385    3.516249    1.599291          1          7
+Last_Doct~98 |      4,866    3.515208    1.540236          1          7
+Last_Doc~100 |      3,369    3.399525    1.558274          1          7
+Last_Doc~102 |      3,217    3.443581    1.498757          1          7
+Last_Doc~104 |      2,494    3.485565    1.437141          1          7
+-------------+---------------------------------------------------------
+   Married94 |        979    .1419816    .9427717          0          7
+   Married96 |      1,669    .0281606     .226638          0          6
+   Married98 |      2,139    .0215054    .1689271          0          3
+  Married100 |      3,024    .0998677    .3874648          0          6
+  Married102 |      4,238    .1236432    .4131457          0          3
+-------------+---------------------------------------------------------
+  Married104 |      5,024    .1799363    .5426903          0          6
+  Medicaid86 |      4,927    .2786686    .4483896          0          1
+  Medicaid88 |      6,216     .231982    .4221315          0          1
+  Medicaid90 |      5,750    .2398261    .4270143          0          1
+  Medicaid92 |      6,465     .253983    .4353217          0          1
+-------------+---------------------------------------------------------
+  Medicaid94 |      6,035     .236454    .4249393          0          1
+  Medicaid96 |      5,391    .2133185    .4096887          0          1
+  Medicaid98 |      4,884    .1848894    .3882476          0          1
+ Medicaid100 |      3,381    .1591245    .3658463          0          1
+ Medicaid102 |      3,222    .1945996    .3959536          0          1
+-------------+---------------------------------------------------------
+ Medicaid104 |      2,501    .2007197    .4006189          0          1
+Moth_Alc_B~h |     10,254    .4271504    .4946886          0          1
+Moth_~_1_Avg |      3,889    34.97943    11.93555          0        168
+Moth_~_1_Qtr |      3,923    304.7693    218.2739          0       1300
+Moth_HrsWo.. |      4,397    387.7364    197.5295          0       2184
+-------------+---------------------------------------------------------
+Moth_~_2_Avg |      4,099    34.68383    12.42257          0        168
+Moth_~_2_Qtr |      4,131    395.7717    204.5975          0       2184
+Moth_HrsWo.. |      4,943    420.9381    190.1019          0       2184
+Moth_H~3_Avg |      4,322    34.40491    12.40139          0        168
+Moth_H~3_Qtr |      4,358    406.3134    198.8119          0       2184
+-------------+---------------------------------------------------------
+Moth_HrsWo.. |      5,416    424.6793    188.2628          0       2184
+Moth_H~4_Avg |      4,445    34.43307    12.23774          0        168
+Moth_H~4_Qtr |      4,484    411.2542    196.4687          0       2184
+Moth_HrsWo.. |      5,435    432.2664    186.7043          0       1365
+Moth_H~5_Avg |      4,629    34.40549    12.38325          0        168
+-------------+---------------------------------------------------------
+Moth_H~5_Qtr |      4,664    409.6572    199.4426          0       2184
+Moth_H~6_Avg |      4,761    34.55388    12.36055          0        168
+Moth_H~6_Qtr |      4,799    411.2021    199.5396          0       2184
+Moth_H~7_Avg |      4,782    34.65454    12.50023          0        168
+Moth_H~7_Qtr |      4,821     416.284     196.887          0       1430
+-------------+---------------------------------------------------------
+Moth_H~8_Avg |      4,857    34.64443    12.32412          0        120
+Moth_H~8_Qtr |      4,892    414.4928    196.0082          0       1365
+Moth_H~9_Avg |      4,914     34.5641    12.30399          0        120
+Moth_H~9_Qtr |      4,955    412.9972    195.8944          0       1560
+Moth_H~0_Avg |      4,948    34.73565     12.2982          0        120
+-------------+---------------------------------------------------------
+Moth_H~0_Qtr |      4,995    415.3103     197.141          0       1560
+Moth_~11_Avg |      4,916    34.93186    12.26435          0        120
+Moth_~11_Qtr |      4,964    418.8241    194.8376          0       1560
+Moth_~12_Avg |      4,972    35.03781    12.14592          0        120
+Moth_~12_Qtr |      5,012    421.0962    193.2475          0       1560
+-------------+---------------------------------------------------------
+Moth_HrsWo~4 |      5,124    35.08919    12.34881          0        120
+Moth_HrsWo~5 |      5,223    35.28049    12.06205          0        105
+M~1_Avg_Be~e |      4,373    35.08255    11.81042          0        168
+M~2_Avg_Be~e |      4,905     35.1474    11.58192          0        168
+M~3_Avg_Be~e |      5,374    35.37681     11.3624          0        168
+-------------+---------------------------------------------------------
+M~4_Avg_Be~e |      5,398    35.58948    11.21093          0         98
+Moth_Smoke~h |     10,245    .3278673    .4694591          0          1
+Moth_Weigh~e |      9,960    31.43032    14.87697          0        199
+    MotherID |     11,428    6018.262    3451.431          2      12675
+     Nerve86 |          5          14           0         14         14
+-------------+---------------------------------------------------------
+     Nerve88 |          2          14           0         14         14
+     Nerve90 |          2          14           0         14         14
+     Nerve92 |          3          14           0         14         14
+     Nerve94 |          4          14           0         14         14
+     Nerve96 |        658    .0638298    .9438733          0         14
+-------------+---------------------------------------------------------
+     Nerve98 |        525    .0057143    .0754485          0          1
+    Nerve100 |        443     .006772    .0821058          0          1
+ NetFamInc78 |      8,953    39598.88    33606.97          0   211502.8
+ NetFamInc79 |      8,906    40299.94    33689.82          0   190502.5
+ NetFamInc80 |      8,857    36911.82    30876.62          0   168002.2
+-------------+---------------------------------------------------------
+ NetFamInc81 |      8,806    36725.19     30905.1          0     152252
+ NetFamInc82 |      9,010    34455.28     28328.4          0   142501.9
+ NetFamInc83 |      8,973    34586.41    27551.28          0   138751.8
+ NetFamInc84 |      8,868     35212.2    29384.46          0   178001.8
+ NetFamInc85 |      8,890    36468.26    29712.34          0   171001.7
+-------------+---------------------------------------------------------
+ NetFamInc86 |      8,709    39291.42    31777.28          0   168001.7
+ NetFamInc87 |      8,612    40081.84    31109.81          0   162001.6
+ NetFamInc88 |      8,844    70624.12    220817.7          0    1639044
+ NetFamInc89 |      8,755    44481.35    37357.79          0   217474.2
+ NetFamInc90 |      8,092     45389.5    39983.88          0     225325
+-------------+---------------------------------------------------------
+ NetFamInc91 |      7,798    71390.47    180183.5          0    1132755
+ NetFamInc92 |      7,549    46742.16     40477.4          0   209727.1
+ NetFamInc93 |      7,299    48766.05    45676.25          0   241195.9
+ NetFamInc95 |      7,179       64573    146476.2          0    1178661
+ NetFamInc97 |      7,257    50243.94    46793.02          0   280994.4
+-------------+---------------------------------------------------------
+ NetFamInc99 |      6,892    54724.59    57278.41          0   366088.8
+NetFamInc101 |      6,775    58836.69    63018.26          0   406288.5
+NetFamInc103 |      7,115     60178.4     64182.8          0     408473
+NumDocVisi~r |      5,576    3.193329    5.016307          1         96
+    NumIll86 |      2,019    2.475978    3.336258          0         50
+-------------+---------------------------------------------------------
+    NumIll88 |      2,333    2.297042    2.569209          0         36
+    NumIll90 |      2,143    2.526832    3.117389          1         50
+    NumIll92 |      2,569    2.170884    2.563218          0         50
+    NumIll94 |      2,051     2.33057      2.4391          1         36
+    NumIll96 |      1,763    2.277368    2.234972          1         36
+-------------+---------------------------------------------------------
+    NumIll98 |      1,464    2.311475    2.504673          1         35
+   NumIll100 |      1,000       2.286    2.444623          1         36
+   NumIll102 |      1,018    2.230845    2.290322          1         30
+   NumIll104 |        760    2.094737    2.366649          1         36
+NumberSibs79 |     11,410    4.263628    2.821027          0         29
+-------------+---------------------------------------------------------
+  OtherLim86 |         53          15           0         15         15
+  OtherLim88 |        109          95           0         95         95
+  OtherLim90 |          0
+  OtherLim92 |        121    94.26446    8.090909          6         95
+  OtherLim94 |        110          95           0         95         95
+-------------+---------------------------------------------------------
+  OtherLim96 |        658    19.63526    38.49751          0         95
+  OtherLim98 |        525    .2380952    .4263239          0          1
+ OtherLim100 |        443    .2731377    .4460747          0          1
+  Oversample |        584           1           0          1          1
+PIATMT_Pct86 |      1,880    45.22979    25.94833          1         99
+-------------+---------------------------------------------------------
+PIATMT_Pct88 |      3,230    44.13313    25.77143          0         99
+PIATMT_Pct90 |      3,315    45.04827    26.20291          1         99
+PIATMT_Pct92 |      3,970    45.95844    26.58473          1         99
+PIATMT_Pct94 |      3,944    47.92115    26.88982          1         99
+PIATMT_Pct96 |      3,679    51.43626     27.4811          1         99
+-------------+---------------------------------------------------------
+PIATMT_Pct98 |      3,387    52.25303    27.67852          1         99
+PIATMT_P~100 |      2,462    55.66288    28.22573          1         99
+PIATMT_P~102 |      2,487    57.46522    28.38293          1         99
+PIATMT_P~104 |      2,024    58.45208    28.87566          1         99
+PIATMT_Raw86 |      1,885    25.20902    13.66329          0         73
+-------------+---------------------------------------------------------
+PIATMT_Raw88 |      3,232    29.24598     15.3373          0         83
+PIATMT_Raw90 |      3,321    32.77115    16.13229          0         83
+PIATMT_Raw92 |      3,996    36.66817    16.59798          0         82
+PIATMT_Raw94 |      3,946    36.56792    16.43941          0         84
+PIATMT_Raw96 |      3,679    38.74015    16.75012          0         84
+-------------+---------------------------------------------------------
+PIATMT_Raw98 |      3,387    39.83407    16.69233          0         84
+PIATMT_R~100 |      2,462    42.25548    16.75243          0         84
+PIATMT_R~102 |      2,487    44.37756    16.47671          0         83
+PIATMT_R~104 |      2,024     45.5163    16.68876          1         84
+PIATRC_Pct86 |      1,311     58.8627    26.70848          1         99
+-------------+---------------------------------------------------------
+PIATRC_Pct88 |      2,467    52.72639    27.40665          1         99
+PIATRC_Pct90 |      2,668    100.6016    14.56268         65        135
+PIATRC_Pct92 |      3,317    51.02201    27.93643          1         99
+PIATRC_Pct94 |      3,349    48.76112    27.24726          1         99
+PIATRC_Pct96 |      2,989    50.83774    27.26201          1         99
+-------------+---------------------------------------------------------
+PIATRC_Pct98 |      2,938    51.46426    27.72435          1         99
+PIATRC_P~100 |      2,191    53.74715    28.58348          1         99
+PIATRC_P~102 |      2,281    53.80798    27.51652          1         99
+PIATRC_P~104 |      1,907     54.5097    27.88154          1         99
+PIATRC_Raw86 |      1,725    26.82493    13.49192          0         84
+-------------+---------------------------------------------------------
+PIATRC_Raw88 |      3,100    30.17645     15.3577          1         84
+PIATRC_Raw90 |      2,668    51.57871    28.55139          1         99
+PIATRC_Raw92 |      3,772    37.93266    16.82021          3         83
+PIATRC_Raw94 |      3,858      35.676    15.65451          0         82
+PIATRC_Raw96 |      3,624    37.48151    15.90066          0         81
+-------------+---------------------------------------------------------
+PIATRC_Raw98 |      3,355    38.61461    15.83114          0         81
+PIATRC_R~100 |      2,451    41.00041    15.95574          0         82
+PIATRC_R~102 |      2,469    42.07088     15.1968          0         81
+PIATRC_R~104 |      2,037     43.2052    15.57752          1         81
+PIATRR_Pct86 |      1,873    56.85478    26.66349          1         99
+-------------+---------------------------------------------------------
+PIATRR_Pct88 |      3,209    52.89748    27.49472          0         99
+PIATRR_Pct90 |      3,267    52.89379    28.02598          1         99
+PIATRR_Pct92 |      3,914    54.15023    28.30652          1         99
+PIATRR_Pct94 |      3,933    54.61124    28.62288          1         99
+PIATRR_Pct96 |      3,669    57.21668     28.4856          1         99
+-------------+---------------------------------------------------------
+PIATRR_Pct98 |      3,386    58.14176    28.70057          1         99
+PIATRR_P~100 |      2,464    60.99878    28.86389          1         99
+PIATRR_P~102 |      2,491    63.20996    28.32751          1         99
+PIATRR_P~104 |      2,040    63.39706     28.0524          1         99
+PIATRR_Raw86 |      1,876    28.31983    14.58686          0         82
+-------------+---------------------------------------------------------
+PIATRR_Raw88 |      3,210    32.20093    16.90253          0         84
+PIATRR_Raw90 |      3,270    35.85719    18.17378          1         84
+PIATRR_Raw92 |      3,936    40.48323    19.15524          3         84
+PIATRR_Raw94 |      3,934    39.60447    18.76576          1         84
+PIATRR_Raw96 |      3,669    41.55846    18.85168          0         84
+-------------+---------------------------------------------------------
+PIATRR_Raw98 |      3,386    43.04814    18.71431          0         84
+PIATRR_R~100 |      2,464     45.6737    18.76465          0         84
+PIATRR_R~102 |      2,491    48.13729    18.65455          0         84
+PIATRR_R~104 |      2,040     49.0598    18.47415          1         84
+   PPVTAge86 |      4,965    55.10957    36.40576          0        184
+-------------+---------------------------------------------------------
+   PPVTAge88 |      6,266    68.81376    43.55597          0        224
+   PPVTAge90 |      4,058    103.6658    37.31318         48        233
+   PPVTAge92 |      5,302    108.0886    44.91674         36        260
+   PPVTAge94 |      6,107     91.3347    47.96581          0        179
+   PPVTAge96 |      5,430    95.82689    47.18938          0        177
+-------------+---------------------------------------------------------
+   PPVTAge98 |      4,923     100.557    46.64135          0        176
+  PPVTAge100 |      3,392    104.1751    47.13153          1        177
+  PPVTAge102 |      3,190    112.5219     43.6797          0        178
+  PPVTAge104 |      2,456    117.9902    41.12395          0        178
+  PPVT_Pct86 |      2,798    30.05575    28.01868          0         99
+-------------+---------------------------------------------------------
+  PPVT_Pct88 |      2,116    29.22353    27.91911          0         99
+  PPVT_Pct90 |      1,155    29.54199    27.41697          0         99
+  PPVT_Pct92 |      4,758     33.1921    29.30335          0         99
+  PPVT_Pct94 |      1,825    34.06192    29.12129          0         99
+  PPVT_Pct96 |      2,452    37.89356    30.37035          1         99
+-------------+---------------------------------------------------------
+  PPVT_Pct98 |      1,271    39.04406    31.18277          1         99
+ PPVT_Pct100 |        944    44.37818    31.12207          1         99
+ PPVT_Pct102 |        879    44.56883    31.95155          1         99
+ PPVT_Pct104 |        831     44.3911    33.11397          1         99
+  PPVT_Raw86 |      2,798    58.15976    30.05646          0        149
+-------------+---------------------------------------------------------
+  PPVT_Raw88 |      2,116    55.45416    35.10879          0        165
+  PPVT_Raw90 |      1,155    73.15238    35.12907          0        165
+  PPVT_Raw92 |      4,758    83.37873    34.35468          1        171
+  PPVT_Raw94 |      1,825    69.92438    37.91264          0        164
+  PPVT_Raw96 |      2,453    92.96005    29.13961          0        166
+-------------+---------------------------------------------------------
+  PPVT_Raw98 |      1,271    84.33517    34.90199          0        156
+ PPVT_Raw100 |        944    89.54555    34.01908          1        159
+ PPVT_Raw102 |        879    90.34357    34.52694          0        164
+ PPVT_Raw104 |        831    92.09146    34.92527          0        167
+PPVT_Stand86 |      2,798    86.32881     20.8387          0        147
+-------------+---------------------------------------------------------
+PPVT_Stand88 |      2,116    85.77221     21.2817          0        159
+PPVT_Stand90 |      1,155    85.82684    20.31761          0        156
+ Probation94 |        148    .2837838     .452364          0          1
+ Probation96 |        247    .3319838    .4718814          0          1
+ Probation98 |        324    .3240741    .4687518          0          1
+-------------+---------------------------------------------------------
+Probation100 |      3,014    .0776377     .267645          0          1
+Probation102 |      4,230    .0777778    .2678532          0          1
+Probation104 |      4,999    .0680136    .2517944          0          1
+  Race_Child |     11,428    2.338729    .7800893          1          3
+    Repeat88 |        876    .3287671    .4700335          0          1
+-------------+---------------------------------------------------------
+    Repeat90 |      1,278    .2989045    .4579571          0          1
+    Repeat92 |      2,072    .2524131    .4345018          0          1
+   Repeat100 |      2,671    .0393111    .1943705          0          1
+   Repeat102 |      2,722    .0400441    .1960987          0          1
+   Repeat104 |      2,214    .0451671    .2077174          0          1
+-------------+---------------------------------------------------------
+  Repeat_194 |         66           1           0          1          1
+  Repeat_196 |        160           1           0          1          1
+  Repeat_198 |      3,520    1.971023    .1677665          1          2
+  Repeat_294 |         48           1           0          1          1
+  Repeat_296 |         84           1           0          1          1
+-------------+---------------------------------------------------------
+  Repeat_298 |      3,520    1.982955    .1294591          1          2
+  Repeat_394 |         43           1           0          1          1
+  Repeat_396 |         62           1           0          1          1
+  Repeat_398 |      3,520    1.988068    .1085947          1          2
+  Repeat_494 |         42           1           0          1          1
+-------------+---------------------------------------------------------
+  Repeat_496 |         45           1           0          1          1
+  Repeat_498 |      3,520     1.99375    .0788207          1          2
+  Repeat_594 |         34           1           0          1          1
+  Repeat_596 |         33           1           0          1          1
+  Repeat_598 |      3,520    1.993466    .0805807          1          2
+-------------+---------------------------------------------------------
+  Repeat_694 |         40           1           0          1          1
+  Repeat_696 |         41           1           0          1          1
+  Repeat_698 |      3,520    1.994318    .0751741          1          2
+  Repeat_794 |          9           1           0          1          1
+  Repeat_796 |         18           1           0          1          1
+-------------+---------------------------------------------------------
+  Repeat_798 |      3,520    1.994886    .0713368          1          2
+  Repeat_894 |          1           1           .          1          1
+  Repeat_896 |         14           1           0          1          1
+  Repeat_898 |      3,520    1.998295    .0412568          1          2
+  Repeat_996 |          5           1           0          1          1
+-------------+---------------------------------------------------------
+  Repeat_998 |      3,520    1.999716     .016855          1          2
+ Repeat_1096 |          1           1           .          1          1
+ Repeat_1196 |          1           1           .          1          1
+ Repeat_1296 |          2           1           0          1          1
+  Repeat_K94 |        121           1           0          1          1
+-------------+---------------------------------------------------------
+  Repeat_K96 |        213           1           0          1          1
+  Repeat_K98 |      3,520    1.999148    .0291854          1          2
+Repeat_No~94 |        175           1           0          1          1
+Repeat_No~96 |      3,088           1           0          1          1
+RepeatNone98 |      3,520    1.121307    .3265299          1          2
+-------------+---------------------------------------------------------
+ Repeat_YA94 |        977    .3490276    .4769068          0          1
+ Repeat_YA96 |      1,557    .3114965     .463254          0          1
+Repeat_YA100 |      1,857    .1330102    .3396773          0          1
+Repeat_YA102 |      2,280     .120614    .3257496          0          1
+Repeat_YA104 |      2,338    .0829769    .2759063          0          1
+-------------+---------------------------------------------------------
+Repeat_~1100 |        103    2.650485    2.412015          0          8
+Repeat_~1102 |        109    3.229358    2.689599          0         12
+Repeat_~1104 |        100        2.41    2.055272          0          8
+Repeat_~2100 |          8       1.625     1.30247          0          3
+Repeat_~2102 |          6    1.833333    2.401388          0          6
+-------------+---------------------------------------------------------
+Repeat_~2104 |          6    2.666667    3.204164          0          7
+Repeat_~3100 |          2           4    4.242641          1          7
+Repeat_~3104 |          1           3           .          3          3
+Repeat_~4100 |          2          .5    .7071068          0          1
+Repeat_~4104 |          1           3           .          3          3
+-------------+---------------------------------------------------------
+Repeat_~5104 |          1           3           .          3          3
+       Res79 |      1,330    .9789474    1.056497          0          8
+       Res80 |      1,767    1.018676    1.029129          0          8
+       Res81 |      2,363     1.05036    1.030239          0          8
+       Res82 |      3,052    1.246723    1.129042          1         11
+-------------+---------------------------------------------------------
+       Res83 |      3,784    1.075581    .9996541          0          8
+       Res84 |      4,448    1.226169    1.079947          1         11
+       Res85 |      4,652    1.204213    1.013349          1         11
+       Res86 |      5,245    1.216778    1.059673          1         11
+       Res87 |      5,856    1.194331    .9874405          1         11
+-------------+---------------------------------------------------------
+       Res88 |      6,527    1.217558    1.068671          1         11
+       Res89 |      7,150    1.208951    1.020823          1         11
+       Res90 |      7,652    1.228176    1.070975          1         11
+       Res91 |      6,866    1.222255    1.065573          1         11
+       Res92 |      7,229    1.273897    1.237873          1         11
+-------------+---------------------------------------------------------
+       Res94 |      7,850    1.375414    1.547097          1         11
+       Res96 |      8,112    1.578526     2.03774          1         11
+       Res98 |      8,379     1.93973    2.792723          1         12
+      Res100 |      8,304     2.56262    3.587777          1         12
+      Res102 |      8,067    3.232057    4.187545          1         12
+-------------+---------------------------------------------------------
+      Res104 |      8,231    3.904264     4.61595          1         12
+     Resid94 |        980    18.87857    2.978738          1         22
+     Resid96 |      1,672    18.79067    2.970303          1         22
+     Resid98 |      2,139    18.82515    3.131407          1         22
+    Resid100 |      3,025    17.70479    4.131173          1         22
+-------------+---------------------------------------------------------
+    Resid102 |      4,238    17.01038    4.563856          1         23
+    Resid104 |      5,024    16.69904    4.460925          1         23
+      Resp86 |         18           5           0          5          5
+      Resp88 |         18           5           0          5          5
+      Resp90 |         26           5           0          5          5
+-------------+---------------------------------------------------------
+      Resp92 |         20        4.85    .3663475          4          5
+      Resp94 |         32           5           0          5          5
+      Resp96 |        658    .3343465    1.249928          0          5
+      Resp98 |        525    .0742857    .2624854          0          1
+     Resp100 |        443    .0361174    .1867931          0          1
+-------------+---------------------------------------------------------
+    Retard86 |          9          12           0         12         12
+    Retard88 |         10          12           0         12         12
+    Retard90 |         16          12           0         12         12
+    Retard92 |         18          12           0         12         12
+    Retard94 |         12          12           0         12         12
+-------------+---------------------------------------------------------
+    Retard96 |        658     .218845    1.606913          0         12
+    Retard98 |        525    .0380952    .1916088          0          1
+   Retard100 |        443    .0361174    .1867931          0          1
+    SampleID |     11,428    9.515488    4.130795          5         20
+ Sentenced94 |        139    .1942446    .3970489          0          1
+-------------+---------------------------------------------------------
+ Sentenced96 |        238     .197479    .3989358          0          1
+ Sentenced98 |        308    .1883117    .3915971          0          1
+Sentenced100 |        209     .507177    .5011488          0          1
+Sentenced102 |        318    .4748428    .5001537          0          1
+Sentenced104 |        278    .4172662    .4939969          0          1
+-------------+---------------------------------------------------------
+   Sex_Child |     11,423    1.489801    .4999179          1          2
+    Speech86 |         23           6           0          6          6
+    Speech88 |         14           6           0          6          6
+    Speech90 |         25           6           0          6          6
+    Speech92 |         37           6           0          6          6
+-------------+---------------------------------------------------------
+    Speech94 |         35           6           0          6          6
+    Speech96 |        658    .2279635    1.147962          0          6
+    Speech98 |        525    .0647619      .24634          0          1
+   Speech100 |        443    .0564334    .2310176          0          1
+  W_YA_Rev00 |     11,428    115444.4    238317.9          0    1548843
+-------------+---------------------------------------------------------
+  W_YA_Rev02 |     11,428    145636.8    256093.8          0    1551078
+  W_YA_Rev04 |     11,428    174911.9      273697          0    1680334
+  W_YA_Rev94 |     11,428    31400.19    133873.3          0    1761863
+  W_YA_Rev96 |     11,428    56643.13      176244          0    1466485
+  W_YA_Rev98 |     11,428    72058.18      197445          0    1800358
+-------------+---------------------------------------------------------
+     Wages94 |        900    777.7444    2396.239          0      32000
+     Wages96 |      1,500    1609.419    7346.249          0     250000
+     Wages98 |      1,896    1367.107    3447.204          0      50000
+    Wages100 |      2,558    5288.545    10001.86          0     175000
+    Wages102 |      3,560    7002.217    10836.64          0     102333
+-------------+---------------------------------------------------------
+    Wages104 |      4,227     9057.38    14724.54          0     174300
+Wages_Est100 |        378    1.531746    .8079825          1          4
+Wages_Est102 |        636    1.449686    .7606358          1          5
+Wages_Est104 |        676     1.58432    .9190928          1          7
+Weeks_Bega~h |     10,587    1007.691    2874.075          0       9999
+-------------+---------------------------------------------------------
+Weeks_Stop~h |     10,587    1225.877    3208.658          0       9999
+   Weight102 |      3,102    1356.627    684.2398          0       5184
+   Weight104 |      2,442    1421.215    665.4191        144       4336
+Weight_Mom81 |     11,041    129.1784    22.36449         70        300
+Weight_Rev86 |     11,428    125213.4    206797.2          0    1300423
+-------------+---------------------------------------------------------
+Weight_Rev88 |     11,428    162381.2    223555.1          0    1252259
+Weight_Rev90 |     11,428    182035.7    247783.5          0    1440287
+Weight_Rev92 |     11,428    208268.1    259022.8          0    1636016
+Weight_Rev94 |     11,428    199339.4    256478.9          0    1356129
+Weight_Rev96 |     11,428      188825    264363.8          0    1441960
+-------------+---------------------------------------------------------
+Weight_Rev98 |     11,428    175090.6    262049.5          0    1316777
+Weight_R~100 |     11,428    152885.8    274034.1          0    1556469
+   YA_Age104 |      5,024     20.1461    3.942973         14         33
+  YA_Educ104 |      5,633    11.21374    2.145732          2         20
+   YA_Elig94 |     10,037    .1106904    .3137641          0          1
+-------------+---------------------------------------------------------
+   YA_Elig96 |     10,501    .1887439    .3913237          0          1
+   YA_Elig98 |     10,911    .2221611    .4157179          0          1
+  YA_Elig100 |     11,203      .32527    .4684966          0          1
+  YA_Elig102 |     11,338    .4493738    .4974523          0          1
+  YA_Elig104 |     11,428    .5468148    .5457902          0          3
+-------------+---------------------------------------------------------
+YA_Interv~94 |     10,037    .0976387    .2968403          0          1
+YA_Interv~96 |     10,501    .1592229    .3659013          0          1
+YA_Interv~98 |     10,911    .1964073    .3972983          0          1
+YA_Inter~100 |     11,203     .270017    .4439881          0          1
+YA_Inter~102 |     11,338    .3737873    .4838295          0          1
+-------------+---------------------------------------------------------
+YA_Inter~104 |     11,428     .439622    .4963628          0          1
+     YA_LD94 |         82    2.146341    6.568014          0         22
+     YA_LD96 |        161    1.776398    6.012461          0         22
+     YA_LD98 |        161    .0621118    .2421116          0          1
+    YA_LD100 |        268    .0783582    .2692372          0          1
+-------------+---------------------------------------------------------
+    YA_LD102 |        503    .0576541    .2333202          0          1
+    YA_LD104 |        581    .0516351    .2214799          0          1
+YA_LastInt~w |      5,634    2003.627    1.289854       1994       2004
+  YA_NumKids |      5,634    .4416045    .8823262          0          8
+    YA_Res94 |        979    18.62308    3.303638          1         22
+-------------+---------------------------------------------------------
+    YA_Res96 |      1,671    18.28366    3.494525          1         22
+    YA_Res98 |      2,139    18.30295    3.629838          1         22
+   YA_Res100 |      3,025    17.70545    4.126816          1         22
+   YA_Res102 |      4,238    17.02832    4.570911          1         23
+   YA_Res104 |      5,024    16.70203    4.456013          1         23
+-------------+---------------------------------------------------------
+        hhID |     11,428    6012.644    3446.441          2      12675
+   Age2_Mo86 |      5,621    53.14926    37.40346          0        183
+   Age2_Mo88 |      6,910     69.0932      43.546          0        212
+   Age2_Mo90 |      8,063    82.10393    49.28512          0        237
+   Age2_Mo92 |      8,882    96.91151    54.14019          0        259
+-------------+---------------------------------------------------------
+   Age2_Mo94 |      9,568    113.3596    59.23613          0        282
+   Age2_Mo96 |     10,058    130.3474    63.59629          0        304
+   Age2_Mo98 |     10,485    148.4178    68.14611          0        328
+  Age2_Mo100 |     10,746    170.2509    71.82422          0        356
+  Age2_Mo102 |     10,890    191.1957    73.85339          0        377
+-------------+---------------------------------------------------------
+  Age2_Mo104 |     10,953    213.0386    75.02791          0        399
+    Age_Yr86 |      5,254    4.140464    3.050696          0         15
+   Age2_Yr86 |      5,621    3.987369    3.109454          0         15
+    Age_Yr88 |      6,563    5.294073    3.621334          0         17
+   Age2_Yr88 |      6,910    5.313314    3.625561          0         17
+-------------+---------------------------------------------------------
+    Age_Yr90 |      7,671    6.380915    4.117425          0         19
+   Age2_Yr90 |      8,063    6.392906    4.106817          0         19
+    Age_Yr92 |      7,246     7.42037    4.569403          0         21
+   Age2_Yr92 |      8,882    7.622382     4.51206          0         21
+    Age_Yr94 |      7,858    8.685034    5.024358          0         23
+-------------+---------------------------------------------------------
+   Age2_Yr94 |      9,568     8.99143    4.933437          0         23
+    Age_Yr96 |      8,120    10.01564     5.41559          0         25
+   Age2_Yr96 |     10,058    10.40306    5.299014          0         25
+    Age_Yr98 |      8,391    11.43857    5.781955          0         27
+   Age2_Yr98 |     10,485     11.9073    5.679688          0         27
+-------------+---------------------------------------------------------
+   Age_Yr100 |      8,321    13.22642     6.16741          0         29
+  Age2_Yr100 |     10,746     13.7292    5.984624          0         29
+   Age_Yr102 |      8,098    14.93443    6.345612          0         31
+  Age2_Yr102 |     10,890    15.47365    6.159234          0         31
+   Age_Yr104 |      8,266    16.69659    6.457147          0         33
+-------------+---------------------------------------------------------
+  Age2_Yr104 |     10,953    17.29325    6.256889          0         33
+    Elig1_86 |     11,386    .1428948    .3499809          0          1
+    Elig2_86 |     11,386    .1471105    .3542316          0          1
+    Elig1_88 |     11,373    .2455816    .4304505          0          1
+    Elig2_88 |     11,373    .2607931    .4390866          0          1
+-------------+---------------------------------------------------------
+    Elig1_90 |     11,370    .3581354    .4794733          0          1
+    Elig2_90 |     11,370    .3769569    .4846453          0          1
+    Deceased |     11,470     .013252    .1143568          0          1
+      HS1_90 |      4,072    .2156189    .4113015          0          1
+     Pre1_90 |      4,072    .2691552    .4435752          0          1
+-------------+---------------------------------------------------------
+    None1_90 |      4,172    .5028763    .5000517          0          1
+      HS2_90 |      4,286    .2069529    .4051687          0          1
+     Pre2_90 |      4,286     .259916    .4386394          0          1
+    None2_90 |      4,386    .5209758    .4996168          0          1
+      HS3_90 |      4,293    .1903098    .3925912          0          1
+-------------+---------------------------------------------------------
+     Pre3_90 |      4,286    .2510499    .4336678          0          1
+    None3_90 |      4,386    .5455996    .4979731          0          1
+  Num1Elig86 |      2,780    1.920863    .9897986          1          7
+  Num2Elig86 |      2,861    1.922754    .9940256          1          7
+  Num3Elig86 |      2,861    1.922754    .9940256          1          7
+-------------+---------------------------------------------------------
+  Num1Elig88 |      4,169    2.141281    1.086449          1          7
+  Num2Elig88 |      4,399    2.139805    1.075696          1          7
+  Num3Elig88 |      4,399    2.139805    1.075696          1          7
+  Num1Elig90 |      5,466    2.306623    1.121698          1          7
+  Num2Elig90 |      5,760    2.305556    1.126503          1          7
+-------------+---------------------------------------------------------
+  Num3Elig90 |      5,760    2.305556    1.126503          1          7
+    HS1_FE90 |      1,858    .2621098    .4399004          0          1
+   Pre1_FE90 |      1,858    .2744887    .4463764          0          1
+  None1_FE90 |      1,858    .4634015     .498793          0          1
+    HS2_FE90 |      1,899    .2601369    .4388247          0          1
+-------------+---------------------------------------------------------
+   Pre2_FE90 |      1,899    .2748815    .4465721          0          1
+  None2_FE90 |      1,899    .4649816    .4989036          0          1
+    HS3_FE90 |      1,898    .2576396    .4374497          0          1
+   Pre3_FE90 |      1,898    .2639621    .4408951          0          1
+  None3_FE90 |      1,898    .4783983    .4996648          0          1
+-------------+---------------------------------------------------------
+        PreK |      4,286    2.326178    .7961405          1          3
+     PreK_FE |      1,899    2.204845    .8267509          1          3
+    Hispanic |     11,470    .1915432    .3935326          0          1
+       Black |     11,470    .2757629    .4469174          0          1
+       White |     11,470    .5290323    .4991782          0          1
+-------------+---------------------------------------------------------
+    NonBlack |     11,470    .7205754     .448736          0          1
+     PermInc |     11,428    44965.45    46919.52          0    1639044
+   lnPermInc |     11,426    10.45331    .7053187   4.394449   14.30962
+ PermInc_std |     11,428    3.82e-10           1  -.9583526   33.97475
+      MothED |     11,419    12.60662    2.664601          0         20
+-------------+---------------------------------------------------------
+  MomDropout |     11,419    .2462562    .4308484          0          1
+       MomHS |     11,419    .3447763    .4753161          0          1
+ MomSomeColl |     11,419    .4089675    .4916648          0          1
+     AgeAFQT |     10,831     35.1414    26.82405   .8315796   122.4247
+ AgeAFQT_std |     10,831    6.02e-10           1  -1.279069   3.253918
+-------------+---------------------------------------------------------
+ impAFQT_std |     11,470    .0004602    .9794088  -1.279069   3.253918
+    Res_0to3 |      7,734     .916602    .2765007          0          1
+       Ear86 |          0
+     Blood86 |          0
+  Epilepsy86 |          0
+-------------+---------------------------------------------------------
+       Brain |         38           1           0          1          1
+Brain_before |          8           1           0          1          1
+       Hyper |         48           1           0          1          1
+Hyper_before |          6           1           0          1          1
+      Asthma |        262           1           0          1          1
+-------------+---------------------------------------------------------
+Asthma_bef~e |        114           1           0          1          1
+        Resp |         59           1           0          1          1
+ Resp_before |         29           1           0          1          1
+      Speech |         53           1           0          1          1
+Speech_bef~e |         22           1           0          1          1
+-------------+---------------------------------------------------------
+        Deaf |         39           1           0          1          1
+ Deaf_before |         13           1           0          1          1
+       Blind |         26           1           0          1          1
+Blind_before |         10           1           0          1          1
+     Disturb |         26           1           0          1          1
+-------------+---------------------------------------------------------
+Disturb_be~e |          4           1           0          1          1
+     Allergy |        109           1           0          1          1
+Allergy_be~e |         50           1           0          1          1
+    Crippled |         80           1           0          1          1
+Crippled_b~e |         53           1           0          1          1
+-------------+---------------------------------------------------------
+      Retard |         27           1           0          1          1
+Retard_bef~e |          7           1           0          1          1
+       Heart |         45           1           0          1          1
+Heart_before |         27           1           0          1          1
+       Nerve |          8           1           0          1          1
+-------------+---------------------------------------------------------
+Nerve_before |          1           1           .          1          1
+         Ear |         52           1           0          1          1
+  Ear_before |         33           1           0          1          1
+       Blood |         11           1           0          1          1
+Blood_before |          5           1           0          1          1
+-------------+---------------------------------------------------------
+    Epilepsy |         40           1           0          1          1
+Epilepsy_b~e |         20           1           0          1          1
+    OtherLim |        151           1           0          1          1
+OtherLim_b~e |         72           1           0          1          1
+HealthCond~e |      7,734    .0465477    .2106817          0          1
+-------------+---------------------------------------------------------
+      Low_BW |     10,264     .085834    .2801324          0          1
+     VLow_BW |     10,264    .0132502    .1143499          0          1
+      Attrit |      5,634    .0488108    .2154914          0          1
+  Sample90_1 |      1,232           1           0          1          1
+  Sample90_2 |      1,251           1           0          1          1
+-------------+---------------------------------------------------------
+  Sample90_3 |      1,252           1           0          1          1
+       Three |     11,470    .0345248    .1825809          0          1
+    NotThree |     11,470    .0647777    .2461439          0          1
+        HS_3 |     11,470    .1612031    .5145825          0          2
+   PreK_FE_3 |      1,899    2.131648    .9632575          0          3
+-------------+---------------------------------------------------------
+ Income_0to3 |      7,509    38139.78    48866.57          0   928259.3
+ LogInc_0to3 |      7,485     10.2188    .8287498   2.828496   13.74107
+      IncAt3 |      4,942    36291.22    73643.41          0    1639044
+   LogIncAt3 |      4,881    10.11064    .9135654   3.387774   14.30962
+   FirstBorn |     11,426    .4294591    .4950206          0          1
+-------------+---------------------------------------------------------
+        Male |     11,470    .5081081     .499956          0          1
+     PPVTat3 |        984    23.64431    13.61659          0        101
+HOME_Pct_0~3 |      4,248    46.85534    28.26714          0         98
+Moth_HrsWo~h |      6,227    30.29446    13.53657          0      150.5
+Moth_~d_0to3 |      7,677    361.6551    170.3666          0   1875.429
+-------------+---------------------------------------------------------
+Moth_~g_0to3 |      7,651    33.61031    11.71668          0        168
+Moth_HrsWo~1 |      5,484    34.04191    12.19487          0        168
+Father_HH_~3 |      5,992    .7152175    .4180139          0          1
+   GMom_0to3 |      7,778    .1622632    .3106187          0          1
+RelCare_1_Yr |      9,843    .2008534     .400659          0          1
+-------------+---------------------------------------------------------
+NonRelC~1_Yr |      9,843    .1850046     .388321          0          1
+MomCare_1_Yr |      9,843     .614142     .486822          0          1
+RelCare_2_Yr |      9,573    .1997284     .399817          0          1
+NonRelC~2_Yr |      9,573    .2385877    .4262424          0          1
+MomCare_2_Yr |      9,573    .5616839    .4962064          0          1
+-------------+---------------------------------------------------------
+RelCare_3_Yr |      9,142    .1890177    .3915441          0          1
+NonRelC~3_Yr |      9,142    .2931525    .4552327          0          1
+MomCare_3_Yr |      9,142    .5178298    .4997093          0          1
+     RelCare |     10,254    .1943957    .3321371          0          1
+  NonRelCare |     10,254    .2355504    .3591713          0          1
+-------------+---------------------------------------------------------
+     MomCare |     10,254     .570054    .4277712          0          1
+Alc_BefBirth |     11,470    .0790759    .2698689          0          1
+ Doctor_0to3 |      4,418    .5595292    .4964998          0          1
+Dentist_0to3 |      2,535      .22643    .4186031          0          1
+   Premature |     10,138    .2289406    .4201717          0          1
+-------------+---------------------------------------------------------
+Insurance_~3 |      4,438    .6457864    .4656746          0          1
+Medicaid_0~3 |      4,437    .2079108    .3946647          0          1
+       logBW |     10,261    4.731882    .2310702          0   5.590987
+PreTreatIn~x |      1,251    4.11e-10           1   -3.55885   2.569825
+Res_0to3_imp |      1,251    .8975941    .2948779          0          1
+-------------+---------------------------------------------------------
+Res_0to3_m~s |      1,251    .0511591    .2204102          0          1
+HealthCond~p |      1,251    .0343027     .177968          0          1
+HealthCond~s |      1,251    .0511591    .2204102          0          1
+ VLow_BW_imp |      1,251     .016406    .1254596          0          1
+VLow_BW_miss |      1,251     .019984    .1400011          0          1
+-------------+---------------------------------------------------------
+   logBW_imp |      1,251    4.706863    .2512574   1.791759   5.187386
+  logBW_miss |      1,251     .019984    .1400011          0          1
+LogInc_0to~p |      1,251    10.01621    .7074158   6.652863    13.2994
+LogInc_0to~s |      1,251    .0519584    .2220319          0          1
+LogIncAt3_~p |      1,251    9.967999    .7885442   5.414989   14.30962
+-------------+---------------------------------------------------------
+LogIncAt3_~s |      1,251     .206235     .404763          0          1
+FirstBorn_~p |      1,251    .4188649    .4935705          0          1
+FirstBorn_~s |      1,251           0           0          0          0
+ PPVTat3_imp |      1,251    19.28841    7.483967          0        101
+PPVTat3_miss |      1,251    .8441247    .3628821          0          1
+-------------+---------------------------------------------------------
+HOME_Pct_0~p |      1,251    38.17545     17.2309          0         96
+HOME_Pct_0~s |      1,251    .6586731    .4743445          0          1
+Moth_H~h_imp |      1,251    25.99899    6.516778          0   48.07692
+Moth_HrsWo.. |      1,251    .6986411    .4590318          0          1
+Moth_H~3_imp |      1,251    32.76058    7.637441          1         65
+-------------+---------------------------------------------------------
+Moth_~3_miss |      1,251     .461231    .4986941          0          1
+Moth_H~1_imp |      1,251    32.66545    6.526179          1         90
+Moth_~1_miss |      1,251    .6970424    .4597208          0          1
+Father_HH_~p |      1,251    .6179798    .3558514          0          1
+Father_HH_~s |      1,251    .4092726    .4918963          0          1
+-------------+---------------------------------------------------------
+GMom_0to3_~p |      1,251    .2131541    .3202373          0          1
+GMom_0to3_~s |      1,251     .048761    .2154541          0          1
+ MomCare_imp |      1,251    .6735716    .4008087          0          1
+MomCare_miss |      1,251    .0055955    .0746235          0          1
+ RelCare_imp |      1,251     .181121    .3245529          0          1
+-------------+---------------------------------------------------------
+RelCare_miss |      1,251    .0055955    .0746235          0          1
+NonRelCare~p |      1,251    .1453075    .2857923          0          1
+NonRelCare~s |      1,251    .0055955    .0746235          0          1
+Moth_Smoke~p |      1,251    .3780579    .4733148          0          1
+Moth_Smoke~s |      1,251    .0519584    .2220319          0          1
+-------------+---------------------------------------------------------
+Alc_BefBir~p |      1,251    .0799361    .2713026          0          1
+Alc_BefBir~s |      1,251           0           0          0          0
+Breastfed_~p |      1,251     .322853    .4647495          0          1
+Breastfed_~s |      1,251    .0135891     .115824          0          1
+Doctor_0to~p |      1,251    .3865874    .2882382          0          1
+-------------+---------------------------------------------------------
+Doctor_0to~s |      1,251     .656275    .4751406          0          1
+Dentist_0t~p |      1,251    .3098397    .2672736          0          1
+Dentist_0t~s |      1,251    .6794564    .4668722          0          1
+Moth_Weigh~p |      1,251    29.97768    14.64303          0        107
+Moth_Weigh~s |      1,251    .0839329     .277398          0          1
+-------------+---------------------------------------------------------
+Illness_1s~p |      1,251    .5156554    .4847595          0          1
+Illness_1s~s |      1,251    .0607514    .2389693          0          1
+Premature_~p |      1,251    .2097173     .394559          0          1
+Premature_~s |      1,251    .0607514    .2389693          0          1
+Insurance_~p |      1,251    .4924415    .2949899          0          1
+-------------+---------------------------------------------------------
+Insurance_~s |      1,251    .6554756     .475403          0          1
+Medicaid_0~p |      1,251     .333412    .2880603          0          1
+Medicaid_0~s |      1,251    .6554756     .475403          0          1
+AgeTest_Mo86 |      4,965    55.10957    36.40576          0        184
+AgeTest_Yr86 |      4,965    4.136153    3.040949          0         15
+-------------+---------------------------------------------------------
+AgeTest_Mo88 |      6,266    68.81376    43.55597          0        224
+AgeTest_Yr88 |      6,266    5.293489    3.627317          0         18
+AgeTest_Mo90 |      4,058    103.6658    37.31318         48        233
+AgeTest_Yr90 |      4,058    8.200099    3.099752          4         19
+AgeTest_Mo92 |      5,302    108.0886    44.91674         36        260
+-------------+---------------------------------------------------------
+AgeTest_Yr92 |      5,302     8.56375    3.739084          3         21
+AgeTest_Mo94 |      6,107     91.3347    47.96581          0        179
+AgeTest_Yr94 |      6,107    7.160963     4.00153          0         14
+AgeTest_Mo96 |      5,430    95.82689    47.18938          0        177
+AgeTest_Yr96 |      5,430     7.52744    3.938405          0         14
+-------------+---------------------------------------------------------
+AgeTest_Mo98 |      4,923     100.557    46.64135          0        176
+AgeTest_Yr98 |      4,923    7.919155    3.898025          0         14
+AgeTest_M~00 |      3,392    104.1751    47.13153          1        177
+AgeTest_Y~00 |      3,392     8.23467    3.934408          0         14
+AgeTest_M~02 |      3,190    112.5219     43.6797          0        178
+-------------+---------------------------------------------------------
+AgeTest_Y~02 |      3,190    8.922257    3.653918          0         14
+AgeTest_M~04 |      2,456    117.9902    41.12395          0        178
+AgeTest_Y~04 |      2,456    9.382329    3.439201          0         14
+  Test_Pct86 |      2,989    39.02721    25.71706          0         99
+  Test_Pct88 |      4,345    42.20372    25.75065          0         99
+-------------+---------------------------------------------------------
+  Test_Pct90 |      3,762    45.57788    25.22616          0         99
+  Test_Pct92 |      4,822    42.37426    25.02949          0         99
+  Test_Pct94 |      4,659    47.24701    25.87252          0         99
+  Test_Pct96 |      3,947    49.90267    25.30397          1         99
+  Test_Pct98 |      3,627    52.17627    25.70926          1         99
+-------------+---------------------------------------------------------
+ Test_Pct100 |      2,620     55.7584    25.68279          1         99
+ Test_Pct102 |      2,641    57.81951    25.33708          1         99
+ Test_Pct104 |      2,150    57.92287      26.265          1         99
+     NonMale |     11,470    .4918919     .499956          0          1
+     lowAFQT |     11,470    .1642546    .3705226          0          1
+-------------+---------------------------------------------------------
+  NonlowAFQT |     11,470    .8357454    .3705226          0          1
+     HS_Male |      1,899    .1384939    .3455087          0          1
+    Pre_Male |      1,899    .1421801    .3493267          0          1
+  HS_NonMale |      1,899     .121643    .3269591          0          1
+ Pre_NonMale |      1,899    .1327014    .3393411          0          1
+-------------+---------------------------------------------------------
+    HS_Black |      1,899    .1205898    .3257357          0          1
+   Pre_Black |      1,899    .0858346    .2801935          0          1
+ HS_NonBlack |      1,899    .1395471    .3466078          0          1
+Pre_NonBlack |      1,899    .1890469     .391649          0          1
+  HS_lowAFQT |      1,899    .0842549    .2778428          0          1
+-------------+---------------------------------------------------------
+ Pre_lowAFQT |      1,899    .0542391    .2265485          0          1
+HS_NonlowA~T |      1,899     .175882    .3808201          0          1
+Pre_Nonlow~T |      1,899    .2206424     .414789          0          1
+    Repeat94 |        372    .9139785    .2807734          0          1
+    Repeat96 |      3,659    .1574201    .3642461          0          1
+-------------+---------------------------------------------------------
+    Repeat98 |      3,372    .0827402      .27553          0          1
+      Repeat |      8,239    .2138609    .4100547          0          1
+          LD |     10,103    .0328615    .1782829          0          1
+   LD_before |         44           1           0          1          1
+      HSGrad |      5,633    .5394994    .4984816          0          1
+-------------+---------------------------------------------------------
+         GED |      3,063     1.14365    .3581623          1          3
+  HSGrad_GED |      5,251    .5059989    .5000116          0          1
+HighGradeAtt |      2,624    12.11014    3.349349          0         95
+ someCollAtt |      5,633    .2391266     .426588          0          1
+       Wages |      4,730    8947.311    14697.09          0     175000
+-------------+---------------------------------------------------------
+ PosWages104 |      4,227    .7418973    .4376425          0          1
+ PosWages102 |      3,560    .7300562    .4439927          0          1
+ PosWages100 |      2,558    .6157154    .4865208          0          1
+  PosWages98 |      1,896     .410865    .4921206          0          1
+  PosWages96 |      1,500    .4146667    .4928287          0          1
+-------------+---------------------------------------------------------
+  PosWages94 |        900    .3233333    .4680088          0          1
+    PosWages |      5,486    .6799125    .4665524          0          1
+    InSchool |      5,631    .5013319    .5000426          0          1
+        Idle |      5,631    .1179187    .3225404          0          1
+   Convicted |      5,601    .1569363    .3637731          0          1
+-------------+---------------------------------------------------------
+   Probation |      5,516    .1488397    .3559627          0          1
+   Sentenced |      1,092    .3543956    .4785489          0          1
+    Prison94 |        980    .0091837    .0954391          0          1
+    Prison96 |      1,672    .0047847    .0690264          0          1
+    Prison98 |      2,139    .0070126    .0834668          0          1
+-------------+---------------------------------------------------------
+   Prison100 |      3,025    .0082645    .0905476          0          1
+   Prison102 |      4,238    .0141576    .1181545          0          1
+   Prison104 |      5,024    .0019904    .0445744          0          1
+      Prison |      5,634    .0170394    .1294297          0          1
+       Crime |      5,634    .2016329    .4012551          0          1
+-------------+---------------------------------------------------------
+    TeenPreg |      5,634    .1595669    .3662364          0          1
+HealthReport |      5,632    3.850953    .7740142          1          5
+  PoorHealth |      5,632     .092152    .2892661          0          1
+      LD_std |      1,247   -1.22e-08           1  -4.333426   .2305792
+  Repeat_std |      1,169   -1.40e-08           1  -1.339819   .7457312
+-------------+---------------------------------------------------------
+  HSGrad_std |      1,251   -9.43e-09           1  -1.861474   .5367793
+someCollAt~d |      1,251   -1.63e-08           1  -.6966778   1.434236
+    Idle_std |      1,251   -1.27e-08           1  -2.015323   .4958017
+   Crime_std |      1,251   -1.88e-08           1  -1.588057   .6291968
+  Prison_std |      1,251   -2.25e-09           1  -5.807153   .1720638
+-------------+---------------------------------------------------------
+TeenPreg_std |      1,251   -2.01e-08           1  -1.607004   .6217786
+PoorHealth~d |      1,251   -1.17e-08           1  -2.948003   .3389415
+HSGrad_GED~d |      1,100   -1.08e-09           1  -1.710529    .584083
+   Sum_Adult |      1,251   -1.15e-08           1   -3.30338   1.250491
+  Noncog_std |      1,251   -2.91e-09           1  -5.832442   .9967217
+-------------+---------------------------------------------------------
+ HSGrad_wage |      1,251    2.12e-08    1.438692  -2.678088   .7722601
+someCollAt~e |      1,251   -1.40e-08    .8527176  -.5940694   1.222999
+   Idle_wage |      1,251   -6.10e-08    2.509967  -5.058395   1.244446
+  Crime_wage |      1,251   -3.34e-10    .6031837  -.9578903   .3795213
+TeenPreg_w~e |      1,251    2.86e-09    .2349061  -.3774949   .1460596
+-------------+---------------------------------------------------------
+PoorHealth~e |      1,251   -3.25e-09    .3605335  -1.062854   .1221998
+    Sum_wage |      1,251   -9.35e-09           1  -2.805927   1.016703
+_IAge2_Yr~_1 |     10,953    .0041085    .0639684          0          1
+_IAge2_Yr~_2 |     10,953    .0047476    .0687419          0          1
+_IAge2_Yr~_3 |     10,953    .0071213    .0840908          0          1
+-------------+---------------------------------------------------------
+_IAge2_Yr~_4 |     10,953    .0117776    .1078886          0          1
+_IAge2_Yr~_5 |     10,953    .0118689    .1083009          0          1
+_IAge2_Yr~_6 |     10,953    .0169816    .1292083          0          1
+_IAge2_Yr~_7 |     10,953    .0194467    .1380952          0          1
+_IAge2_Yr~_8 |     10,953    .0203597    .1412339          0          1
+-------------+---------------------------------------------------------
+_IAge2_Yr~_9 |     10,953    .0257464    .1583849          0          1
+_IAge2_Yr~10 |     10,953    .0296722    .1696892          0          1
+_IAge2_Yr~11 |     10,953    .0342372    .1818462          0          1
+_IAge2_Yr~12 |     10,953     .034785    .1832432          0          1
+_IAge2_Yr~13 |     10,953    .0404455    .1970108          0          1
+-------------+---------------------------------------------------------
+_IAge2_Yr~14 |     10,953    .0540491    .2261249          0          1
+_IAge2_Yr~15 |     10,953      .05341      .22486          0          1
+_IAge2_Yr~16 |     10,953    .0571533    .2321459          0          1
+_IAge2_Yr~17 |     10,953    .0558751    .2296909          0          1
+_IAge2_Yr~18 |     10,953    .0587054    .2350832          0          1
+-------------+---------------------------------------------------------
+_IAge2_Yr~19 |     10,953    .0614444    .2401546          0          1
+_IAge2_Yr~20 |     10,953    .0580663    .2338794          0          1
+_IAge2_Yr~21 |     10,953    .0598923     .237298          0          1
+_IAge2_Yr~22 |     10,953    .0574272    .2326677          0          1
+_IAge2_Yr~23 |     10,953    .0524057     .222854          0          1
+-------------+---------------------------------------------------------
+_IAge2_Yr~24 |     10,953    .0468365    .2112981          0          1
+_IAge2_Yr~25 |     10,953    .0334155    .1797272          0          1
+_IAge2_Yr~26 |     10,953    .0308591    .1729438          0          1
+_IAge2_Yr~27 |     10,953    .0218205    .1461038          0          1
+_IAge2_Yr~28 |     10,953    .0176207    .1315744          0          1
+-------------+---------------------------------------------------------
+_IAge2_Yr~29 |     10,953    .0104081    .1014925          0          1
+_IAge2_Yr~30 |     10,953    .0047476    .0687419          0          1
+_IAge2_Yr~31 |     10,953    .0019173    .0437468          0          1
+_IAge2_Yr~32 |     10,953    .0005478    .0233997          0          1
+_IAge2_Yr~33 |     10,953    .0000913    .0095551          0          1
+
+. save "C:\Users\Tessie Krishna\Documents\GitHub\eco395m_team_awesome\final project\data\Deming's data.dta"
+file C:\Users\Tessie Krishna\Documents\GitHub\eco395m_team_awesome\final project\data\Deming's data.dta saved
+=======
 . save "C:\Dropbox\Classes\ECO 395M Data mining and statisical learning\eco395m_team_awesome\final project\data\final_data.dta"
 file C:\Dropbox\Classes\ECO 395M Data mining and statisical learning\eco395m_team_awesome\final project\data\final_data.dta saved
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
 
-. exit, clear

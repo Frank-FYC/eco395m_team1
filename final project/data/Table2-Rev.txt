@@ -610,6 +610,8 @@ None	-0.018
 	[0.026]
 P-value of Diff	0.663
 Sample Size	1251
+<<<<<<< HEAD
+=======
 	Attrit
 	b/se
 HS2_FE90	0.022
@@ -916,3 +918,4 @@ None	-0.018
 	[0.026]
 P-value of Diff	0.663
 Sample Size	1251
+>>>>>>> e9d7c717a4601c4cdd011b7bf6f1b66a745d763d
