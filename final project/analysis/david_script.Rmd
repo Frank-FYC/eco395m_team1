@@ -70,7 +70,15 @@ df$Race = factor(data_Deming_2008_0217$Race_Child, levels=1:4,
 ## Creating Male variable
 Male <-select(data_Deming_2008_0217, Sex_Child == 1) ## Not sure why this does not work
                  
-                                     
+## Master dataset with the following variables:
+  #Headstart
+  #SibDiff 
+  #Mother ID
+  #Race
+  #Male
+  #Hispanic
+  #Black
+                                    
 ```
  
 ON$Entertainment <- ifelse(ON$data_channel_is_entertainment== 1,1,0)
@@ -82,6 +90,12 @@ ON$Tech <- ifelse(ON$data_channel_is_tech == 1, 6, 0)
 ON$Category_num = ON$Entertainment + ON$Social + ON$World + ON$Lifestyle + ON$Business + ON$Tech
 ON$Category = factor(ON$Category_num, levels=0:6, 
                     labels=c("Misc","Entertainment","Social","World", "Lifestyle","Business", "Tech" ))
+
+
+
+```{r}
+
+
 
 ```
 
