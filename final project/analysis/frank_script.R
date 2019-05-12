@@ -1,8 +1,8 @@
 library(tidyverse)
-library(foreign)
+library(readstata13)
 library(matrixStats)
 
-df <- read.dta("../data/data_Deming_2008_0217.dta")
+df <- read.dta13("../data/final_data.dta")
 
 varlist <- c("BirthWeight")
 
@@ -72,19 +72,60 @@ compscorefunc <- function(year,column1,column2,age1){
 df2 <- as.data.frame(subset(df,calc_age(1986,df$DOB_Yr_Child)>=7 & calc_age(1986,df$DOB_Yr_Child)<=10))
 df2_result <- cbind(df2[,"ChildID"],df2[,"PIATMT_Raw86"])
 
-test <- rbind(
-  compscorefunc(1986,"ChildID","PIATMT_Raw86","5"),
-compscorefunc(1988,"ChildID","PIATMT_Raw88","5"),
-compscorefunc(1990,"ChildID","PIATMT_Raw90","5"),
-compscorefunc(1992,"ChildID","PIATMT_Raw92","5"),
-compscorefunc(1994,"ChildID","PIATMT_Raw94","5"),
-compscorefunc(1996,"ChildID","PIATMT_Raw96","5"),
-compscorefunc(1998,"ChildID","PIATMT_Raw98","5"),
-compscorefunc(2002,"ChildID","PIATMT_Raw100","5"),
-compscorefunc(2002,"ChildID","PIATMT_Raw102","5"),
-compscorefunc(2004,"ChildID","PIATMT_Raw104","5"))
+compscoreage6 <- rbind(
+  compscorefunc(1986,"ChildID","Test_Pct86","6"),
+  compscorefunc(1988,"ChildID","Test_Pct88","6"),
+  compscorefunc(1990,"ChildID","Test_Pct90","6"),
+  compscorefunc(1992,"ChildID","Test_Pct92","6"),
+  compscorefunc(1994,"ChildID","Test_Pct94","6"),
+  compscorefunc(1996,"ChildID","Test_Pct96","6"),
+  compscorefunc(1998,"ChildID","Test_Pct98","6"),
+  compscorefunc(2002,"ChildID","Test_Pct100","6"),
+  compscorefunc(2002,"ChildID","Test_Pct102","6"),
+  compscorefunc(2004,"ChildID","Test_Pct104","6")
+)
 
-#math and reading scores of child at year 5to6
+compscoreage11 <- rbind(
+  compscorefunc(1986,"ChildID","Test_Pct86","11"),
+  compscorefunc(1988,"ChildID","Test_Pct88","11"),
+  compscorefunc(1990,"ChildID","Test_Pct90","11"),
+  compscorefunc(1992,"ChildID","Test_Pct92","11"),
+  compscorefunc(1994,"ChildID","Test_Pct94","11"),
+  compscorefunc(1996,"ChildID","Test_Pct96","11"),
+  compscorefunc(1998,"ChildID","Test_Pct98","11"),
+  compscorefunc(2002,"ChildID","Test_Pct100","11"),
+  compscorefunc(2002,"ChildID","Test_Pct102","11"),
+  compscorefunc(2004,"ChildID","Test_Pct104","11")
+)
+
+compscoreage14 <- rbind(
+  compscorefunc(1986,"ChildID","Test_Pct86","14"),
+  compscorefunc(1988,"ChildID","Test_Pct88","14"),
+  compscorefunc(1990,"ChildID","Test_Pct90","14"),
+  compscorefunc(1992,"ChildID","Test_Pct92","14"),
+  compscorefunc(1994,"ChildID","Test_Pct94","14"),
+  compscorefunc(1996,"ChildID","Test_Pct96","14"),
+  compscorefunc(1998,"ChildID","Test_Pct98","14"),
+  compscorefunc(2002,"ChildID","Test_Pct100","14"),
+  compscorefunc(2002,"ChildID","Test_Pct102","14"),
+  compscorefunc(2004,"ChildID","Test_Pct104","14")
+)
+
+compscoreage18 <- rbind(
+  compscorefunc(1986,"ChildID","Test_Pct86","18"),
+  compscorefunc(1988,"ChildID","Test_Pct88","18"),
+  compscorefunc(1990,"ChildID","Test_Pct90","18"),
+  compscorefunc(1992,"ChildID","Test_Pct92","18"),
+  compscorefunc(1994,"ChildID","Test_Pct94","18"),
+  compscorefunc(1996,"ChildID","Test_Pct96","18"),
+  compscorefunc(1998,"ChildID","Test_Pct98","18"),
+  compscorefunc(2002,"ChildID","Test_Pct100","18"),
+  compscorefunc(2002,"ChildID","Test_Pct102","18"),
+  compscorefunc(2004,"ChildID","Test_Pct104","18")
+)
+
+
+#math and reading scores of child at year 6
 
 math5to6_1986 <- df[df$childage1986>=5 & df$childage1986<=6,c("ChildID","PIATMT_Raw86")]
 names(math5to6_1986)[2] <- "mathscore5to6"
