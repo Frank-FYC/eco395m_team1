@@ -1,0 +1,173 @@
+---
+title: "Davids_R_Script"
+author: "David Fraire"
+date: "5/10/2019"
+output: html_document
+---
+Code for loading Library Packages
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(matrixStats)
+library(readr)
+library(FNN)
+library(tidyverse)
+library(datasets)
+library(dbplyr)
+library(dplyr)
+library(ggformula)
+library(ggplot2)
+library(ggstance)
+library(graphics)
+library(grDevices)
+library(haven)
+library(lattice)
+library(markdown)
+library(Matrix)
+library(methods)
+library(mosaic)
+library(mosaicData)
+library(pander)
+library(RColorBrewer)
+library(stringr)
+library(tidyr)
+library(tidyverse)
+
+```
+
+Research Question: Wha is the impact of Headstart in the short/long term effect on the participants, specifically the non-white children. 
+
+Personal hypothesis (guided by provided research papers): Yes, the short term effect on non-white children will be more pronounced in the short-term and long-term. There might be a more pronounced "fade-out" effect in the white chidren, but overall the "fade-out" will be seen on average across the particpants. 
+
+```{r}
+Deming2008 <- read_dta("Documents/GitHub/eco395m_team_awesome/final project/data/data_Deming_2008_0217.dta") ## Raw NLSY data w/ renamed variables by Deming
+
+nlsy_deming <- read_dta("Documents/GitHub/eco395m_team_awesome/final project/data/nlsy_deming.dta") ## Variable dataset of included regression for Deming paper
+
+Appendix_2008<- read_dta("Documents/GitHub/eco395m_team_awesome/final project/data/Appendix_2008_0217.dta") ## Appendix of full data
+
+View(Deming_2008)
+View(nsly_deming)
+View(Appendix_2008)
+
+
+## Creating datafram for Sibling diff. variable (difference 
+
+
+## Creating dataframe for Race spit into hispanic, black, white
+Race <- select(data_Deming_2008_0217, Hispanic, Black, White)
+
+## Creating dataframe for MotherID (will need to merge with additional column for further analysis)
+momID <- select(data_Deming_2008_0217, MotherID)
+
+## For turning factor variable into categorical race variable into 3 different columns
+data_Deming_2008_0217$Hispanic <- ifelse(data_Deming_2008_0217$Race_Child== 1,"Hispanic",0)
+data_Deming_2008_0217$Black <-ifelse(data_Deming_2008_0217$Race_Child == 2,"Black", 0)
+data_Deming_2008_0217$White<-ifelse(data_Deming_2008_0217$Race_Child ==3,"White", 0)
+
+df$Race = factor(data_Deming_2008_0217$Race_Child, levels=1:4, 
+                    labels=c("Hispanic","Black","White", "Other")
+## Creating Male variable
+Male <-select(data_Deming_2008_0217, Sex_Child == 1) ## Not sure why this does not work
+                 
+                                     
+```
+ 
+ON$Entertainment <- ifelse(ON$data_channel_is_entertainment== 1,1,0)
+ON$Social <- ifelse(ON$data_channel_is_socmed == 1, 2, 0)
+ON$World <- ifelse(ON$data_channel_is_world == 1, 3, 0)
+ON$Lifestyle <- ifelse(ON$data_channel_is_lifestyle == 1, 4, 0)
+ON$Business <- ifelse(ON$data_channel_is_bus == 1, 5, 0)
+ON$Tech <- ifelse(ON$data_channel_is_tech == 1, 6, 0)
+ON$Category_num = ON$Entertainment + ON$Social + ON$World + ON$Lifestyle + ON$Business + ON$Tech
+ON$Category = factor(ON$Category_num, levels=0:6, 
+                    labels=c("Misc","Entertainment","Social","World", "Lifestyle","Business", "Tech" ))
+
+```
+
+KNN modeling Code w/ rmse for accuracy check
+```{r}
+library(readr)
+library(psycho)
+library(tidyverse)
+library(dplyr)
+library(FNN)
+
+### DATASET <- DATASETNAME %>% psycho::standardize()
+rmse = function(y, yhat) {sqrt(mean((y - yhat)^2))}
+K = 100
+rmsevals = do(K)*{
+  n = nrow(SH)
+  n_train = round(0.8*n)  # round to nearest integer
+  n_test = n - n_train
+  train_cases = sample.int(n, n_train, replace=FALSE)
+  test_cases = setdiff(1:n, train_cases)
+  SH_train = SH[train_cases,]
+  SH_test = SH[test_cases,]
+  x_train = select(SH_train, c(-fireplaces, -sewer, -landValue, -heating, -fuel, -waterfront, -newConstruction, -centralAir))
+  y_train = select(SH_train, price)
+  x_test = select(SH_test, c(-fireplaces, -sewer, -landValue, -heating, -fuel, -waterfront, -newConstruction, -centralAir))
+  y_test = select(SH_test, price)
+  
+  knn5 = knn.reg(train=x_train, test = x_test, y = y_train, k=5)
+  ypred_knn5 = knn5$pred
+  knn20 = knn.reg(train=x_train, test = x_test, y = y_train, k=20)
+  ypred_knn20 = knn20$pred
+  knn50 = knn.reg(train=x_train, test = x_test, y = y_train, k=50)
+  ypred_knn50 = knn50$pred
+  knn70 = knn.reg(train=x_train, test = x_test, y = y_train, k=70)
+  ypred_knn70 = knn70$pred
+  knn100 = knn.reg(train=x_train, test = x_test, y = y_train, k=100)
+  ypred_knn100 = knn100$pred
+  knn200 = knn.reg(train=x_train, test = x_test, y = y_train, k=200)
+  ypred_knn200 = knn200$pred
+  knn300 = knn.reg(train=x_train, test = x_test, y = y_train, k=300)
+  ypred_knn300 = knn300$pred
+  c(rmse(SH_test$price, ypred_knn5), rmse(SH_test$price, ypred_knn20), rmse(SH_test$price, ypred_knn50), rmse(SH_test$price, ypred_knn70), rmse(SH_test$price, ypred_knn100), rmse(SH_test$price, ypred_knn200), rmse(SH_test$price, ypred_knn300))
+}
+colMeans(rmsevals)
+NN <- c(5, 20, 50, 70 ,100, 200, 300)
+plot(colMeans(rmsevals) ~ NN, main = "RMSE vs number of neighbors", ylab="RMSE", xlab = "Number of Neighbors", type = 'l')
+```
+
+RMSE
+```{r}
+rmse_vals.std = do(500)*{
+  n = nrow(__)
+  n_train = round(0.8*n)  # round to nearest integer
+  n_test = n - n_train
+  train_cases = sample.int(n, n_train, replace=FALSE)
+  test_cases = setdiff(1:n, train_cases)
+  df_train = __[train_cases,]
+  df_test = __[test_cases,]
+
+   bestmodelname <- lm(head_start ~  , data = "datasetname")
+ 
+ 
+  yhat_test3 = predict("bestmodelname", df_test)
+  rmse("testdataset"$, yhat_test3)
+}
+colMeans(rmse_vals.std)
+
+
+
+
+```
+
+Code for Preliminary Plots ()
+```{r}
+
+## Violin Plot of x on y
+ggplot(ON, aes(x=Category, y=shares))+
+  geom_violin(aes(fill=Category))+
+  labs(title="",
+       y="",
+       x="")+
+  ylim(0,10000) ## 
+  
+  
+  
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
