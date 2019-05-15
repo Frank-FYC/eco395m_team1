@@ -1,6 +1,8 @@
 library(tidyverse)
 library(readstata13)
-library(miceadds)
+library(clusterSEs)
+library(stargazer)
+library(effects)
 
 df <- read.csv("../data/finaldataset.csv")
 df2 <- read.dta13("../data/deming_final_data.dta")
@@ -148,6 +150,7 @@ part.table <- as.data.frame(cbind(part.age,part.grade,part.school,part.total,par
 
 names(part.table) <- c("Age","Grade","School Type","Total","PIAT Participants","Non-HeadStart","HeadStart")
 
+
 # Linear Models as the Baseline
 
 ## Primary to elementary
@@ -155,7 +158,7 @@ names(part.table) <- c("Age","Grade","School Type","Total","PIAT Participants","
 df$compscore6to11 <- rowMeans(df[,c("compscoreage6","compscoreage7","compscoreage8","compscoreage9","compscoreage10","compscoreage11")],
                               na.rm=TRUE)
 
-lm6to11 <- miceadds::lm.cluster(
+lm6to11 <- glm(
   data=df,
   formula=compscore6to11~
     Hispanic+Black+Male+
@@ -163,14 +166,13 @@ lm6to11 <- miceadds::lm.cluster(
     logBW+
     PoorHealth+Age_Moth_Birth+
     headstart+mentaldisability+
-    learndisability,
-  cluster="MotherID")
+    learndisability)
 
 ## Middle School
 
 df$compscore12to14 <- rowMeans(df[,c("compscoreage12","compscoreage13","compscoreage14")],na.rm=TRUE)
 
-lm12to14 <- miceadds::lm.cluster(
+lm12to14 <- glm(
   data=df,
   formula=compscore12to14~
     Hispanic+Black+Male+
@@ -178,8 +180,7 @@ lm12to14 <- miceadds::lm.cluster(
     logBW+Repeat+
     PoorHealth+Age_Moth_Birth+
     headstart+mentaldisability+
-    learndisability,
-  cluster="MotherID")
+    learndisability)
 
 
 ## High School
@@ -187,15 +188,17 @@ lm12to14 <- miceadds::lm.cluster(
 df$compscore15to18 <- rowMeans(df[,c("compscoreage15","compscoreage16","compscoreage17","compscoreage18")],na.rm=TRUE)
 
 #### Note that Father_HH_0to3 and PPVTat3 were removed becuase there were no values found at this level
-lm15to18 <- miceadds::lm.cluster(
+lm15to18 <- glm(
   data=df,
   formula=compscore15to18~
     Hispanic+Black+Male+
     FirstBorn+LogInc_0to3+MothED+
     logBW+Repeat+
     PoorHealth+Age_Moth_Birth+
-    headstart+mentaldisability,
-  cluster="MotherID")
+    headstart+mentaldisability)
 
-# Alternative Models
+# Table for linear models
+
+stargazer::stargazer(lm6to11,lm12to14,lm15to18, type = 'text',title="Composition Score based on Age",align=TRUE)
+
 
