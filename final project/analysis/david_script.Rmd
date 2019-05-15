@@ -29,15 +29,51 @@ library(mosaic)
 library(mosaicData)
 library(pander)
 library(RColorBrewer)
+library(stargazer)
 library(stringr)
 library(tidyr)
 library(tidyverse)
 
 ```
 
-Research Question: Wha is the impact of Headstart in the short/long term effect on the participants, specifically the non-white children. 
+#Effect of HS on PPVT Score
+``` {r}
+# Time-fixed effects modeling code
+
+final <- read.csv("~/Documents/GitHub/eco395m_team_awesome/final project/data/finaldataset.csv", header=TRUE)
+na.omit(final)
+View(final)
+
+
+lm1 <- lm(LogInc_0to3~somecollege, data=final)
+
+colnames(final)
+
+glm1 = glm(HSGrad~headstart+BirthWeight+hsgrad+FirstBorn  , data=final, family=binomial)
+glm2 = glm(HSGrad~ (.) - logBW - compscoreage6 - compscoreage7 - compscoreage8 - compscoreage9- compscoreage10- compscoreage11- compscoreage12- compscoreage13- compscoreage14- compscoreage15- compscoreage16- compscoreage17- compscoreage18, data=final, family=binomial)
+coef(lm1)
+coef(glm1)
+library(stargazer)
+install.packages("stargzer")
+stargazer::stargazer(glm1, type="text")
+
+Effect of HS on HSGrad
+Effect of HS on college enrollment
+```
+
+Research Question: What is the impact of Headstart in the short/long term effect on the participants, specifically the non-white children. 
 
 Personal hypothesis (guided by provided research papers): Yes, the short term effect on non-white children will be more pronounced in the short-term and long-term. There might be a more pronounced "fade-out" effect in the white chidren, but overall the "fade-out" will be seen on average across the particpants. 
+
+
+
+
+```{r}
+
+```
+
+
+
 
 ```{r}
 Deming2008 <- read_dta("Documents/GitHub/eco395m_team_awesome/final project/data/data_Deming_2008_0217.dta") ## Raw NLSY data w/ renamed variables by Deming
@@ -46,16 +82,19 @@ nlsy_deming <- read_dta("Documents/GitHub/eco395m_team_awesome/final project/dat
 
 Appendix_2008<- read_dta("Documents/GitHub/eco395m_team_awesome/final project/data/Appendix_2008_0217.dta") ## Appendix of full data
 
+final_data <- read_dta("Documents/GitHub/eco395m_team_awesome/final project/data/final_data.dta") ## Demings final dataset
+  
+
 View(Deming_2008)
 View(nsly_deming)
 View(Appendix_2008)
-
+View(final_data)
 
 ## Creating datafram for Sibling diff. variable (difference 
+sibdiff <- select((final_data, ifelse(final_data$MotherID)))
 
-
-## Creating dataframe for Race spit into hispanic, black, white
-Race <- select(data_Deming_2008_0217, Hispanic, Black, White)
+## Creating dataframe for Race split into hispanic, black, white
+Race <- select(final_data, Hispanic, Black, White)
 
 ## Creating dataframe for MotherID (will need to merge with additional column for further analysis)
 momID <- select(data_Deming_2008_0217, MotherID)
@@ -66,19 +105,10 @@ data_Deming_2008_0217$Black <-ifelse(data_Deming_2008_0217$Race_Child == 2,"Blac
 data_Deming_2008_0217$White<-ifelse(data_Deming_2008_0217$Race_Child ==3,"White", 0)
 
 df$Race = factor(data_Deming_2008_0217$Race_Child, levels=1:4, 
-                    labels=c("Hispanic","Black","White", "Other")
+                 labels=c("Hispanic","Black","White", "Other")
 ## Creating Male variable
-Male <-select(data_Deming_2008_0217, Sex_Child == 1) ## Not sure why this does not work
-                 
-## Master dataset with the following variables:
-  #Headstart
-  #SibDiff 
-  #Mother ID
-  #Race
-  #Male
-  #Hispanic
-  #Black
-                                    
+
+Male <-select(data_Deming_2008_0217, Sex_Child == 1) ## Not sure why this does not work                          
 ```
  
 ON$Entertainment <- ifelse(ON$data_channel_is_entertainment== 1,1,0)
