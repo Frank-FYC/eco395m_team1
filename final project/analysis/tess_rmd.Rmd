@@ -9,22 +9,12 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Head Start is a nationwide preschool program targeted at children who come from socio-economically disadvantaged backgrounds. The program, started in 1965 as part of the 'War on Poverty', is funded federally. Head Start has helped over 30 million children and their families in all 50 states, the District of Columbia, Puerto Rico and the U.S. territories. It provides comprehensive early childhood education, health, nutrition, and parent involvement services to these children and their families. It helps create healthy development in children ages three to five from low-income families. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The children are eligible based on the net family's income, although each local program includes other eligibility criteria, such as disabilities and services needed by other family members. Families must earn less than the federal poverty level. Families sometimes may qualify under a categorical eligibility category. Kids from higher income families or families experiencing emergency situations can be enrolled up to 10% of any funded program. While the Obama administration consistently increased the funding for the Head Start program, the Trump administration has cut down the budget allocated for education and training outlays by about 45.7% of which Head Start  is a part. This brought us to our research question: Is Head Start effective? Does it have any short-term and/or long-term benefit on its participants? Does this effect vary for different races? Many studies have been conducted during Head Start's multi-decade history to measure its effectiveness. There seems to be no academic or political consensus about the program's effects.
 
-```{r cars}
-summary(cars)
-```
+CCR Analytics published their results in 2014, of studying 49,467 children assessed in the 2012-2013 school year from 81 Head Start programs throughout California. The study was open to all California Head Start programs participants who used the DRDP-PS 2010 assessment tool. It found that providing two years of Head Start to a child increases the probability by at least 13% that the child will be ready for school. In 2009, David Deming evaluated the program, using the National Longitudinal Survey of Youth (NLSY 79 data). He compared siblings and found that those who attended Head Start showed stronger academic performance, more likely to graduate from high school and attend college, and less likely to suffer from poor health as an adult. We are using Deming's dataset as our primary dataset to explore the causality effects and see if we can get similar results or have something new waiting for us.
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+According to Lee, who collected data across sixty Head Start classrooms in 2007 and 2008, Head Start is associated with significant gains in test scores and significantly reduces the probability that a child will repeat a grade. In 2005, Barnett and Hustedt reviewed the literature and stated that although the reviews found were mixed, they were generally positive. According to the Administrative History of the Office of Economic Opportunity, children who finish the program and are sent to disadvantaged schools perform worse than their peers by as early as second grade. Only by isolating such children and sending them to better schools could gains be sustained. Time magazine's columnist Joe Klein, in 2011, called for the elimination of Head Start, citing an internal undisclosed report that the program is costly and makes a negligible impact on children's well-being. W. Steven Barnett, director of the National Institute for Early Education Research at Rutgers University, rebutted Klein stating that the weighing all of the evidence and not just that cited by partisans on one side or the other leads to the most accurate conclusion that Head Start produces modest benefits including some long-term gains for children.
