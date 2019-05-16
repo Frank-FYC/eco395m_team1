@@ -39,13 +39,7 @@ lm_few <- glm(repeatgrade ~  headstart+Hispanic+Black+MothED+learndisability, da
 
 lm_medium <- glm(repeatgrade ~  headstart+Hispanic+Black+headstart*Hispanic+headstart*Black+Male+MothED+learndisability, data=df, family = binomial)
 
-stargazer::stargazer(lm_one, lm_few, lm_medium, type="text", title="Logit regression of Repetition of grade on Headstart participation")
-
-odd_one <- exp(coef(lm_one))
-odd_few <- exp(coef(lm_few))
-odd_medium <- exp(coef(lm_medium))
-
-stargazer::stargazer(odd_one, odd_few, odd_medium, type="text", title="Odds Ratio of Repetition of grade on Headstart participation")
+stargazer::stargazer(lm_one, lm_few, lm_medium, apply.coef=exp, type="text", title="Odds ratio of Repetition of grade on Headstart participation")
 
 ############################################################################
 
@@ -61,12 +55,19 @@ lm2_few <- glm(PoorHealth ~  headstart+Hispanic+Black+Male+logBW, data=dj, famil
 
 lm2_medium <- glm(PoorHealth ~  headstart+Hispanic+Black+headstart*Hispanic+headstart*Black+Male+logBW, data=dj, family = binomial)
 
-stargazer::stargazer(lm2_one, lm2_few, lm2_medium, type="text", title="Logit regression of Self reported poor health on Headstart participation")
+stargazer::stargazer(lm2_one, lm2_few, lm2_medium, apply.coef=exp, type="text", title="Odds ratio of Self reported poor health on Headstart participation")
 
-odd2_one <- exp(coef(lm2_one))
-odd2_few <- exp(coef(lm2_few))
-odd2_medium <- exp(coef(lm2_medium))
+#######################################################################################
 
-stargazer::stargazer(odd2_one, odd2_few, odd2_medium, type="text", title="Odds Ratio of Self reported poor health on Headstart participation")
+dk <- df[complete.cases(df$Idle),]
+
+# baseline medium model
+lm3_one <- glm(Idle ~  headstart, data=dk, family = binomial)
+
+lm3_few <- glm(Idle ~  headstart+Hispanic+Black+Male+logBW, data=dk, family = binomial)
+
+lm3_medium <- glm(Idle ~  headstart+Hispanic+Black+headstart*Hispanic+headstart*Black+Male+hsgrad, data=dk, family = binomial)
+
+stargazer::stargazer(lm3_one, lm3_few, lm3_medium, apply.coef=exp, type="text", title="Odds ratio of being out of both college and labor force on Headstart participation")
 
 #######################################################################################
