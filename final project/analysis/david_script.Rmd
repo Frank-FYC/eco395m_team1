@@ -4,9 +4,10 @@ author: "David Fraire"
 date: "5/16/2019"
 output: pdf_document
 ---
-#Code for loading Library Packages
-```{r setup, include=FALSE}
+
+```{r Library & Data Loading, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+#Code for loading Library Packages
 library(foreign)
 library(matrixStats)
 library(readr)
@@ -34,51 +35,64 @@ library(stringr)
 library(tidyr)
 library(tidyverse)
 
+final <- read.csv("../data/finaldataset.csv", header=TRUE)
+
 ```
 
+The following regressions show in table form will represent the effects of the Headstart program on the outcome variables of **PPVTat3**, **somecollege**, **hsgrad**. We decided to use a mixture of linear models and logit models to proceed with analysis of the effect of Headstart program on the three aforementioned dependent variables. 
 
-The following regressions show in table form will represent the effects of the Headstart program on **PPVTat3**, **somecollege**, **hsgrad**. 
-
-We decided to use a Genearlized Linear Models with logit link funcitons and a Linear Models to proceed with analysis of the effect of Headstart program on the three aforementioned dependent variables. 
-
-#HS on PPVT Score at Age 3
-``` {r ,echo=FALSE}
-final <- read.csv("../data/finaldataset.csv", header=TRUE)
+``` {r HS on PPVT,echo=FALSE, results='asis'}
 
 lmPPVT0 = lm(PPVTat3~headstart, data=final)
 lmPPVT1 = lm(PPVTat3~headstart + BirthWeight + Male , data=final)
 lmPPVT2 = lm(PPVTat3~headstart + Hispanic + Black + Male, data=final)
-lmPPVT3 = lm(PPVTat3~headstart + Hispanic + Black + Male + BirthWeight + hsgrad + FirstBorn, data=final)
+lmPPVT3 = lm(PPVTat3~headstart + Hispanic + Black + Male + BirthWeight + hsgrad + FirstBorn + headstart*Black + headstart*Hispanic, data=final)
 
-stargazer::stargazer(lmPPVT0, lmPPVT1, lmPPVT2, lmPPVT3 ,type="latex", title="Headstart effect on PPVT Scores at Age 3")
+stargazer::stargazer(lmPPVT0, lmPPVT1,lmPPVT2, lmPPVT3,type="latex", title="Headstart effect on PPVT Scores at Age 3",header=FALSE,single.row=TRUE, column.sep.width = ".6pt")
 
 
 ```
 
-For the first table, we regressed the data for PPVTat3 on headstart using a linear fit to begin. The effect of the headstart program in this model shows a negative effect ranging from -6.741 to -2.179 PPVT scores across all regressions. This means that participation in Headstart has a negative effect on the test scores with the data provided in our dataset. Given that the children who participate in Headstart are likely to come from disadvatanged socioeconomic backgrounds, this can be explained in the following models as those who are in Headstart will likely have lower scores to start. 
+For the previous table, we began by regressing the data for **PPVTat3** on **headstart** using a linear fit. The effect of the headstart program in this model shows a negative effect ranging from -6.741 to -2.179 PPVT scores and remains significant even after adding variables which are very signficant. This means that participation in Headstart certainly has a negative effect on the test scores with the data provided in our dataset. Given that the children who participate in Headstart are likely to come from disadvatanged socioeconomic backgrounds, this can be explained in the following models as those who are in Headstart will likely have lower scores to start.  
 
-#HS on College Enrollment
-``` {r, echo=FALSE}
+``` {r HS on College Enroll,echo=FALSE, results='asis'}
 
 glmCE0<- glm(somecollege~headstart, data=final, family=binomial)
 glmCE1<- glm(somecollege~headstart + Male, data=final, family=binomial)
 glmCE2<- glm(somecollege~headstart + Male + Black + Hispanic, data=final, family=binomial)
-glmCE3<- glm(somecollege~headstart + Male + Black + Hispanic + BirthWeight + LogInc_0to3, data=final, family=binomial)
+glmCE3<- glm(somecollege~headstart + Male + Black + Hispanic + BirthWeight + LogInc_0to3 + headstart*Black + headstart*Hispanic, data=final, family=binomial)
 
-stargazer::stargazer(glmCE0, glmCE1, glmCE2, glmCE3, type="text", title="Regressions of HS on College Enrollment")
+
+Odd0<- exp(coef(glmCE0))
+Odd1<- exp(coef(glmCE1))
+Odd2<- exp(coef(glmCE2))
+Odd3<- exp(coef(glmCE3))
+
+stargazer::stargazer(glmCE0, glmCE1, glmCE2, glmCE3, type="text", title="Headstart effect on College Enrollment",header=FALSE,single.row=FALSE)
+stargazer::stargazer(Odd0,Odd1,Odd2,Odd3, type="text",header=FALSE,single.row=TRUE, title="Log Odds of Variable")
 ```
+For the effect of Headstart on college enrollment which is measured by the binary variable **somecollege**, we used a logit model to see the effects on the odds of having gone to college. Simply running a regression of **headstart** on **somecollege** shows that **headstart** has a significant effect on the outcome of having enrolled at a college. The odds of attending college are increased by a factor of 1.625. However, this effect is shown to decrease and even become statistically insignificant when controlling for other significant variables such as **Male**, **Black**, **Hispanic**, and **LogInc_0to3**. 
 
-For the effect of Headstart on college enrollment which is measured by the variable **somecollege**, we used a logit model to see the partial effects on the outcome of having gone to college. Simply running a regression of **headstart** on **somecollege** shows that **headstart** has a significant effect on the outcome of having enrolled at a college. 
+The following tables tell us the log odds of each of the regressions showing that **headstart** in the regression with all included covariates has a positive effect of a factor of 1.059 but is not a statistically significant variable after controlling for **Male**, **Black**, **Hispanic**,**LogInc_0to3** and **headstart** interaction terms, all of which are very statistically significant. 
 
-#HS on High School grad
-``` {r, echo=FALSE}
+
+``` {r HS on High School Grad,echo=FALSE, results='asis'}
 glmhs0<- glm(hsgrad~headstart, data=final, family=binomial)
 glmhs1<- glm(hsgrad~headstart + Male , data=final, family=binomial)
 glmhs2<- glm(hsgrad~headstart + Male + Black + Hispanic , data=final, family=binomial)
-glmhs3<- glm(hsgrad~headstart + Male + Black + Hispanic +LogInc_0to3 + MothED, data=final, family=binomial)
+glmhs3<- glm(hsgrad~headstart + Male + Black + Hispanic +LogInc_0to3 + MothED + headstart*Black + headstart*Hispanic, data=final, family=binomial)
 
-stargazer::stargazer(glmhs0, glmhs1, glmhs2, glmhs3, type="text", title="Regressions of HS on High School Graduation")
+OddHS0<- exp(coef(glmhs0))
+OddHS1<- exp(coef(glmhs1))
+OddHS2<- exp(coef(glmhs2))
+OddHS3<- exp(coef(glmhs3))
+
+stargazer::stargazer(glmhs0, glmhs1, glmhs2, glmhs3, type="latex", title="Headstart effects on High School Graduation",header=FALSE,single.row=FALSE)
+stargazer::stargazer(OddHS0,OddHS1,OddHS2,OddHS3, type="latex",header=FALSE,single.row=TRUE)
+
 
 ```
 
+
+For this regression table we regressed the following variables on **hsgrad** to indicate whether or not a child graduated from highschool, **Male**, **Black**, **Hispanic**, **LogInc_0to3**, **MothEd**. The model uses a logit link funciton which tells us in column that the effect of particpating in the Headstart program will increase the log odds of graduating highschool by .486. 
 

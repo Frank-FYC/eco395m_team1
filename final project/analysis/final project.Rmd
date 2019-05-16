@@ -219,7 +219,7 @@ lm6to11 <- glm(
     FirstBorn+LogInc_0to3+MothED+Father_HH_0to3+PPVTat3+
     logBW+Repeat+
     PoorHealth+Age_Moth_Birth+
-    headstart+mentaldisability+
+    headstart+headstart*Hispanic+headstart*Black+mentaldisability+
     learndisability)
 
 ## Middle School
@@ -233,7 +233,7 @@ lm12to14 <- glm(
     FirstBorn+LogInc_0to3+MothED+Father_HH_0to3+PPVTat3+
     logBW+Repeat+
     PoorHealth+Age_Moth_Birth+
-    headstart+mentaldisability+
+    headstart+headstart*Hispanic+headstart*Black+mentaldisability+
     learndisability)
 
 
@@ -248,7 +248,7 @@ lm15to18 <- glm(
     Hispanic+Black+Male+
     FirstBorn+LogInc_0to3+MothED+
     logBW+Repeat+
-    PoorHealth+Age_Moth_Birth+
+    PoorHealth+headstart*Hispanic+headstart*Black+Age_Moth_Birth+
     headstart+mentaldisability+learndisability)
 
 # Table for linear models
@@ -288,7 +288,7 @@ In terms of magnitude (the absolute value of the coefficient) and significance (
     + **mentaldisability**: whether or not this child was diagnosed with a mental disability, 0 or 1.
     + **learndisability**: whether or not this child was diagnosed with a learning disability, 0 or 1.
     
-Overall, we find that the role of Head Start on a child's short term (Elementary School), to long term (High School), effects to be insignificant at best and negative in magnitude at worst. Whether or not this was attributed to the significant (almost 1/2 decrease) drop in participating children in the survey or because the effects of Head Start (in terms of what it teaches a child and its relevance to subsequent testing parameters) were not related to what was being assessed in the PIAT tests. What we can definitively was that throughout a child's formative years, mental health and learning disability, followed by whether a child has needed to repeat a grade level, and race, play a significant role in their success. 
+Overall, we find that the role of Head Start on a child's short term (Elementary School), to long term (High School), effects to be insignificant at best and negative in magnitude at worst. Whether or not this was attributed to the significant (almost 1/2 decrease) drop in participating children in the survey or because the effects of Head Start (in terms of what it teaches a child and its relevance to subsequent testing parameters) were not related to what was being assessed in the PIAT tests. What we can definitively was that throughout a child's formative years, mental health and learning disability, followed by whether a child has needed to repeat a grade level, and race, play a significant role in their success. When we interact race with participation with Head Start, we find that there are no significant effects found.
 
 # Conclusion
 
