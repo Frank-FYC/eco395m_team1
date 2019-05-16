@@ -9,19 +9,102 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#Effect of Headstart participation on the chances of repetition of grade
+#Effect of Head Start participation on the chances of repetition of grade
 
-We try to measure the odds of repeating a grade for Head start participants 
-```{r cars}
-summary(cars)
+We try to see if the childen who attend Head Start have a higher or lower probability of repeating their grade as compared to the non Head Start participants who would be eligible for HeadStart otherwise. We first take into consideration only children whose family income is below the federal poverty level. We ensure that none of the observations have *"NA"* values for the variables we are regressing on as we don't want missing values to affect our analysis. Hence, we choose observations that have non missing values for **LogInc0to3, Father_HH_0to3, MothEd, FirstBorn, Age_Moth_Birth.** 
+```{r datasetup, include=FALSE, warning=FALSE}
+#call libraries
+library(tidyverse)
+library(foreign)
+library(psycho)
+library(reshape2)
+library(expss)
+library(mosaic)
+library(foreach)
+library(gamlr)
+library(stargazer)
+
+#read data
+dt = read.csv('../data/finaldataset.csv')
+
+da <- dt[complete.cases(dt$LogInc_0to3),]
+db <- da[complete.cases(da$Father_HH_0to3),]
+dc <- db[complete.cases(db$MothED),]
+dd <- dc[complete.cases(dc$FirstBorn),]
+de <- dd[complete.cases(dd$Age_Moth_Birth),]
+dg <- de[complete.cases(de$Repeat),]
+
+dh <- dg[which(dg$LogInc_0to3<=10),]
+df <- dh[which(dh$mentaldisability==0),]
+
+##########################################################################33
 ```
 
-## Including Plots
+We run a logit model to see the effect of participation in Head Start on repetition of a grade. We run multiple regressions, controlling for various dependent variables and get the following results. It is important to note that the values in the table below are the odds ratio and not just the coefficients of the variables.
 
-You can also embed plots, for example:
+```{r repeat, echo=FALSE, warning=FALSE, results='asis'}
+############Effect of HS on Repeat grade
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# baseline medium model
+
+lm_one <- glm(repeatgrade ~  headstart, data=df, family = binomial)
+
+lm_few <- glm(repeatgrade ~  headstart+Hispanic+Black+MothED+learndisability, data=df, family = binomial)
+
+lm_medium <- glm(repeatgrade ~  headstart+Hispanic+Black+headstart*Hispanic+headstart*Black+Male+MothED+learndisability, data=df, family = binomial)
+
+stargazer::stargazer(lm_one, lm_few, lm_medium, apply.coef=exp, type="latex", title="Odds ratio of Head Start participants repeating a grade compared to non Head Start participants", header=FALSE, single.row=TRUE)
+
+############################################################################
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+As we can see from the table above, the odds of a Head Start participant ever repeating a grade as compared to a non Head Start participant is 0.924 while controlling for other variables, and significant at 5%. This odds ratio is even lower for Hispanics who attend Headstart program, however, Black students who attend Head Start still have an odds ratio of 1.265 as compared to their non Head Start counterparts. This shows that Head Start participants in general have lower probabilities of repeating a grade as compared to non Head Start participants.
+
+#Effect of Head Start participation on the chances of reporting poor health conditions
+
+NLSY collects data from various participants where they are asked to self report their health condition. If they report it as either Fair or Poor as opposed to Good, Very Good and Excellent, we count them as self reported poor health conditions. We run logit regression on the chances of a Head Start participant self reporting poor health as compared to non Head Start participants. The table below summarizes our odds ratios.
+
+```{r PoorHealth, echo=FALSE, warning=FALSE, results='asis'}
+###############Effect of HS on SRH
+
+di <- df[complete.cases(df$PoorHealth),]
+dj <- di[complete.cases(di$logBW),]
+
+# baseline medium model
+lm2_one <- glm(PoorHealth ~  headstart, data=dj, family = binomial)
+
+lm2_few <- glm(PoorHealth ~  headstart+Hispanic+Black+Male+logBW, data=dj, family = binomial)
+
+lm2_medium <- glm(PoorHealth ~  headstart+Hispanic+Black+headstart*Hispanic+headstart*Black+Male+logBW, data=dj, family = binomial)
+
+stargazer::stargazer(lm2_one, lm2_few, lm2_medium, apply.coef=exp, type="latex", title="Odds ratio of Head Start participants reporting poor health compared to non Head Start participants", header=FALSE, single.row=TRUE)
+
+#######################################################################################
+```
+
+As we can see from above, the Head Start participants are less likely in general to report Poor health conditions as compared to non Head Start participants. However, when controlled for interactions with race, we get on average, a white Head Start participant is 1.12 times more likely to report poor health conditions as compared to a white non Head start participant. Black and Hispanic kids however, are still less likely to report poor health conditions if they attend Head Start, although these results aren't statistically significant.
+
+#Effect of Head Start participation on being *Idle* post High School
+
+We now look at students who graduated from high school but neither enrolled into college nor went into labor force. We measure it using an indicator variable, **Idle** which is 1 if the student neither enrolls into college nor enters labor market. By running a logit regression of this on Head Start participation, we get the following results.
+
+```{r Idle, echo=FALSE, warning=FALSE, results='asis'}
+dk <- df[complete.cases(df$Idle),]
+
+# baseline medium model
+lm3_one <- glm(Idle ~  headstart, data=dk, family = binomial)
+
+lm3_few <- glm(Idle ~  headstart+Hispanic+Black+Male+logBW, data=dk, family = binomial)
+
+lm3_medium <- glm(Idle ~  headstart+Hispanic+Black+headstart*Hispanic+headstart*Black+Male+hsgrad, data=dk, family = binomial)
+
+
+#######################################################################################
+```
+
+```{r Idle graph, echo=FALSE, warning=FALSE, results='asis'}
+
+stargazer::stargazer(lm3_one, lm3_few, lm3_medium, apply.coef=exp, type="latex", title="Odds ratio of Head Start participants being both out of school and labor force compared to non Head Start participants",  header=FALSE, single.row=TRUE)
+```
+
+The odds ratio of Head Start participants being *Idle* as compared to non Head Start participants, seems to follow a similar pattern as the self reported health scores. Head Start participants in general are less likely than non Head Start particpants to be idle. However, when controlled for interactions with race, Hispanic and Black Head Start participants are less likely to be idle as compared to their non Head Start counterparts. White Headstart participants however, are just as likely to be idle as compared to their non Head Start counterparts.
