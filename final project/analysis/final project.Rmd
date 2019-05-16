@@ -19,7 +19,7 @@ library(knitr)
 
 # Introduction
 
-Head Start is a nationwide preschool program targeted at children who come from socio-economically disadvantaged backgrounds. The program, started in 1965 as part of the 'War on Poverty', is funded federally. Head Start has helped over 30 million children and their families in all 50 states, the District of Columbia, Puerto Rico and the U.S. territories. It provides comprehensive early childhood education, health, nutrition, and parent involvement services to these children and their families. It helps create healthy development in children ages three to five from low-income families. 
+Head Start is a nationwide preschool program targeted at children who come from socioeconomically disadvantaged backgrounds. The program, started in 1965 as part of the 'War on Poverty', is funded federally. Head Start has helped over 30 million children and their families in all 50 states, the District of Columbia, Puerto Rico and the U.S. territories. It provides comprehensive early childhood education, health, nutrition, and parent involvement services to these children and their families. It helps create healthy development in children ages three to five from low-income families. 
 
 The children are eligible based on the net family's income. Although each local program includes other eligibility criteria, such as disabilities and services needed by other family members. Families must earn less than the federal poverty level. Families sometimes may qualify under a categorical eligibility category. Kids from higher income families or families experiencing emergency situations can be enrolled up to 10% of any funded program. While the Obama administration consistently increased the funding for the Head Start program, the Trump administration has cut down the budget allocated for education and training outlays by about 45.7% - which severely impacted Head Start programs. This brought us to our research question: Is Head Start effective? Does it have any short-term and/or long-term benefit on its participants? Does this effect vary for different races? Many studies have been conducted during Head Start's multi-decade history to measure its effectiveness. Based on our literature review of the subject, there seems to be no academic or political consensus about the program's effectiveness
 
@@ -52,9 +52,10 @@ The **High School Graduation** was a indicator variable generated from whether o
 
 **Grade Repetition** was an indicator variable based on whether or not a child ever repeated one or more grades from primary (elementary), secondary (middle and high), and tertiary school (university) levels.
 
-**Self Reported Health** was an indicator variable based on whether or not a child ever reported a less than 3 on a scale of 5 during the survey.
+**Self Reported Health** was an indicator variable based on whether or not an individual ever reported a less than 3 on a scale of 5 during the survey.
 
 # Results and Analysis
+
 ```{r frank preprocessing, include=FALSE}
 rm(list=ls())
 
@@ -264,8 +265,10 @@ lm15to18 <- glm(
 table_lm <- stargazer::stargazer(lm6to11,lm12to14,lm15to18, type = 'latex',title="Composite Score based on Age",align=TRUE)
 
 ```
+
 ## Summary Table
 We first begin with a summary table of the total number of children broken down by age, education level, and primary variables of interest.
+
 ```{r summary table,echo=FALSE}
 table_part
 ```
@@ -298,10 +301,92 @@ In terms of magnitude (the absolute value of the coefficient) and significance (
     
 Overall, we find that the role of Head Start on a child's short term (Elementary School), to long term (High School), effects to be insignificant at best and negative in magnitude at worst. Whether or not this was attributed to the significant (almost 1/2 decrease) drop in participating children in the survey or because the effects of Head Start (in terms of what it teaches a child and its relevance to subsequent testing parameters) were not related to what was being assessed in the PIAT tests. What we can definitively was that throughout a child's formative years, mental health and learning disability, followed by whether a child has needed to repeat a grade level, and race, play a significant role in their success. When we interact race with participation with Head Start, we find that there are no significant effects found.
 
+## Effects of Head Start on PPVT at Age 3
+```{r Library & Data Loading, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#Code for loading Library Packages
+library(matrixStats)
+library(readr)
+library(dbplyr)
+library(dplyr)
+library(ggformula)
+library(ggplot2)
+library(ggstance)
+library(grDevices)
+library(haven)
+library(markdown)
+library(Matrix)
+library(pander)
+library(stargazer)
+library(stringr)
+library(tidyr)
+library(tidyverse)
+
+final <- read.csv("../data/finaldataset.csv", header=TRUE)
+
+```
+
+We decided to use a mixture of linear models and logit models to analyze the effect of Head Start on the outcome variables of **PPVTat3**, **somecollege**, **hsgrad**. The table showing effects of Head Start on **PPVTat3** is a linear model. The tables showing Head Start on **somecollege** and **hsgrad** are logit models, and the coefficients for both were exponentiated for ease of interpretation. 
+
+``` {r Models, echo=FALSE, results='asis'}
+## Linear Models for PPVTat3
+lmPPVT0 = lm(PPVTat3~headstart, data=final)
+lmPPVT1 = lm(PPVTat3~headstart + Male , data=final)
+lmPPVT2 = lm(PPVTat3~headstart + Hispanic + Black + Male, data=final)
+lmPPVT3 = lm(PPVTat3~headstart + Hispanic + Black + Male + hsgrad + FirstBorn + headstart*Black + headstart*Hispanic, data=final)
+
+
+## Logit models for College + Odds Ratios
+glmCE0<- glm(somecollege~headstart, data=final, family=binomial)
+glmCE1<- glm(somecollege~headstart + Male, data=final, family=binomial)
+glmCE2<- glm(somecollege~headstart + Male + Black + Hispanic, data=final, family=binomial)
+glmCE3<- glm(somecollege~headstart + Male + Black + Hispanic + LogInc_0to3+ headstart*Black + headstart*Hispanic, data=final, family=binomial)
+
+
+Odd0<- exp(coef(glmCE0))
+Odd1<- exp(coef(glmCE1))
+Odd2<- exp(coef(glmCE2))
+Odd3<- exp(coef(glmCE3))
+
+
+## Logit models for highschool grad (highschool is = AGEHSGRAD<12)
+glmhs0<- glm(hsgrad~headstart, data=final, family=binomial)
+glmhs1<- glm(hsgrad~headstart + Male , data=final, family=binomial)
+glmhs2<- glm(hsgrad~headstart + Male + Black + Hispanic , data=final, family=binomial)
+glmhs3<- glm(hsgrad~headstart + Male + Black + Hispanic +LogInc_0to3 + MothED + headstart*Black + headstart*Hispanic, data=final, family=binomial)
+
+
+OddHS0<- exp(coef(glmhs0))
+OddHS1<- exp(coef(glmhs1))
+OddHS2<- exp(coef(glmhs2))
+OddHS3<- exp(coef(glmhs3))
+```
+
+``` {r PPVT Table, echo=FALSE, results='asis'}
+stargazer::stargazer(lmPPVT0, lmPPVT1,lmPPVT2, lmPPVT3,type="latex", title="Headstart effect on PPVT Scores at Age 3",header=FALSE,single.row=TRUE, column.sep.width = ".6pt", omit.stat = c("f"))
+```
+
+We begin in column 1 by regressing the data for **PPVTat3** only on **headstart** using a linear model. The effect of the Head Start program in this model shows a very statistically significant, yet negative effect of -6.741. The linear model in column 4 includes **Hispanic**, **Black**, **Male**, **hsgrad**, **FirstBorn**, and interaction terms for **headstart** with race. The very (p-value <0.01) significant variables from this regression are **headstart**, **Hispanic**, **Black**, **Male**, **hsgrad**, and **FirstBorn**. The **Black** variable has a very large average effect (-13.120) on the outcome of **PPVTat3** scores and is the largest in magnitude. The **headstart** variable still has a significant (p-value <0.05) but is smaller in magnitude and less significant than that of previous regressions with less variables. This means that participation in Head Start has a consistently negative effect on **PPVTat3** with the data provided in our dataset after controlling for other very significant variables. Given that the children who participate in Head Start are likely to come from disadvantaged socioeconomic backgrounds, this plays an important factor in the following models there are negative effects for Head Start. However, this does not mean that Head Start causes lower test scores, this just means that there is a selection bias for children who participate in Head Start. The model in column 4 includes variables that were shown to explain a significant amount of variation in the original dataset and were therefore chosen to be included in order to convey the decreasing marginal effect of Head Start on **PPVTat3** scores at age 3.
+
+## Effects of Head Start on College Enrollment
+
+``` {r College Table, echo=FALSE, results='asis'}
+stargazer::stargazer(glmCE0, glmCE1, glmCE2, glmCE3, type="latex", title="Headstart effect on College Enrollment",header=FALSE,single.row=TRUE,apply.coef = exp)
+```
+
+The effect of Head Start on college enrollment is measured by the indicator variable **somecollege**. We used a logit model to measure the effects of going to college. Note, the coefficients in the table have been exponentiated for ease of interpretation. Simply running a regression of **headstart** on **somecollege** shows that **headstart** has a very significant effect on the outcome of having college enrollment. The odds of attending college are increased by a factor of 1.625. However, this effect is shown to decrease the odds of attending college when controlling for other significant variables such as **Male**, **Black**, **Hispanic**, **LogInc_0to3**, and interaction **headstart** race variables. In column 4, which all variables, the odds of enrolling in college are 0.841 if you participated in the **headstart** program and is very significant. This tells us that after controlling for other highly significant variables, that attending the Head Start program actually hurt your odds of enrolling in college. Once again, this can be explained by the type of individuals who participate in Head Start coming from disadvantaged background compared to more affluent peers.
+
+## Effects of Head Start on Highschool Graduation
+
+``` {r Highschool Table, echo=FALSE, results='asis'}
+stargazer::stargazer(glmhs0, glmhs1, glmhs2, glmhs3, type="latex", title="Headstart effects on High School Graduation",header=FALSE,single.row=TRUE, apply.coef = exp)
+```
+
+In order to measure the effect of Head Start on whehter a child graduates High School we decided to use a logit model in order to tell us the odds ratio. To start in column 1, we regressed **headstart** on **hsgrad** and then exponentiated the coefficients for the all the regressions included in the table. When regressing **headstart** only on **hsgrad** we see that being enrolled in the program increases the odds of graduating High School by a factor 1.625 and is very significant. Column 4 includes the variables **Male**, **Black**,**Hispanic**,**LogInc_0to3**,**MothED**, and **headstart** interaction terms. Once again, the effect of **headstart** improves the odds of graduating High School by a factor of 0.854 and is statistically significant. Once we add for other important and highly significant variables, the **headstart** variable decreases the odds of graduating high school. We believe that this is caused by selection bias within our dataset as the effects in Deming's original research paper also showed this  result on High School graduation.
+
 # Conclusion
 
 # Bibliography
-
 
 Anderson, Michael L. 2008. *"Multiple Inference and Gender Differences in the Effects of Early Intervention: A Reevaluation of the Abecedarian, Perry Preschool, and Early Training Projects."* Journal of the American Statistical Association, 103(484): 1481-95
 

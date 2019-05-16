@@ -66,9 +66,7 @@ OddHS3<- exp(coef(glmhs3))
 ```
 
 ``` {r PPVT Table, echo=FALSE, results='asis'}
-
 stargazer::stargazer(lmPPVT0, lmPPVT1,lmPPVT2, lmPPVT3,type="latex", title="Headstart effect on PPVT Scores at Age 3",header=FALSE,single.row=TRUE, column.sep.width = ".6pt", omit.stat = c("f"))
-
 ```
 For the previous table, we begin in the first by regressing the data for **PPVTat3** only on **headstart** using a linear fit. The effect of the headstart program in this model shows a very statistically significant negative effect of -6.741. The linear model in the last column includes **Hispanic**, **Black**, **Male**, **hsgrad**, **FirstBorn**, and interaction terms for **headstart**. The very significant variables from this regression are **headstart**, **Hispanic**, **Black**, **Male**, **hsgrad**, and **FirstBorn**. The **Black** variable has a very large average effect on the outcome of PPVT scores and is the highest in magnitude. The **headstart** variable still has a significant effect but is lower in magnitude and lower in signiicance than that of previous regressions with less covariates. This means that participation in Headstart has a consistently negative effect on the test scores with the data provided in our dataset even after controlling for other highly significant variables. Given that the children who participate in Headstart are likely to come from disadvatanged socioeconomic backgrounds, this can be explained in the following models as those who are in Headstart will likely have lower scores to start. The last model included variables that were shown to explain a significant amount of variation in the original dataset and were therfore chosen to be included in order to convey the decreasing marginal effect of Headstart on PPVT scores at age 3. 
 
