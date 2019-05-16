@@ -1,8 +1,8 @@
 ---
 title: "Davids_R_Script"
 author: "David Fraire"
-date: "5/10/2019"
-output: html_document
+date: "5/16/2019"
+output: pdf_document
 ---
 Code for loading Library Packages
 ```{r setup, include=FALSE}
@@ -35,88 +35,50 @@ library(tidyr)
 library(tidyverse)
 
 ```
-Research Question: What is the impact of Headstart in the short/long term effect on the participants, specifically the non-white children. 
-
-Personal hypothesis (guided by provided research papers): Yes, the short term effect on non-white children will be more pronounced in the short-term and long-term. There might be a more pronounced "fade-out" effect in the white chidren, but overall the "fade-out" will be seen on average across the particpants.
 
 
-The following regressions show in table form will represent the effects of the Headstart program on PPVTat3, College Education, and High School graduation. To begin, we have regressions run including demographic factors such as race, gender, and whether or not the child is firstborn. 
+The following regressions show in table form will represent the effects of the Headstart program on PPVTat3, College Education, and High School graduation. 
+
+We decided to use a Genearlized Linear Models and a Linear Models to proceed with analysis of the effect of Headstart program. For the first model, we regressed the data for PPVTat3 on headstart using a linear fit. The effect of the headstart program in this model shows a negative 
 
 
-
-
-First, we decided to use a Genearlized Linear Model to proceed with analysis of the effect of Headstart program on non-white participants. The 1st regression includes the following variables: birthweight, hsgrad, Firstborn, Hispanic, Black, Male. Birthweight
 #HS on PPVT Score
-``` {r}
-# Import data and begin analysis
+``` {r ,echo=FALSE, results='asis'}
 final <- read.csv("../data/finaldataset.csv", header=TRUE)
-demingfinal<-read_stata("../data/deming_final_data.dta")
-View(demingfinal)
-View(final)
-summary(final,)
-colnames(final)
 
-final.na = na.omit(final)
+lmPPVT0 = lm(PPVTat3~headstart, data=final)
+lmPPVT1 = lm(PPVTat3~headstart + BirthWeight + Male , data=final)
+lmPPVT2 = lm(PPVTat3~headstart + Hispanic + Black + Male, data=final)
+lmPPVT3 = lm(PPVTat3~headstart + Hispanic + Black + Male + BirthWeight + hsgrad+ FirstBorn, data=final)
 
-# Linear and Generlized models
-lmPPVT <- lm(headstart~PPVTat3, data=final)
-lmPPVT <- lm(headstart ~ PPVTat3, data=final, na.action = na.omit)
-
-coef(lmPPVT)
-glmPPVT = glm(headstart~PPVTat3, data=final, family=binomial)
-glmPPVT2 = glm(headstart~Hispanic + Black + Male + PPVTat3, data=final, family=binomial, na.action = na.omit)
-glmPPVT3 = glm(headstart~ BirthWeight+hsgrad+FirstBorn + Hispanic + Black + Male  , data=final, family=binomial)
-
-
-#final$glm1resid<- predict.glm(glm1) ## Predict function requires no NA's
-#final$glmPPVT2resid<- predict.glm(glmPPVT) ## Calculated residuals for rows with no NA
-#final$glm3resid<- predict.glm(glm3) 
-
-lm(headstart ~ glm2resid, data=final, family=binomial)
-
-stargazer::stargazer(glm3, glm2, glm1, lm1,lm2,type="text", flip=TRUE)
-
-
-## Extra models
-lm1_0<- lm(PPVTat3~headstart + Male + Black + Hispanic, data=final)
-lm1_1<- lm(PPVTat3~headstart + Male + Black + Hispanic + mentaldisability, data=final)
-
-stargazer(lm1_0,lm1_1, type="text")
-
-
-
-sibling = final %>%
-  group_by(MotherID, ChildID, headstart,Black, Hispanic) %>%
-  summarise()
-
-count(final$headstart == 1)
+stargazer::stargazer(lmPPVT0, lmPPVT1, lmPPVT2, lmPPVT3 ,type="text")
 
 ```
 
 
 #HS on College Enrollment
-``` {r}
+``` {r, echo=FALSE}
 
-lmCE<- lm(somecollege~headstart, data=final)
-lmCE1<-lm(somecollege~headstart + Male + Black + Hispanic, data=final)
-glmCE <- glm(somecollege~headstart, data=final, family=binomial)
-glmCE1 <-glm(somecollege~headstart + Male + Black + Hispanic, data=final, family=binomial)
+glmCE0<- glm(somecollege~headstart, data=final, family=binomial)
+glmCE1<- glm(somecollege~headstart + Male, data=final, family=binomial)
+glmCE2<- glm(somecollege~headstart + Male + Black + Hispanic, data=final, family=binomial)
+glmCE3<- glm(somecollege~headstart + Male + Black + Hispanic + BirthWeight + LogInc_0to3, data=final, family=binomial)
 
-stargazer::stargazer(glmCE1, glmCE, lmCE,lmCE1, type="text", title="Regressions of HS on College Enrollment")
+stargazer::stargazer(glmCE0, glmCE1, glmCE2, glmCE3, type="text", title="Regressions of HS on College Enrollment")
 
 
 
 ```
 
 
-#HS on HSgrad
-``` {r}
-lmhs<- lm(hsgrad~headstart, data=final)
-lmhs1<-lm(hsgrad~headstart + Male + Black + Hispanic, data=final)
-glmhs <- glm(hsgrad~headstart, data=final, family=binomial)
-glmhs1 <-glm(hsgrad~headstart + Male + Black + Hispanic, data=final, family=binomial)
+#HS on High School grad
+``` {r, echo=FALSE}
+glmhs0<- glm(hsgrad~headstart, data=final, family=binomial)
+glmhs1<- glm(hsgrad~headstart + Male , data=final, family=binomial)
+glmhs2<- glm(hsgrad~headstart + Male + Black + Hispanic , data=final, family=binomial)
+glmhs3<- glm(hsgrad~headstart + Male + Black + Hispanic +LogInc_0to3 + MothED, data=final, family=binomial)
 
-stargazer::stargazer(glmhs1, glmhs, lmhs,lmhs1, type="text", title="Regressions of HS on High School Graduation")
+stargazer::stargazer(glmhs0, glmhs1, glmhs2, glmhs3, type="text", title="Regressions of HS on High School Graduation")
 
 ```
 
