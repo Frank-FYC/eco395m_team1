@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.9)  16 MAY 2019 13:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.6960 64-bit) (preloaded format=pdflatex 2019.2.9)  16 MAY 2019 14:29
 entering extended mode
 **./final_project.tex
 (final_project.tex
@@ -521,6 +521,15 @@ LaTeX Warning: Label `' multiply defined.
 
 LaTeX Warning: Label `' multiply defined.
 
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
 )
 \openout1 = `final_project.aux'.
 
@@ -698,26 +707,26 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 327.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (C:\Users\frank\AppData\Roaming\MiKTeX\2.9\tex/latex/microtype\mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-) [3] [4] [5] [6] [7] [8]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 741.
-[9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 741.
+) [3] [4] [5] [6] [7] [8] [9] [10]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 897.
+[11]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 897.
 (final_project.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 741.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 741.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 897.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 897.
 Package rerunfilecheck Info: File `final_project.out' has not changed.
-(rerunfilecheck)             Checksum: E2B99E4D07DC4A363C6225CEDD35B44D;1870.
+(rerunfilecheck)             Checksum: 2E1CBFE4DD25DF17986452B55687909E;2864.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 741.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 897.
  ) 
 Here is how much of TeX's memory you used:
- 12551 strings out of 492946
- 182985 string characters out of 3135528
- 302324 words of memory out of 3000000
- 16142 multiletter control sequences out of 15000+200000
- 52393 words of font info for 100 fonts, out of 3000000 for 9000
+ 12569 strings out of 492946
+ 183290 string characters out of 3135528
+ 302623 words of memory out of 3000000
+ 16148 multiletter control sequences out of 15000+200000
+ 52559 words of font info for 102 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  32i,9n,38p,978b,428s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files/M
@@ -732,9 +741,9 @@ X 2.9/fonts/type1/public/lm/lmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
 ublic/lm/lmri10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmri12.p
 fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/public/lm/lmsy7.pfb>
-Output written on final_project.pdf (9 pages, 231836 bytes).
+Output written on final_project.pdf (11 pages, 241324 bytes).
 PDF statistics:
- 160 PDF objects out of 1000 (max. 8388607)
- 26 named destinations out of 1000 (max. 500000)
- 10329 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 184 PDF objects out of 1000 (max. 8388607)
+ 34 named destinations out of 1000 (max. 500000)
+ 10353 words of extra memory for PDF output out of 12000 (max. 10000000)
 
