@@ -6,23 +6,25 @@ library(reshape2)
 library(expss)
 library(mosaic)
 library(foreach)
-library(gamlr) 
+library(gamlr)
+library(stargazer)
 
 #read data
 dt = read.csv('../data/finaldataset.csv')
-view(dt)
 
 da <- dt[complete.cases(dt$LogInc_0to3),]
 db <- da[complete.cases(da$Father_HH_0to3),]
 dc <- db[complete.cases(db$MothED),]
 dd <- dc[complete.cases(dc$FirstBorn),]
 de <- dd[complete.cases(dd$Age_Moth_Birth),]
-df <- de[complete.cases(de$Repeat),]
-view(df)
+dg <- de[complete.cases(de$Repeat),]
+
+dh <- dg[which(dg$LogInc_0to3<=10),]
+df <- dh[which(dh$mentaldisability==0),]
 
 
 #summarize data
-summary(df)
+summary(df$Repeat)
 
 
 ##########################################################################33
@@ -30,212 +32,41 @@ summary(df)
 ############Effect of HS on Repeat grade
 
 # baseline medium model
-lm_medium <- function(x){
-  lm(Repeat ~  headstart+Hispanic+Black+Male+LogInc_0to3+MothED+Father_HH_0to3+mentaldisability+learndisability+FirstBorn+Age_Moth_Birth, data=x)
-}
-# forward selection
-lm_forward <- function(x){
-  lm0 = lm(Repeat ~ 1, data=x)
-  lm_forward = step(lm0, direction='forward',scope=~(headstart+Hispanic+Black+Male+LogInc_0to3+MothED+Father_HH_0to3+mentaldisability+learndisability+FirstBorn+logBW+Age_Moth_Birth)^2) 
-}
-# backward selection?
-lm_backward <- function(x){
-  lm(Repeat ~ (headstart+Hispanic+Black+Male+LogInc_0to3+MothED+Father_HH_0to3+mentaldisability+learndisability+FirstBorn+Age_Moth_Birth)^2, data=x)
-  
-}
-# stepwise selection
-# note that we start with a reasonable guess
-lm_step <- function(x){
-  step(lm(Repeat ~ headstart+Hispanic+Black+Male+LogInc_0to3+MothED+Father_HH_0to3+mentaldisability+learndisability+FirstBorn+Age_Moth_Birth, data=x), 
-       scope=~(. + headstart+Hispanic+Black+Male+LogInc_0to3+MothED+Father_HH_0to3+mentaldisability+learndisability+FirstBorn+Age_Moth_Birth)^2)
-}
 
-n.coefficients <- function(x){
-  as.numeric(sapply(x, length)[1]) + 1
-}
+lm_one <- glm(repeatgrade ~  headstart, data=df, family = binomial)
 
+lm_few <- glm(repeatgrade ~  headstart+Hispanic+Black+MothED+learndisability, data=df, family = binomial)
 
-# Best model
-lm_medium_all <- lm_medium(df)
-lm_forward_all <- lm_forward(df)
-lm_backward_all <- drop1(lm_backward(df))
-lm_step_all <- lm_step(df)
+lm_medium <- glm(repeatgrade ~  headstart+Hispanic+Black+headstart*Hispanic+headstart*Black+Male+MothED+learndisability, data=df, family = binomial)
 
+stargazer::stargazer(lm_one, lm_few, lm_medium, type="text", title="Logit regression of Repetition of grade on Headstart participation")
 
-variables <- c(n.coefficients(lm_medium_all),
-               n.coefficients(lm_forward_all),
-               n.coefficients(lm_backward_all),
-               n.coefficients(lm_step_all)
-)
+odd_one <- exp(coef(lm_one))
+odd_few <- exp(coef(lm_few))
+odd_medium <- exp(coef(lm_medium))
 
-
-models <- c("lm_medium_all Model",
-            "lm_forward_all Model",
-            "lm_backward_all Model",
-            "lm_step_all Model"
-)
-
-
-models.variables <- data.frame(
-  model_type = models,
-  Number_of_variables = variables
-)
-
-
-models.variables
-
-## Determining Head start Effects on Repeat grade
-headstart_coefficient <- c(
-  coef(lm_medium_all)["headstart"],
-  coef(lm_forward_all)["headstart"],
-  "NA",
-  coef(lm_step_all)["headstart"]
-)
-
-models <- c("lm_medium_all Model",
-            "lm_forward_all Model",
-            "lm_backward_all Model",
-            "lm_step_all Model"
-)
-
-models.coefficients <- data.frame(
-  model_type = models,
-  headstart_value = headstart_coefficient
-)
-
-models.coefficients
-
-#Gamma Lasso regression
-scx = sparse.model.matrix(Repeat ~ headstart+Hispanic+Black+Male+LogInc_0to3+MothED+Father_HH_0to3+mentaldisability+learndisability+FirstBorn+Age_Moth_Birth, data=df)[,-1]
-scy = df$Repeat
-sclasso = gamlr(scx, scy)
-plot(sclasso)
-
-lm_medium = lm(Repeat ~  headstart+Hispanic+Black+Male+LogInc_0to3+MothED+Father_HH_0to3+mentaldisability+learndisability+FirstBorn+Age_Moth_Birth, data=df)
-
-
-lm_step = step(lm_medium,
-               scope=~(. + headstart+Hispanic+Black+Male+LogInc_0to3+MothED+Father_HH_0to3+mentaldisability+learndisability+FirstBorn+Age_Moth_Birth)^2)
-
-lmstepbeta = coef(lm_step)["headstart"]
-lmstepbeta
-
-
-scbeta = coef(sclasso)
-scbeta
-
-
-
+stargazer::stargazer(odd_one, odd_few, odd_medium, type="text", title="Odds Ratio of Repetition of grade on Headstart participation")
 
 ############################################################################
 
-
-
-
 ###############Effect of HS on SRH
 
-dg <- df[complete.cases(df$PoorHealth),]
-dh <- dg[complete.cases(dg$logBW),]
+di <- df[complete.cases(df$PoorHealth),]
+dj <- di[complete.cases(di$logBW),]
 
 # baseline medium model
-lm_medium <- function(x){
-  lm(PoorHealth ~  headstart+Hispanic+Black+Male+LogInc_0to3+FirstBorn+Age_Moth_Birth+logBW, data=x)
-}
-# forward selection
-lm_forward <- function(x){
-  lm0 = lm(PoorHealth ~ 1, data=x)
-  lm_forward = step(lm0, direction='forward',scope=~(headstart+Hispanic+Black+Male+LogInc_0to3+FirstBorn+Age_Moth_Birth+logBW)^2) 
-}
-# backward selection?
-lm_backward <- function(x){
-  lm(PoorHealth ~ (headstart+Hispanic+Black+Male+LogInc_0to3+FirstBorn+Age_Moth_Birth+logBW)^2, data=x)
-  
-}
-# stepwise selection
-# note that we start with a reasonable guess
-lm_step <- function(x){
-  step(lm(PoorHealth ~ headstart+Hispanic+Black+Male+LogInc_0to3+FirstBorn+Age_Moth_Birth+logBW, data=x), 
-       scope=~(. + headstart+Hispanic+Black+Male+LogInc_0to3+FirstBorn+Age_Moth_Birth+logBW)^2)
-}
+lm2_one <- glm(PoorHealth ~  headstart, data=dj, family = binomial)
 
-n.coefficients <- function(x){
-  as.numeric(sapply(x, length)[1]) + 1
-}
+lm2_few <- glm(PoorHealth ~  headstart+Hispanic+Black+Male+logBW, data=dj, family = binomial)
 
+lm2_medium <- glm(PoorHealth ~  headstart+Hispanic+Black+headstart*Hispanic+headstart*Black+Male+logBW, data=dj, family = binomial)
 
-# Best model
-lm_medium_all <- lm_medium(dh)
-lm_forward_all <- lm_forward(dh)
-lm_backward_all <- drop1(lm_backward(dh))
-lm_step_all <- lm_step(dh)
+stargazer::stargazer(lm2_one, lm2_few, lm2_medium, type="text", title="Logit regression of Self reported poor health on Headstart participation")
 
+odd2_one <- exp(coef(lm2_one))
+odd2_few <- exp(coef(lm2_few))
+odd2_medium <- exp(coef(lm2_medium))
 
-variables <- c(n.coefficients(lm_medium_all),
-               n.coefficients(lm_forward_all),
-               n.coefficients(lm_backward_all),
-               n.coefficients(lm_step_all)
-)
+stargazer::stargazer(odd2_one, odd2_few, odd2_medium, type="text", title="Odds Ratio of Self reported poor health on Headstart participation")
 
-
-models <- c("lm_medium_all Model",
-            "lm_forward_all Model",
-            "lm_backward_all Model",
-            "lm_step_all Model"
-)
-
-
-models.variables <- data.frame(
-  model_type = models,
-  Number_of_variables = variables
-)
-
-
-models.variables
-
-## Determining Head start Effects on Repeat grade
-headstart_coefficient <- c(
-  coef(lm_medium_all)["headstart"],
-  coef(lm_forward_all)["headstart"],
-  "NA",
-  coef(lm_step_all)["headstart"]
-)
-
-models <- c("lm_medium_all Model",
-            "lm_forward_all Model",
-            "lm_backward_all Model",
-            "lm_step_all Model"
-)
-
-models.coefficients <- data.frame(
-  model_type = models,
-  headstart_value = headstart_coefficient
-)
-
-models.coefficients
-
-#Gamma Lasso regression
-scx = sparse.model.matrix(PoorHealth ~ headstart+Hispanic+Black+Male+LogInc_0to3+FirstBorn+Age_Moth_Birth+logBW, data=df)[,-1]
-scy = df$PoorHealth
-sclasso = gamlr(scx, scy)
-plot(sclasso)
-
-lm_medium = lm(PoorHealth ~  headstart+Hispanic+Black+Male+LogInc_0to3+FirstBorn+Age_Moth_Birth+logBW, data=df)
-
-
-lm_step = step(lm_medium,
-               scope=~(. + headstart+Hispanic+Black+Male+LogInc_0to3+FirstBorn+Age_Moth_Birth+logBW)^2)
-
-lmstepbeta = coef(lm_step)["headstart"]
-lmstepbeta
-
-
-scbeta = coef(sclasso)
-scbeta
-
-
-##################################################################################3
-
-
-
-
-
+#######################################################################################
