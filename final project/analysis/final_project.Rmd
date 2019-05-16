@@ -329,7 +329,7 @@ final <- read.csv("../data/finaldataset.csv", header=TRUE)
 
 We decided to use a mixture of linear models and logit models to analyze the effect of Head Start on the outcome variables of **PPVTat3**, **somecollege**, **hsgrad**. The table showing effects of Head Start on **PPVTat3** is a linear model. The tables showing Head Start on **somecollege** and **hsgrad** are logit models, and the coefficients for both were exponentiated for ease of interpretation. 
 
-```{r Models, echo=FALSE, results='asis'}
+``` {r Models, echo=FALSE, results='asis'}
 ## Linear Models for PPVTat3
 lmPPVT0 = lm(PPVTat3~headstart, data=final)
 lmPPVT1 = lm(PPVTat3~headstart + Male , data=final)
@@ -363,7 +363,7 @@ OddHS2<- exp(coef(glmhs2))
 OddHS3<- exp(coef(glmhs3))
 ```
 
-```{r PPVT Table, echo=FALSE, results='asis'}
+``` {r PPVT Table, echo=FALSE, results='asis'}
 stargazer::stargazer(lmPPVT0, lmPPVT1,lmPPVT2, lmPPVT3,type="latex", title="Headstart effect on PPVT Scores at Age 3",header=FALSE,single.row=TRUE, column.sep.width = ".6pt", omit.stat = c("f"))
 ```
 
@@ -371,7 +371,7 @@ We begin in column 1 by regressing the data for **PPVTat3** only on **headstart*
 
 ## Effects of Head Start on College Enrollment
 
-```{r College Table, echo=FALSE, results='asis'}
+``` {r College Table, echo=FALSE, results='asis'}
 stargazer::stargazer(glmCE0, glmCE1, glmCE2, glmCE3, type="latex", title="Headstart effect on College Enrollment",header=FALSE,single.row=TRUE,apply.coef = exp)
 ```
 
@@ -379,7 +379,7 @@ The effect of Head Start on college enrollment is measured by the indicator vari
 
 ## Effects of Head Start on High School Graduation
 
-```{r Highschool Table, echo=FALSE, results='asis'}
+``` {r Highschool Table, echo=FALSE, results='asis'}
 stargazer::stargazer(glmhs0, glmhs1, glmhs2, glmhs3, type="latex", title="Headstart effects on High School Graduation",header=FALSE,single.row=TRUE, apply.coef = exp)
 ```
 
