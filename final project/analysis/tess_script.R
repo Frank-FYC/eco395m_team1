@@ -11,7 +11,7 @@ library(stargazer)
 
 #read data
 dt = read.csv('../data/finaldataset.csv')
-view(dt)
+
 da <- dt[complete.cases(dt$LogInc_0to3),]
 db <- da[complete.cases(da$Father_HH_0to3),]
 dc <- db[complete.cases(db$MothED),]
