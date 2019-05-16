@@ -3,6 +3,7 @@ library(readstata13)
 library(clusterSEs)
 library(stargazer)
 library(effects)
+library(knitr)
 
 df <- read.csv("../data/finaldataset.csv")
 df2 <- read.dta13("../data/deming_final_data.dta")
@@ -150,6 +151,7 @@ part.table <- as.data.frame(cbind(part.age,part.grade,part.school,part.total,par
 
 names(part.table) <- c("Age","Grade","School Type","Total","PIAT Participants","Non-HeadStart","HeadStart")
 
+table_part <- kable(part.table,caption="Children Summary")
 
 # Linear Models as the Baseline
 
@@ -163,10 +165,9 @@ lm6to11 <- glm(
   formula=compscore6to11~
     Hispanic+Black+Male+
     FirstBorn+LogInc_0to3+MothED+Father_HH_0to3+PPVTat3+
-    logBW+
+    logBW+Repeat+
     PoorHealth+Age_Moth_Birth+
-    headstart+mentaldisability+
-    learndisability)
+    headstart)
 
 ## Middle School
 
@@ -179,8 +180,7 @@ lm12to14 <- glm(
     FirstBorn+LogInc_0to3+MothED+Father_HH_0to3+PPVTat3+
     logBW+Repeat+
     PoorHealth+Age_Moth_Birth+
-    headstart+mentaldisability+
-    learndisability)
+    headstart)
 
 
 ## High School
@@ -195,10 +195,10 @@ lm15to18 <- glm(
     FirstBorn+LogInc_0to3+MothED+
     logBW+Repeat+
     PoorHealth+Age_Moth_Birth+
-    headstart+mentaldisability)
+    headstart)
 
 # Table for linear models
 
-stargazer::stargazer(lm6to11,lm12to14,lm15to18, type = 'text',title="Composition Score based on Age",align=TRUE)
+table_lm <- stargazer::stargazer(lm6to11,lm12to14,lm15to18, type = 'text',title="Composition Score based on Age",align=TRUE)
 
 
