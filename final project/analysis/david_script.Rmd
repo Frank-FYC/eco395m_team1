@@ -4,7 +4,7 @@ author: "David Fraire"
 date: "5/16/2019"
 output: pdf_document
 ---
-Code for loading Library Packages
+#Code for loading Library Packages
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(foreign)
@@ -37,24 +37,25 @@ library(tidyverse)
 ```
 
 
-The following regressions show in table form will represent the effects of the Headstart program on PPVTat3, College Education, and High School graduation. 
+The following regressions show in table form will represent the effects of the Headstart program on **PPVTat3**, **somecollege**, **hsgrad**. 
 
-We decided to use a Genearlized Linear Models and a Linear Models to proceed with analysis of the effect of Headstart program. For the first model, we regressed the data for PPVTat3 on headstart using a linear fit. The effect of the headstart program in this model shows a negative 
+We decided to use a Genearlized Linear Models with logit link funcitons and a Linear Models to proceed with analysis of the effect of Headstart program on the three aforementioned dependent variables. 
 
-
-#HS on PPVT Score
-``` {r ,echo=FALSE, results='asis'}
+#HS on PPVT Score at Age 3
+``` {r ,echo=FALSE}
 final <- read.csv("../data/finaldataset.csv", header=TRUE)
 
 lmPPVT0 = lm(PPVTat3~headstart, data=final)
 lmPPVT1 = lm(PPVTat3~headstart + BirthWeight + Male , data=final)
 lmPPVT2 = lm(PPVTat3~headstart + Hispanic + Black + Male, data=final)
-lmPPVT3 = lm(PPVTat3~headstart + Hispanic + Black + Male + BirthWeight + hsgrad+ FirstBorn, data=final)
+lmPPVT3 = lm(PPVTat3~headstart + Hispanic + Black + Male + BirthWeight + hsgrad + FirstBorn, data=final)
 
-stargazer::stargazer(lmPPVT0, lmPPVT1, lmPPVT2, lmPPVT3 ,type="text")
+stargazer::stargazer(lmPPVT0, lmPPVT1, lmPPVT2, lmPPVT3 ,type="latex", title="Headstart effect on PPVT Scores at Age 3")
+
 
 ```
 
+For the first table, we regressed the data for PPVTat3 on headstart using a linear fit to begin. The effect of the headstart program in this model shows a negative effect ranging from -6.741 to -2.179 PPVT scores across all regressions. This means that participation in Headstart has a negative effect on the test scores with the data provided in our dataset. Given that the children who participate in Headstart are likely to come from disadvatanged socioeconomic backgrounds, this can be explained in the following models as those who are in Headstart will likely have lower scores to start. 
 
 #HS on College Enrollment
 ``` {r, echo=FALSE}
@@ -65,11 +66,9 @@ glmCE2<- glm(somecollege~headstart + Male + Black + Hispanic, data=final, family
 glmCE3<- glm(somecollege~headstart + Male + Black + Hispanic + BirthWeight + LogInc_0to3, data=final, family=binomial)
 
 stargazer::stargazer(glmCE0, glmCE1, glmCE2, glmCE3, type="text", title="Regressions of HS on College Enrollment")
-
-
-
 ```
 
+For the effect of Headstart on college enrollment which is measured by the variable **somecollege**, we used a logit model to see the partial effects on the outcome of having gone to college. Simply running a regression of **headstart** on **somecollege** shows that **headstart** has a significant effect on the outcome of having enrolled at a college. 
 
 #HS on High School grad
 ``` {r, echo=FALSE}
