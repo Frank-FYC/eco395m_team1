@@ -29,7 +29,7 @@ final <- read.csv("../data/finaldataset.csv", header=TRUE)
 
 ```
 ## Effects of Head Start on PPVT at Age 3, College enrollment, & Highschool Graduation
-The following regressions show in table form will represent the effects of the Headstart program on the outcome variables of **PPVTat3**, **somecollege**, **hsgrad**. We decided to use a mixture of linear models and logit models to proceed with analysis of the effect of Headstart program on the three aforementioned dependent variables. 
+The following regressions show in table form will represent the effects of the Headstart program on the outcome variables of **PPVTat3**, **somecollege**, **hsgrad**. We decided to use a mixture of linear models and logit models to proceed with analysis of the effect of Headstart program on the three aforementioned dependent variables. The table showing effects of Head Start on **PPVTat3** is a linear model. The tables showing Head Start effects on **somecollege** and **hsgrad** are logit models and the shown coefficients have been exponentiated for interpretation reasons. 
 
 ``` {r Models, echo=FALSE, results='asis'}
 ## Linear Models for PPVTat3
